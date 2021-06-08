@@ -1,0 +1,390 @@
+
+/** {*/
+/*  border: 0 none transparent  !important;*/
+/*}*/
+
+a {
+  text-decoration: none; /*убираем подчеркивание текста ссылок*/
+  font-family: "Roboto Thin", monospace;
+}
+
+.App {
+  text-align: center;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  align-items: center;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: rgba(9.4, 9.4, 9.4, 0.8);
+  border: 3px solid red;
+  margin: 0;
+  background: url('pics/body-bg.gif') 50% 0;
+  color: whitesmoke;
+  /*align-self: center;*/
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  /*background-color: pink;*/
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Newheader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid blue;
+  margin-top: 40px;
+  min-height: 150px;
+  width: 1200px;
+  background-color: rgba(9.4, 9.4, 9.4, 0.8);
+}
+
+.Nav {
+  /*float: right;*/
+  border: 3px solid blue;
+  display:flex;
+  /*flex-direction: row;*/
+  justify-content: flex-end;
+  padding: 20px 40px 0 0;
+  width: 100%;
+}
+
+.Nav ul a {
+  -webkit-transition: background-color .3s;
+  transition: background-color .3s;
+  font-size: 1rem;
+  color: #fff;
+  display: block;
+  padding: 0 15px;
+  cursor: pointer;
+
+}
+
+h1 a {
+  /*position: relative;*/
+  background: url('pics/logo.png') no-repeat 0 0;
+  height: 58px;
+  width: 187px;
+  overflow: hidden;
+  text-indent: -99em;
+  display: block;
+  margin: 0 20px 0 40px;
+  /*padding: 0 80px 0 0;*/
+}
+
+.nav-mobile {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.mainContainer {
+  background: url('pics/main-bg.jpg') no-repeat center 0;
+  width: 100%;
+  min-height:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 3px dotted #000;
+}
+
+.horizontal-align {
+  display: flex;
+  flex-direction: row;
+  border: 3px double green;
+  justify-content: center;
+  background: rgba(9.4, 9.4, 9.4, 0.8);
+  width: 1200px;
+
+}
+
+.authForm{
+  padding: 20 px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0em;
+  justify-content: flex-end;
+}
+.authForm input {
+  padding: 20 px;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+fieldset {
+  border-width: 0;
+  font-family: "Roboto Thin", monospace;
+}
+
+.authField {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  padding: 8px;
+  background-color: #99a591;
+  font-family: "Roboto Thin", monospace;
+  font-variant: small-caps;
+  font-size: 110%;
+  margin: 15px;
+  border-radius: 15px;
+  min-width: 100px;
+  /*width: 60%;*/
+}
+button:hover {
+  font-size: 120%;  background-color: #99a580;
+
+}
+
+.DBItemWrapper {
+  display: flex;
+  border: dashed yellow 2px;
+  align-self: left;
+  padding-bottom: 10px;
+
+}
+
+.DBwrapper {
+  /*width: 30%;*/
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  align-self: left;
+  border: dashed white 2px;
+}
+
+.def-list-1 {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  border: dashed pink 2px;
+  margin-left: 10px;
+}
+
+.def-list-1 dt a {
+  color: #b09609;
+  text-decoration: none;
+}
+
+dd {
+  font: 12px/18px Arial, Helvetica, sans-serif;
+  color: #717171;
+  display: flex;
+  text-align: left;
+  align-self: left;
+  border: dashed sandybrown 2px;
+  margin-inline-start: 0px;
+
+}
+
+dt {
+  border: dashed violet 2px;
+}
+
+.totheleft {
+  padding-left: 20px;
+  width:40%;
+  border: dashed white 1px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.regLabel {
+  border: dashed white 1px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  /*justify-content: flex-start;*/
+  padding-right: 10px;
+  width: 50%;
+  font-family: "Roboto Thin", monospace;
+}
+.regInput {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  padding-left: 10px;
+
+
+}
+
+.totheright{
+  width:25%;
+  border:dashed 1px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /*justify-content: flex-end;*/
+  padding-right: 30px;
+}
+
+.center{
+  padding: 0 20px 0 20px;
+  /*float:left;*/
+  border:dashed 1px;
+  /*border-width:1px;*/
+  /*min-width:80px;*/
+  width:60%;
+  /*display: inline-block;*/
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+}
+
+footer {
+  border: 3px solid blue;
+  /*width: 1050px;*/
+
+}
+
+header, footer, .bodyContainer {
+  width: 1200px;
+  background: rgba(9.4, 9.4, 9.4, 0.8);
+}
+
+body {
+  background: url('pics/body-bg.gif') 50% 0;
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+/*#root {*/
+/*  width: 100%;*/
+/*  background: url('pics/main-bg.jpg') no-repeat center 0;*/
+/*}*/
+
+#MyAddForm {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#MyAddForm fieldset {
+  padding: 5px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#MyAddForm fieldset input, textarea {
+  padding: 10px;
+  margin: 10px;
+}
+
+#addNewUser, #regForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: dashed violet 2px;
+  width: 100%;
+
+}
+
+.labelInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+  /*margin: 10px;*/
+}
+
+.regField {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /*padding: 10px;*/
+}
+
+/*a.active {*/
+/*  font-weight: bold;*/
+/*  color: red;*/
+
+/*}*/
+
+.authField input {
+  padding: 5px;
+  margin: 15px 0 15px 0;
+}
+
+.errorspan {
+  color: red;
+  font-family: monospace, "Roboto Thin";
+  border: 2px lightblue solid;
+}
+
+h2, h1 {
+  font-family: "Roboto Thin", monospace;
+}
+
+a.button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+
+  padding: 8px;
+  background-color: #99a591;
+  font-family: "Roboto Thin", monospace;
+  /*font-variant: small-caps;*/
+  font-size: 110%;
+  margin: 15px;
+  border-radius: 15px;
+  width: 60%;
+}
+
+a.button:hover {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+
+  font-size: 120%;  background-color: #99a580;
+
+}
