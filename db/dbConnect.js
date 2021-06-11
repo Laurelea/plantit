@@ -7,6 +7,4 @@ const pg = new Client({
     port: 5432,
 })
 
-
-
 module.exports = pg

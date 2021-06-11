@@ -2,32 +2,44 @@ const db = require('./dbConnect')
 const bcrypt = require('bcrypt')
 
 module.exports.getUser = async function (email) {
-    console.log('Email to check: ', email)
+    // console.log('Email to check: ', email)
     const ifUser = await db.query('SELECT * FROM users WHERE email=$1', [email])
-    console.log(ifUser.rows.length)
+    // console.log(ifUser, ifUser.rows.length)
     return ifUser
 }
 
-module.exports.getUserName = async function (username) {
-    console.log('Email to check: ', username)
-    const ifUNexists = await db.query('SELECT * FROM users WHERE user_name=$1', [username])
-    console.log(ifUNexists.rows.length)
-    return ifUNexists
-}
+// module.exports.getUserName = async function (username) {
+//     console.log('Email to check: ', username)
+//     const ifUNexists = await db.query('SELECT * FROM users WHERE user_name=$1', [username])
+//     console.log(ifUNexists.rows.length)
+//     return ifUNexists
+// }consol
 
-module.exports.getUserByID = async function (id) {
-    console.log('ID to check: ', id)
-    const ifUser = await db.query('SELECT * FROM users WHERE id=$1', [id])
-    console.log("ifUser.rows.length: ", ifUser.rows.length)
-    return ifUser
+// module.exports.getUserByID = async function (id) {
+//     console.log('ID to check: ', id)
+//     const ifUser = await db.query('SELECT * FROM users WHERE id=$1', [id])
+//     console.log("ifUser.rows.length: ", ifUser.rows.length)
+//     return ifUser
+// }
+
+module.exports.getUserByUN = async function (username) {
+    console.log('UN to check: ', username)
+    const ifUN = await db.query('SELECT * FROM users WHERE user_name=$1', [username])
+    // console.log("ifUser.rows.length: ", ifUser.rows.length)
+    return ifUN
 }
 
 module.exports.addUser = async function (username, password, email) {
-    const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
-    console.log('hashedPassword:', hashedPassword)
-    const newUser = await db.query('INSERT INTO users(user_name, password, email, true_password) VALUES ($1, $2, $3, $4) RETURNING *', [username, hashedPassword, email, password])
-    // console.log("New User:", newUser)
-    return newUser
+    try {
+        const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
+        // console.log('hashedPassword:', hashedPassword)
+        const newUser = await db.query('INSERT INTO users(user_name, password, email, true_password) VALUES ($1, $2, $3, $4) RETURNING *', [username, hashedPassword, email, password])
+        // console.log("New User:", newUser)
+        return newUser
+    } catch (e) {
+        return e
+    }
+
 }
 
 module.exports.showUsersTable = async function() {
@@ -36,11 +48,11 @@ module.exports.showUsersTable = async function() {
     return showUsers
 }
 
-module.exports.checkPass = async function (email, password) {
-    const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
-    console.log("checkPass hashedPassword", hashedPassword)
-    const ifPassCorrect = await db.query(`SELECT * FROM users WHERE email = $1 AND password = $2`, [email, hashedPassword]);
-    return (ifPassCorrect.rowCount != 0)
+module.exports.checkPass = async function (password, hashedPassword) {
+    // const ifPassCorrect = bcrypt.compareSync(password, hashedPassword); // true
+    // console.log("ifPassCorrect", ifPassCorrect)
+    // const ifPassCorrect = await db.query(`SELECT * FROM users WHERE email = $1 AND password = $2`, [email, hashedPassword]);
+    return bcrypt.compareSync(password, hashedPassword)
 }
 
 module.exports.editUser = async function (id, user_name, email, password) {
@@ -70,3 +82,9 @@ module.exports.deleteUser = async function () {
         console.log(err)
     }
 }
+
+module.exports.getToken = async function(token) {
+    console.log('Token to check: ', token)
+    const ifToken = await db.query('SELECT * FROM sessions WHERE token=$1', [token])
+    // console.log("ifUser.rows.length: ", ifUser.rows.length)
+    return ifToken}

@@ -1,10 +1,15 @@
 import React from 'react'
 import './../App.css';
 import {NavLink, Link} from "react-router-dom";
-import {ReactSession} from "react-client-session";
+// import {ReactSession} from "react-client-session";
 // import Button from '@material-ui/core/Button';
+// import Cookies from 'js-cookie'
+// import cookie from "react-cookie";
 
+import Cookies from 'universal-cookie';
 import axios from "axios";
+
+const cookies = new Cookies();
 
 export default class Auth extends React.Component {
 
@@ -14,13 +19,22 @@ export default class Auth extends React.Component {
             loginValue: '',
             pwValue: '',
             loginValid: false,
-            pwValid: false
+            pwValid: false,
+            isAuthenticated: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         // this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    resetForm = async () => {
+        document.getElementById("authForm").reset()
+        this.setState({
+            ...this.state,
+            loginErrorMessage: "",
+            pwErrorMessage: ""
+        })
+    }
     loginHandler = async (event) => {
         event.preventDefault()
         // console.log(event.target)
@@ -28,31 +42,37 @@ export default class Auth extends React.Component {
             password: this.state.pwValue,
             email: this.state.loginValue,
         }
-        const response = await axios.post('/api/auth', authData, { withCredentials: true })
+        //Запрос: логин и пароль.
+        // Ответ:
+        // 2. Сообщение - ошибка или успешно
+        // 3. Если успешно, то id сессии, UserName
+
+        //Эта штука должна посылать существующую куку:
+        const response = await axios.post('/api/auth', authData,  { withCredentials: true })
             .then(response => {
                 console.log("post.response.data: ", response.data);
-                this.setState({apiResponse: response.data.isLogin, message: response.data.message});
-                (response.data.isLogin == true)
-                    ? ReactSession.set("username", this.state.loginValue)
-                    :
-                console.log("apiResponse: ", this.state.apiResponse, this.state.message)
-                // document.getElementById("apiID").innerText =  "API response:" + this.state.apiResponse
+
+                //При любом результате авторизации:
+                this.setState({
+                    // apiResponse: response.data.isAuthenticated,
+                    message: response.data.message,
+                });
+
+                //При успешной авторизации:
+                if (response.data.isAuthenticated) {
+                    this.setState({
+                        authUN: response.data.authUN,
+                        authEmail: response.data.authEmail,
+                        isAuthenticated: true
+                    });
+                }
+                this.resetForm()
             })
             .catch(error => {
                 // handle error
                 console.log(error);
             })
-        // console.log("document.title: ", document.title)
-        // console.log("this.state.pageTitle: ", this.state.pageTitle)
     }
-
-
-
-    //Предотвращает стандартное поведение формы
-    // submitHandler = (event) => {
-    //     event.preventDefault()
-    //
-    // }
 
     checkLogin(value) {
         try {
@@ -132,7 +152,7 @@ export default class Auth extends React.Component {
     render() {
         return (
             <div>
-            <form className="authForm" onSubmit={this.loginHandler}>
+            <form className="authForm" onSubmit={this.loginHandler} id="authForm">
                 {/*action="login" method="post"*/}
                 <h2>Авторизация</h2>
                 <fieldset className="authField">
@@ -142,7 +162,7 @@ export default class Auth extends React.Component {
                             placeholder='Email'
                             name='login'
                             // pattern="[a-zA-Z]+"
-                            // value = "default@default.default"
+                            defaultValue= "laurelea@mail.ru"
                             required
                             onChange={this.handleChange}
                         />
@@ -156,11 +176,13 @@ export default class Auth extends React.Component {
                     }
                     <label> Пароль
                         <input
-                            type='password'
+                            type='text'
                             placeholder='Пароль'
                             name='password'
                             required
-                            // value = "default"
+                            defaultValue = "qwerty12"
+                            // value = "qwerty12"
+
                             onChange={this.handleChange}
                         />
                     </label>
@@ -179,11 +201,17 @@ export default class Auth extends React.Component {
 
                         // value="login"
                         // onClick={this.loginHandler}
-                        disabled={!(this.state.loginValid && this.state.pwValid)}
+                        // disabled={!(this.state.loginValid && this.state.pwValid)}
                     >
                         Войти
                     </button>
-
+                    {
+                        this.state.authUN
+                            ? <span className="errorspan"
+                                    id="authSuccessSpan">{this.state.message} {"\n"} You're logged in as {this.state.authUN}</span>
+                            : <span className="errorspan"
+                                    id="authErrorSpan">{this.state.message}</span>
+                    }
                 </fieldset>
             </form>
                 <NavLink to="/newUser" className="button">Регистрация</NavLink>

@@ -1,7 +1,5 @@
 import React from 'react'
 import './../App.css';
-import {NavLink} from "react-router-dom";
-import {ReactSession} from "react-client-session";
 
 import axios from "axios";
 
@@ -53,7 +51,7 @@ export default class newUser extends React.Component {
             && (this.state.ifPwsMatch == true)
         )
         this.setState({ifValid: ifValid})
-        console.log("ifValid: ", ifValid)
+        // console.log("ifValid: ", ifValid)
     }
 
     checkEmail(value) {
@@ -69,7 +67,7 @@ export default class newUser extends React.Component {
     }
 
     checkUsername(value) {
-        console.log("Starting...")
+        // console.log("Starting...")
         try {
             if (value.match(/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{6,19}$/) == null) {
                 throw new Error("Latin chars and digits. Starts with a char.");
@@ -91,7 +89,7 @@ export default class newUser extends React.Component {
             } else if (value.match(/^[a-zA-Z]+[a-zA-Z0-9]*$/) == null) {
                 throw new Error("Latin chars and digits. Starts with a char.");
             } else {
-                console.log("Password: ", value)
+                // console.log("Password: ", value)
                 return true
             }
         } catch (myError) {
@@ -114,53 +112,6 @@ export default class newUser extends React.Component {
         }
     }
 
-
-    // changeHandler (event) {
-    //
-    //         // this.setState({[event.target.name]: event.target.value})
-    //         // console.log("changeHandler: event.target.name: ", event.target.name, " event.target.value: ", event.target.value)
-    //         let result;
-    //         switch (event.target.name) {
-    //             case "email":
-    //                 // this.setState({email: event.target.value})
-    //                 result = this.checkEmail(event.target.value);
-    //                 if (result == true) {
-    //                     this.setState({emailMessage: "Email true", formValid: true})
-    //                 } else {
-    //                     this.setState({emailMessage: result.message.toString(), formValid: false})
-    //                     // console.log(result.message.toString())
-    //                 }
-    //                 break
-    //             case "username":
-    //                 // this.setState({username: event.target.value})
-    //                 result = this.checkUsername(event.target.value);
-    //                 if (result == true) {
-    //                     this.setState({unMessage: "User Name true", formValid: true})
-    //                 } else {
-    //                     this.setState({unMessage: result.message.toString(), formValid: false})
-    //                 }
-    //                 break
-    //             case "password":
-    //                 result = this.checkPw(event.target.value);
-    //                 if (result == true) {
-    //                     this.setState({pwMessage: "Pw true", formValid: true})
-    //                 } else {
-    //                     this.setState({pwMessage: result.message.toString(), formValid: false})
-    //                     // console.log(result.message.toString())
-    //                 }
-    //                 break
-    //             case "repPassword":
-    //                 result = this.ifPwsMatch(event.target.value);
-    //                 if (result == true) {
-    //                     this.setState({repPwMessage: "Pws match"})
-    //                 } else {
-    //                     this.setState({repPwMessage: result.message.toString()})
-    //                     // console.log(result.message.toString())
-    //                 }
-    //         }
-    //         this.ifFormvalid()
-    // }
-
     changeHandler = async (event) => {
         let result = true;
         // console.log("event.target.name", event.target.name)
@@ -180,13 +131,13 @@ export default class newUser extends React.Component {
                 break
             case "username":
                 // this.setState({username: event.target.value})
-                console.log("1. event.target.value", event.target.value)
+                // console.log("1. event.target.value", event.target.value)
                 result = await this.checkUsername(event.target.value)
-                console.log("2.", result)
+                // console.log("2.", result)
                 if (result == true) {
-                    console.log("3. IfRestrue: User name to rem: ", event.target.value)
+                    // console.log("3. IfRestrue: User name to rem: ", event.target.value)
                     this.setState({unMessage: "User Name true", username: event.target.value}, () => {
-                        console.log("4. this.state.username changeHandler: ", this.state.username)
+                        // console.log("4. this.state.username changeHandler: ", this.state.username)
                     })
                 } else {
                     this.setState({unMessage: result.message.toString()})
@@ -223,6 +174,17 @@ export default class newUser extends React.Component {
         // this.ifFormvalid()
     }
 
+    resetForm = async () => {
+        document.getElementById("regForm").reset()
+        this.setState({
+            ...this.state,
+            emailMessage: "",
+            unMessage: '',
+            pwMessage: "",
+            repPwMessage: "",
+        })
+    }
+
     registerHandler = async (event) => {
         event.preventDefault();
         const regData = {
@@ -237,14 +199,20 @@ export default class newUser extends React.Component {
                 console.log("apiResponse: ", this.state.apiResponse)
                 // document.getElementById("apiID").innerText =  "API response:" + this.state.apiResponse
             })
+            .then( response => {
+                console.log("Am I here?");
+                this.resetForm()
+            })
             .catch(error => {
                 // handle error
                 console.log(error);
             })
+
+        // document.getElementsByClassName("errorspan")
     }
 
     render() {
-        const {username, email} = this.state
+        // const {username, email} = this.state
         return (
             <div id="addNewUser">
                 <h2>Регистрация</h2>
@@ -260,7 +228,7 @@ export default class newUser extends React.Component {
                                 autoFocus
                                 className="regInput"
                                 // value={username}
-                                defaultValue={username}
+                                // defaultValue={username}
                                 onChange={this.changeHandler}/>
                         </div>
 
@@ -307,7 +275,7 @@ export default class newUser extends React.Component {
                                 required
                                 id="regEmail"
                                 className="regInput"
-                                defaultValue={email}
+                                // defaultValue={email}
                                 onChange={this.changeHandler}/>
 
                         </div>
@@ -330,7 +298,7 @@ export default class newUser extends React.Component {
                     </div>
 
                 </form>
-                <p className="errorSpan"> {this.state.apiResponse.toString()} {this.state.message.toString()}</p>
+                <p className="errorSpan"> {this.state.apiResponse.toString()} {this.state.message}</p>
             </div>
         )
     }

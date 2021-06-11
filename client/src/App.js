@@ -10,7 +10,6 @@ import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
-import {ReactSession} from 'react-client-session';
 
 const axios = require('axios').default;
 
@@ -23,18 +22,12 @@ export default class App extends React.Component {
         this.state = {
             apiResponse: "",
             pageTitle: "React Components",
-            isLoggedIn: false
+            isAuthenticated: false
         };
         // this.componentDidMount = this.componentDidMount.bind(this);
         // this.axios = this.axios.bind(this);
 
     }
-
-  // callAPI() {
-  //   fetch("/api")
-  //       .then(res => res.json())
-  //       .then(res => this.setState({ apiResponse: res.message }));
-  // }
 
 
   componentDidMount = () => {
@@ -45,10 +38,14 @@ export default class App extends React.Component {
       })
           .then( (response) => {
               console.log("get.response.data: ", response.data);
-              this.setState({apiResponse: response.data.message, pageTitle: response.data.title});
+              this.setState({
+                  apiResponse: response.data.message,
+                  pageTitle: response.data.title,
+                  username: response.data.username,
+                  unqieID: response.data.uniqueID
+              });
               document.title = this.state.pageTitle;
               console.log("this.state.pageTitle: ", this.state.pageTitle);
-              ReactSession.set("username", response.data.username);
           })
           .catch(function (error) {
               // handle error
@@ -58,8 +55,6 @@ export default class App extends React.Component {
       console.log("this.state.pageTitle: ", this.state.pageTitle)
   }
     render () {
-      ReactSession.setStoreType("sessionStorage");
-      // ReactSession.set("username", "Bob");
     return (
         <div className="App">
             <div className="mainContainer">
@@ -98,7 +93,8 @@ export default class App extends React.Component {
                                 <Route render={() => <h2>404 not found</h2>}/>
                             </Switch>
                         {/*</Router>*/}
-                        <p>User Name is: {ReactSession.get("username")}</p>
+                        {/*<p>User Name is: {session.get("username")}</p>*/}
+                        <p>User Name is: {this.state.username}</p>
                         <p>this.state.apiResponse: {this.state.apiResponse}</p>
 
                     </div>
