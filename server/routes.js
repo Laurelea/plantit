@@ -1,5 +1,5 @@
 const express = require("express");
-const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
 // const router = express.Router();
 
 //Подключаем модуль сессий, обязательно после кук
@@ -27,7 +27,7 @@ app.use(express.urlencoded({
     extended: true,
 }))
 
-app.use(cookieParser())
+// app.use(cookieParser())
 
 app.use(
     session({
@@ -43,23 +43,93 @@ app.use(
             pool: db,
             tableName: 'sessions'
         }),
-        cookie: {path: "/", maxAge: 1000 * 60 * 60 * 24}
+        cookie: {path: "/", maxAge: 7 * 24 * 3600 * 1000} //one week
     })
 )
 
 app.use(router);
 
 //test for server: HomePage Route For Server:
-router.get("/api", (req, res) => {
-    console.log('Inside the homepage callback function')
-    console.log("req.sessionID", req.sessionID)
-    // console.log("Req to test", req)
-    const uniqueID = uuidv4.uuid();
-    res.json({
+router.get("/api", async (req, res) => {
+    console.log("Cookie SID from req (browser): ", req.headers.cookie, "\n")
+    let state = {
+        isAuthenticated: false,
         message: "Hello from server!",
-        username: "Lin",
+        userName: "Default",
+        userEmail: "default",
+    }
+    console.log("Printing state 1", state)
+
+    parseCookie = async function(str, callback)
+    {
+        const myStr = await str
+            .split(';')
+            .map(v => v.split('='))
+            .reduce((acc, v) => {
+                acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1]
+                        .trim()
+                        .replace(/[^.]*$/, '')
+                        .replace(/.$/, '')
+                        .replace(/^.{4}/, '')
+                    // .replace(/^.?(.*)/, '')
+                );
+                return acc;
+            }, {});
+        callback(myStr.SID)
+    }
+    // console.log("LOOKING FOR SID:", parseCookie(req.headers.cookie).SID, "\n");
+// const testTest = parseCookie(req.headers.cookie).SID
+//     const testTest = parseCookie(req.headers.cookie)
+//     console.log("Debuggin test:", testTest)
+
+    checkAuthorization = async (SIDcookieValueInBrowser) => {
+        try {
+            //Если куки SID нет в браузере
+            if (!SIDcookieValueInBrowser) {
+                state.isAuthenticated = false;
+                console.log("Printing state if no cookie:", state)
+
+                throw new Error ("No SID cookie found in the browser")
+            //Если есть:
+            } else {
+                const foundSession = await controller.lookForSameSID(SIDcookieValueInBrowser)
+                console.log("Number of cookies found:", foundSession.rows.length)
+                // console.log("Found cookie:", foundSession)
+                if (foundSession.rows.length ==0) {
+                    state.isAuthenticated = false;
+                    console.log("Printing state if no cookie in DB:", state)
+                    throw new Error ("Browser cookie ID doesn't match anything in the DB")
+                } else {
+                    console.log("Changing state...", foundSession.rows[0].sess.userName)
+                    state.isAuthenticated = true;
+                    state.userName = foundSession.rows[0].sess.userName
+                    state.userEmail = foundSession.rows[0].sess.userEmail
+                    console.log("State changed:", state)
+                }
+            }
+        } catch (err) {
+            state.message = err.message.toString()
+            console.log("Grand mistake:", state)
+
+            console.log("Error while checking authorization: ", err)
+        }
+    }
+
+    await parseCookie(req.headers.cookie, checkAuthorization)
+
+    // checkAuthorization(SIDcookieValueInBrowser)
+    // console.log("Debugging. Request:: ", req, "\n")
+    // const uniqueID = uuidv4.uuid();
+    // console.log("state.userName", state)
+    console.log("Printing state before res", state)
+
+    await res.json({
+        isAuthenticated: state.isAuthenticated,
+        message: state.message,
+        userName: state.userName,
+        userEmail: state.userEmail,
         title: "From Server With Love",
-        unqieID: uniqueID
+        // unqieID: uniqueID
     });
 
 });
@@ -72,12 +142,8 @@ router.get("/api/logout", (req, res) => {
 });
 
 router.post("/api/auth", async (req, res) => {
-            // console.log("Cookie from req: ", cookieParser.JSONCookies(req.cookies))
-        console.log("Cookie sessID from req (browser): ", req.cookies.sessID)
-        console.log("Cookie SID from req (browser): ", req.cookies.SID, "\n")
 
-
-        const {email, password} = req.body
+    const {email, password} = req.body
         console.log("req.body: ", req.body)
         console.log('Inside GET /login callback function', "\n")
         // console.log("Login req.sessionID", req.sessionID, "\n")
@@ -115,7 +181,8 @@ router.post("/api/auth", async (req, res) => {
                         console.log("session saved", "\n")
                     })
 
-                    console.log("req.session.cookie: ", req.session.cookie, "\n")
+                    // console.log("req.session.cookie: ", req.session.cookie, "\n")
+                    // console.log("Debugging. Request:: ", req, "\n")
 
 
                     res.json({

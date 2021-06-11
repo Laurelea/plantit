@@ -87,4 +87,12 @@ module.exports.getToken = async function(token) {
     console.log('Token to check: ', token)
     const ifToken = await db.query('SELECT * FROM sessions WHERE token=$1', [token])
     // console.log("ifUser.rows.length: ", ifUser.rows.length)
-    return ifToken}
+    return ifToken
+}
+
+module.exports.lookForSameSID = async function(browserCookie) {
+    console.log('Cookie from the browser to process: ', browserCookie, "\n")
+    const cookiesFound = await db.query('SELECT * FROM sessions WHERE sid=$1', [browserCookie])
+    // console.log("cookiesFound.rows.length: ", cookiesFound.rows.length)
+    return cookiesFound
+}

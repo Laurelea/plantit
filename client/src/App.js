@@ -41,7 +41,7 @@ export default class App extends React.Component {
               this.setState({
                   apiResponse: response.data.message,
                   pageTitle: response.data.title,
-                  username: response.data.username,
+                  username: response.data.userName,
                   unqieID: response.data.uniqueID
               });
               document.title = this.state.pageTitle;
@@ -95,7 +95,7 @@ export default class App extends React.Component {
                         {/*</Router>*/}
                         {/*<p>User Name is: {session.get("username")}</p>*/}
                         <p>User Name is: {this.state.username}</p>
-                        <p>this.state.apiResponse: {this.state.apiResponse}</p>
+                        <p>Message from API: {this.state.apiResponse}</p>
 
                     </div>
                     <div id="authContainer" className="totheright">
