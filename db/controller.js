@@ -91,7 +91,7 @@ module.exports.getToken = async function(token) {
 }
 
 module.exports.lookForSameSID = async function(browserCookie) {
-    console.log('Cookie from the browser to process: ', browserCookie, "\n")
+    console.log('Controller. Cookie from the browser to process: ', browserCookie, "\n")
     const cookiesFound = await db.query('SELECT * FROM sessions WHERE sid=$1', [browserCookie])
     // console.log("cookiesFound.rows.length: ", cookiesFound.rows.length)
     return cookiesFound

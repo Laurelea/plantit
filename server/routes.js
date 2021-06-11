@@ -105,6 +105,7 @@ router.get("/api", async (req, res) => {
                     state.userName = foundSession.rows[0].sess.userName
                     state.userEmail = foundSession.rows[0].sess.userEmail
                     console.log("State changed:", state)
+                    // return state
                 }
             }
         } catch (err) {
@@ -116,21 +117,36 @@ router.get("/api", async (req, res) => {
     }
 
     await parseCookie(req.headers.cookie, checkAuthorization)
+        .then (() => {
+            console.log("Printing state before res", state)
+            // console.log("Printing result in then", result)
+
+            res.json({
+                isAuthenticated: state.isAuthenticated,
+                message: state.message,
+                userName: state.userName,
+                userEmail: state.userEmail,
+                title: "From Server With Love",
+                // unqieID: uniqueID
+            });
+        })
+        .catch(err => {
+            console.log("Err from final catch in then - res", err)
+    })
 
     // checkAuthorization(SIDcookieValueInBrowser)
     // console.log("Debugging. Request:: ", req, "\n")
     // const uniqueID = uuidv4.uuid();
     // console.log("state.userName", state)
-    console.log("Printing state before res", state)
 
-    await res.json({
-        isAuthenticated: state.isAuthenticated,
-        message: state.message,
-        userName: state.userName,
-        userEmail: state.userEmail,
-        title: "From Server With Love",
-        // unqieID: uniqueID
-    });
+    // await res.json({
+    //     isAuthenticated: state.isAuthenticated,
+    //     message: state.message,
+    //     userName: state.userName,
+    //     userEmail: state.userEmail,
+    //     title: "From Server With Love",
+    //     // unqieID: uniqueID
+    // });
 
 });
 
