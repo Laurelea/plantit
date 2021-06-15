@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
-import axios  from "axios";
+import {observer, Provider} from "mobx-react";
+import MainStore from "./stores/MainStore";
 
-// axios.defaults.baseURL = "http://localhost:3003/";
+// const store = new MainStore();
 
 const application = (
     <BrowserRouter>
@@ -13,14 +14,37 @@ const application = (
     </BrowserRouter>
 )
 
+// ReactDOM.render(
+//     <Provider store = {store}>
+//         <BrowserRouter>
+//             <App />
+//         </BrowserRouter>
+//     </Provider>,
+//     document.getElementById('root')
+// );
 
+@observer
+class RunApp extends React.Component<{}, {}> {
+    // store: Store;
 
-ReactDOM.render(
-    <React.StrictMode>
-        {application}
-    </React.StrictMode>,
-    document.getElementById('root')
-);
+    constructor(props) {
+        super(props);
+        this.store = new MainStore();
+    }
+
+    render() {
+        return (
+            <Provider store = {this.store}>
+                {application}
+                {/*<BrowserRouter>*/}
+                {/*    <App />*/}
+                {/*</BrowserRouter>*/}
+            </Provider>
+        );
+    }
+}
+
+ReactDOM.render(<RunApp />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -4,6 +4,9 @@ import {BrowserRouter as Router, NavLink, Route, Switch, Link} from "react-route
 // import Cookies from 'universal-cookie';
 
 // const cookies = new Cookies();
+import { observer } from 'mobx-react';
+import cn from 'classnames';
+import MainStore from '../stores/MainStore';
 
 const home = (
     <>
@@ -14,6 +17,11 @@ const home = (
 // const stateApp = App
 export default class Newheader extends Component{
     render () {
+        // const Menu = observer(() => (
+        //     <nav className={cn(styles.menu, { [styles.active]: MainStore.show })}>
+        //         <div className={styles['toggle-btn']}>☰</div>
+        //     </nav>
+        // ));
     return (
         <header className="Newheader">
             <h1 id="mainheader" className="logo">
@@ -22,8 +30,8 @@ export default class Newheader extends Component{
                 <nav className="Nav">
                     <div className="nav-wrapper">
                         <ul className="nav-mobile">
-                            <li><NavLink to="/" exact>ГЛАВНАЯ</NavLink></li>
-                            <li><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink></li>
+                            <li className={MainStore.isAuthenticated ? "active" : null}><NavLink to="/" exact>ГЛАВНАЯ</NavLink></li>
+                            <li className="active"><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink></li>
                             {/*{stateApp.state.isLoggedIn*/}
                             {/*    ? <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink></li>*/}
                             {/*    : null}*/}
@@ -31,26 +39,9 @@ export default class Newheader extends Component{
                             <li className="active"><NavLink to="/auth/login" exact>ВОЙТИ</NavLink></li>
                             <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
                             <li className="active"><NavLink to="/auth/logout" exact>ВЫЙТИ</NavLink></li>
-
                         </ul>
                     </div>
                 </nav>
-                {/*<Switch>*/}
-                {/*    <Route path="/" exact>*/}
-
-                {/*        {home}*/}
-
-                {/*    </Route>*/}
-                {/*    <Route path="/addPlant" exact>*/}
-
-                {/*        {Addplant}*/}
-
-                {/*    </Route>*/}
-                {/*    <Route path="/register" exact>*/}
-
-                {/*        {Newuser}*/}
-                {/*    </Route>*/}
-                {/*</Switch>*/}
         </header>
 
     )

@@ -10,11 +10,16 @@ import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
+import MainStore from "./stores/MainStore";
+import { observer } from 'mobx-react';
 // import Cookies from 'universal-cookie';
 //
 // const cookies = new Cookies();
 
 const axios = require('axios').default;
+const authStatus = observer(() => {
+    return MainStore.isAuthenticated
+});
 
 export default class App extends React.Component {
 //Это хук, надо переписать без него, использовать класс:
@@ -102,6 +107,7 @@ export default class App extends React.Component {
                         <p>User Name is: {this.state.username}</p>
                         <p>Message from API: {this.state.apiResponse}</p>
                         {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
+                        <p>"MainStore.isAuthenticated: " {authStatus}</p>
 
                     </div>
                     <div id="authContainer" className="totheright">
