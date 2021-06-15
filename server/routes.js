@@ -116,6 +116,8 @@ router.get("/api", async (req, res) => {
         }
     }
 
+//Вывызваем обработчик:
+
     await parseCookie(req.headers.cookie, checkAuthorization)
         .then (() => {
             console.log("Printing state before res", state)
