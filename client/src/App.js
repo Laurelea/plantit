@@ -17,9 +17,9 @@ import { observer } from 'mobx-react';
 // const cookies = new Cookies();
 
 const axios = require('axios').default;
-const authStatus = observer(() => {
-    return MainStore.isAuthenticated
-});
+// const authStatus = observer(() => {
+//     return MainStore.isAuthenticated
+// });
 
 export default class App extends React.Component {
 //Это хук, надо переписать без него, использовать класс:
@@ -39,6 +39,8 @@ export default class App extends React.Component {
 
 
   componentDidMount = () => {
+        // console.log("MainStore.isAuthenticated:  " , authStatus)
+
       axios({
           method: 'get',
           url: '/api',
@@ -107,7 +109,7 @@ export default class App extends React.Component {
                         <p>User Name is: {this.state.username}</p>
                         <p>Message from API: {this.state.apiResponse}</p>
                         {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
-                        <p>"MainStore.isAuthenticated: " {authStatus}</p>
+                        {/*<p>"MainStore.isAuthenticated: " {authStatus}</p>*/}
 
                     </div>
                     <div id="authContainer" className="totheright">

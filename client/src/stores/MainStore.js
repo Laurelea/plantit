@@ -1,10 +1,11 @@
-import { action, observable} from 'mobx';
+import { action, observable, makeAutoObservable} from 'mobx';
 
 class MainStore {
     @observable title = "From Server With Love";
-    @observable isAuthenticated;
+    @observable isAuthenticated = false;
     constructor() {
-        this.isAuthenticated = false;
+        // this.isAuthenticated = false;
+        makeAutoObservable(this)
     }
 
     @observable message = "default message";
@@ -12,6 +13,10 @@ class MainStore {
         userName: "Default",
         userEmail: "default@default.ru"
     };
+
+    // checkAuth() {
+    //
+    // }
 }
 
 // const StoreContext = React.createContext();
@@ -27,4 +32,4 @@ class MainStore {
 // export const withStore = (Component) => (props) => {
 //     return <Component {...props} store={useStore()} />;
 // };
-export default MainStore
+export default new MainStore
