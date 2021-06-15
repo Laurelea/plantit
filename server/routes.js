@@ -43,7 +43,7 @@ app.use(
             pool: db,
             tableName: 'sessions'
         }),
-        cookie: {path: "/", maxAge: 7 * 24 * 3600 * 1000} //one week
+        cookie: {path: "/", maxAge: 7 * 24 * 3600 * 1000, httpOnly: false} //one week
     })
 )
 
@@ -75,7 +75,9 @@ router.get("/api", async (req, res) => {
                 );
                 return acc;
             }, {});
-        callback(myStr.SID)
+        const result = await callback(myStr.SID)
+        console.log("Result of callback:", result)
+        return result
     }
     // console.log("LOOKING FOR SID:", parseCookie(req.headers.cookie).SID, "\n");
 // const testTest = parseCookie(req.headers.cookie).SID
@@ -105,7 +107,7 @@ router.get("/api", async (req, res) => {
                     state.userName = foundSession.rows[0].sess.userName
                     state.userEmail = foundSession.rows[0].sess.userEmail
                     console.log("State changed:", state)
-                    // return state
+                    return true
                 }
             }
         } catch (err) {
@@ -113,12 +115,12 @@ router.get("/api", async (req, res) => {
             console.log("Grand mistake:", state)
 
             console.log("Error while checking authorization: ", err)
+            return err
         }
     }
 
-//Вывызваем обработчик:
-
-    await parseCookie(req.headers.cookie, checkAuthorization)
+    const callRoute = async function () {
+        await parseCookie(req.headers.cookie, checkAuthorization)
         .then (() => {
             console.log("Printing state before res", state)
             // console.log("Printing result in then", result)
@@ -135,6 +137,9 @@ router.get("/api", async (req, res) => {
         .catch(err => {
             console.log("Err from final catch in then - res", err)
     })
+    }
+
+    callRoute()
 
     // checkAuthorization(SIDcookieValueInBrowser)
     // console.log("Debugging. Request:: ", req, "\n")
@@ -211,6 +216,8 @@ router.post("/api/auth", async (req, res) => {
                         sessID: req.sessionID,
                         cookie: req.session.cookie
                     })
+                    res.redirect("/")
+
                 }
             }
         } catch (err) {

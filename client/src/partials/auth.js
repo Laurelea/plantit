@@ -6,10 +6,10 @@ import {NavLink, Link} from "react-router-dom";
 // import Cookies from 'js-cookie'
 // import cookie from "react-cookie";
 
-import Cookies from 'universal-cookie';
+// import Cookies from 'universal-cookie';
 import axios from "axios";
 
-const cookies = new Cookies();
+// const cookies = new Cookies();
 
 export default class Auth extends React.Component {
 
@@ -65,7 +65,9 @@ export default class Auth extends React.Component {
                         authEmail: response.data.authEmail,
                         isAuthenticated: true
                     });
+
                 }
+                window.location.replace("/")
                 this.resetForm()
             })
             .catch(error => {

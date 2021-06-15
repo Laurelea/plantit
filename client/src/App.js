@@ -10,6 +10,9 @@ import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import {NavLink} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
+// import Cookies from 'universal-cookie';
+//
+// const cookies = new Cookies();
 
 const axios = require('axios').default;
 
@@ -53,6 +56,8 @@ export default class App extends React.Component {
           })
       // console.log("document.title: ", document.title)
       console.log("this.state.pageTitle: ", this.state.pageTitle)
+
+      // console.log(cookies.get("SID"))
   }
     render () {
     return (
@@ -96,6 +101,7 @@ export default class App extends React.Component {
                         {/*<p>User Name is: {session.get("username")}</p>*/}
                         <p>User Name is: {this.state.username}</p>
                         <p>Message from API: {this.state.apiResponse}</p>
+                        {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
 
                     </div>
                     <div id="authContainer" className="totheright">

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import '../App.css';
 import {BrowserRouter as Router, NavLink, Route, Switch, Link} from "react-router-dom";
-import Addplant from "./addPlant";
-import Newuser from "./newUser";
-import ReactDOM from "react-dom";
-import App from "../App";
+// import Cookies from 'universal-cookie';
+
+// const cookies = new Cookies();
 
 const home = (
     <>
