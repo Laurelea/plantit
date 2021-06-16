@@ -11,7 +11,9 @@ import {NavLink} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
 import MainStore from "./stores/MainStore";
-import { observer } from 'mobx-react';
+import { Observer } from 'mobx-react';
+import { action, observable, makeAutoObservable} from 'mobx';
+
 // import Cookies from 'universal-cookie';
 //
 // const cookies = new Cookies();
@@ -35,6 +37,7 @@ export default class App extends React.Component {
             isAuthenticated: MainStore.isAuthenticated
             // isAuthenticated: false
         };
+        // makeAutoObservable(this)
         // this.componentDidMount = this.componentDidMount.bind(this);
         // this.axios = this.axios.bind(this);
 
@@ -65,7 +68,7 @@ export default class App extends React.Component {
               });
               MainStore.setUser(response.data.userName, response.data.userEmail);
               console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
-              MainStore.isAuthenticated = true
+              MainStore.isAuthenticated = response.data.isAuthenticated
               document.title = this.state.pageTitle;
               console.log("this.state.pageTitle: ", this.state.pageTitle);
               console.log("this.state.userName: ", this.state.userName);
@@ -123,8 +126,23 @@ export default class App extends React.Component {
                         <p>User Name is: {this.state.userName}</p>
                         <p>Message from API: {this.state.apiResponse}</p>
                         {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
-                        <p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>
-                        <p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>
+                        {/*<p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>*/}
+
+                        <Observer>{() => <p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>}</Observer>
+                        <Observer>{() => <p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>}</Observer>
+                        {/*<Observer>{() => */}
+                        {
+                            <Observer>{() =>
+                                MainStore.isAuthenticated
+                            // true
+                                ? <span className="errorspan"
+                                        id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
+                                : <span className="errorspan"
+                                        id="authErrorSpan">{this.state.apiResponse}</span>
+                            }</Observer>
+                        }
+                         {/*}</Observer>*/}
+                        {/*<p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>*/}
                     </div>
                     <div id="authContainer" className="totheright">
                         {/*Это показывать только если не авторизован*/}

@@ -18,11 +18,6 @@ class MainStore {
             userEmail: email
         }
     }
-
-
-    // checkAuth() {
-    //
-    // }
 }
 
 // const StoreContext = React.createContext();
