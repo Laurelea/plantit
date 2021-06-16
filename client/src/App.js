@@ -21,6 +21,8 @@ const axios = require('axios').default;
 //     return MainStore.isAuthenticated
 // });
 
+
+
 export default class App extends React.Component {
 //Это хук, надо переписать без него, использовать класс:
 //   const [data, setData] = React.useState(null);
@@ -30,16 +32,21 @@ export default class App extends React.Component {
         this.state = {
             apiResponse: "",
             pageTitle: "React Components",
-            isAuthenticated: false
+            isAuthenticated: MainStore.isAuthenticated
+            // isAuthenticated: false
         };
         // this.componentDidMount = this.componentDidMount.bind(this);
         // this.axios = this.axios.bind(this);
 
     }
+    // authStatus  = () => {
+    //     const authStatus = MainStore.isAuthenticated
+    //     return authStatus
+    // }
 
 
   componentDidMount = () => {
-        // console.log("MainStore.isAuthenticated:  " , authStatus)
+        // console.log("MainStore.isAuthenticated:  " , this.state.isAuthenticated)
 
       axios({
           method: 'get',
@@ -51,11 +58,17 @@ export default class App extends React.Component {
               this.setState({
                   apiResponse: response.data.message,
                   pageTitle: response.data.title,
-                  username: response.data.userName,
-                  unqieID: response.data.uniqueID
+                  userName: response.data.userName,
+                  userEmail: response.data.userEmail,
+
+                  // unqieID: response.data.uniqueID
               });
+              MainStore.setUser(response.data.userName, response.data.userEmail);
+              console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
+              MainStore.isAuthenticated = true
               document.title = this.state.pageTitle;
               console.log("this.state.pageTitle: ", this.state.pageTitle);
+              console.log("this.state.userName: ", this.state.userName);
           })
           .catch(function (error) {
               // handle error
@@ -67,6 +80,7 @@ export default class App extends React.Component {
       // console.log(cookies.get("SID"))
   }
     render () {
+
     return (
         <div className="App">
             <div className="mainContainer">
@@ -106,11 +120,11 @@ export default class App extends React.Component {
                             </Switch>
                         {/*</Router>*/}
                         {/*<p>User Name is: {session.get("username")}</p>*/}
-                        <p>User Name is: {this.state.username}</p>
+                        <p>User Name is: {this.state.userName}</p>
                         <p>Message from API: {this.state.apiResponse}</p>
                         {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
-                        {/*<p>"MainStore.isAuthenticated: " {authStatus}</p>*/}
-
+                        <p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>
+                        <p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>
                     </div>
                     <div id="authContainer" className="totheright">
                         {/*Это показывать только если не авторизован*/}

@@ -63,7 +63,8 @@
       "@babel/preset-env",
       "@babel/preset-react",
       "other-presets",
-      "mobx"
+      "mobx",
+      "react-app"
     ],
     "plugins": [
       [

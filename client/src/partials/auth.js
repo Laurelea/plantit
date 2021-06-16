@@ -1,13 +1,8 @@
 import React from 'react'
 import './../App.css';
 import {NavLink, Link} from "react-router-dom";
-// import {ReactSession} from "react-client-session";
-// import Button from '@material-ui/core/Button';
-// import Cookies from 'js-cookie'
-// import cookie from "react-cookie";
-
-// import Cookies from 'universal-cookie';
 import axios from "axios";
+import MainStore from "../stores/MainStore";
 
 // const cookies = new Cookies();
 
@@ -42,12 +37,6 @@ export default class Auth extends React.Component {
             password: this.state.pwValue,
             email: this.state.loginValue,
         }
-        //Запрос: логин и пароль.
-        // Ответ:
-        // 2. Сообщение - ошибка или успешно
-        // 3. Если успешно, то id сессии, UserName
-
-        //Эта штука должна посылать существующую куку:
         const response = await axios.post('/api/auth', authData,  { withCredentials: true })
             .then(response => {
                 console.log("post.response.data: ", response.data);
@@ -61,11 +50,12 @@ export default class Auth extends React.Component {
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
                     this.setState({
-                        authUN: response.data.authUN,
-                        authEmail: response.data.authEmail,
+                        authUN: response.data.userName,
+                        authEmail: response.data.userEmail,
                         isAuthenticated: true
                     });
-
+                    MainStore.setUser(response.data.userName, response.data.userEmail);
+                    MainStore.isAuthenticated = true
                 }
                 window.location.replace("/")
                 this.resetForm()
@@ -81,13 +71,6 @@ export default class Auth extends React.Component {
             if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
                 throw new Error("Value must be email");
             }
-            // else if (value.length < 6) {
-            //     throw new Error("Value is less than 6");
-            // } else if (value.length >= 30) {
-            //     throw new Error("Value is more than 30");
-            // } else if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
-            //     throw new Error("Value must be email");
-            // }
             else {
                 return true
             }
@@ -210,7 +193,7 @@ export default class Auth extends React.Component {
                     {
                         this.state.authUN
                             ? <span className="errorspan"
-                                    id="authSuccessSpan">{this.state.message} {"\n"} You're logged in as {this.state.authUN}</span>
+                                    id="authSuccessSpan">{this.state.message} {"\n"} You're logged in as {this.state.userName}</span>
                             : <span className="errorspan"
                                     id="authErrorSpan">{this.state.message}</span>
                     }

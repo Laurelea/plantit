@@ -3,16 +3,22 @@ import { action, observable, makeAutoObservable} from 'mobx';
 class MainStore {
     @observable title = "From Server With Love";
     @observable isAuthenticated = false;
-    constructor() {
-        // this.isAuthenticated = false;
-        makeAutoObservable(this)
-    }
-
     @observable message = "default message";
     @observable currentUser = {
         userName: "Default",
         userEmail: "default@default.ru"
     };
+    constructor() {
+        // this.isAuthenticated = false;
+        makeAutoObservable(this)
+    }
+    setUser(name, email) {
+        this.currentUser = {
+            userName: name,
+            userEmail: email
+        }
+    }
+
 
     // checkAuth() {
     //
