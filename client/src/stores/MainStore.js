@@ -1,10 +1,11 @@
 import { action, observable, makeAutoObservable} from 'mobx';
+import {observer} from "mobx-react";
 
 class MainStore {
-    @observable title = "From Server With Love";
-    @observable isAuthenticated = false;
-    @observable message = "default message";
-    @observable currentUser = {
+    title = "From Server With Love";
+    isAuthenticated = false;
+    message = "default message";
+    currentUser = {
         userName: "Default",
         userEmail: "default@default.ru"
     };
@@ -12,10 +13,18 @@ class MainStore {
         // this.isAuthenticated = false;
         makeAutoObservable(this)
     }
+    @action
     setUser(name, email) {
         this.currentUser = {
             userName: name,
             userEmail: email
+        }
+    }
+    @action
+    dropUser() {
+        this.currentUser = {
+            userName: "Default",
+            userEmail: "default@default.ru"
         }
     }
 }

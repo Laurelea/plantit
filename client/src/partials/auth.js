@@ -50,15 +50,20 @@ export default class Auth extends React.Component {
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
                     this.setState({
-                        authUN: response.data.userName,
-                        authEmail: response.data.userEmail,
+                        authUN: response.data.authUN,
+                        authEmail: response.data.authEmail,
                         isAuthenticated: true
                     });
-                    MainStore.setUser(response.data.userName, response.data.userEmail);
+                    console.log("MainStore.currentUser.userName: ", MainStore.currentUser.authUN)
+                    console.log("response.data.userName: ", response.data.authEmail)
+
+                    MainStore.setUser(response.data.authUN, response.data.authEmail);
                     MainStore.isAuthenticated = true
+                    console.log("MainStore.isAuthenticated: ", MainStore.isAuthenticated)
+                    console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)
                 }
-                window.location.replace("/")
-                this.resetForm()
+                // window.location.replace("/")
+                // this.resetForm()
             })
             .catch(error => {
                 // handle error

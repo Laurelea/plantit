@@ -49,6 +49,26 @@ app.use(
 
 app.use(router);
 
+
+parseCookie = async function (str, callback) {
+    const myStr = await str
+        .split(';')
+        .map(v => v.split('='))
+        .reduce((acc, v) => {
+            acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1]
+                    .trim()
+                    .replace(/[^.]*$/, '')
+                    .replace(/.$/, '')
+                    .replace(/^.{4}/, '')
+                // .replace(/^.?(.*)/, '')
+            );
+            return acc;
+        }, {});
+    const result = await callback(myStr.SID)
+    console.log("Result of callback:", result)
+    return result
+}
+
 //test for server: HomePage Route For Server:
 router.get("/api", async (req, res) => {
     console.log("Cookie SID from req (browser): ", req.headers.cookie, "\n")
@@ -59,30 +79,6 @@ router.get("/api", async (req, res) => {
         userEmail: "default",
     }
     console.log("Printing state 1", state)
-
-    parseCookie = async function(str, callback)
-    {
-        const myStr = await str
-            .split(';')
-            .map(v => v.split('='))
-            .reduce((acc, v) => {
-                acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1]
-                        .trim()
-                        .replace(/[^.]*$/, '')
-                        .replace(/.$/, '')
-                        .replace(/^.{4}/, '')
-                    // .replace(/^.?(.*)/, '')
-                );
-                return acc;
-            }, {});
-        const result = await callback(myStr.SID)
-        console.log("Result of callback:", result)
-        return result
-    }
-    // console.log("LOOKING FOR SID:", parseCookie(req.headers.cookie).SID, "\n");
-// const testTest = parseCookie(req.headers.cookie).SID
-//     const testTest = parseCookie(req.headers.cookie)
-//     console.log("Debuggin test:", testTest)
 
     checkAuthorization = async (SIDcookieValueInBrowser) => {
         try {
@@ -141,26 +137,15 @@ router.get("/api", async (req, res) => {
 
     callRoute()
 
-    // checkAuthorization(SIDcookieValueInBrowser)
-    // console.log("Debugging. Request:: ", req, "\n")
-    // const uniqueID = uuidv4.uuid();
-    // console.log("state.userName", state)
-
-    // await res.json({
-    //     isAuthenticated: state.isAuthenticated,
-    //     message: state.message,
-    //     userName: state.userName,
-    //     userEmail: state.userEmail,
-    //     title: "From Server With Love",
-    //     // unqieID: uniqueID
-    // });
 
 });
 
-//logout делаем в Реакте его сессиями, сервер тут не нужен?
 //Выход
-router.get("/api/logout", (req, res) => {
+router.get("/api/logout", async (req, res) => {
     //Тут нужно стирать сессию из БД
+    // const gotCookie = parseCookie(req.headers.cookie)
+    // console.log("gotCookie", gotCookie)
+    req.session.destroy()
     res.json({ isAuthenticated: false});
 });
 
@@ -186,16 +171,11 @@ router.post("/api/auth", async (req, res) => {
                 } else {
 
                     //Create session in table session, return result - > its id
-                    //Add function getSessID for getting session ID
 
                     // console.log(ifUser.rows[0])
                     req.session.userName = ifUser.rows[0].user_name
                     req.session.userEmail = ifUser.rows[0].email
                     req.session.isAuthenticated = true
-
-                    // req.universalCookies
-
-                    // req.session.cookie.sessID = req.sessionID
 
                     req.session.save(err => {
                         if (err) {
@@ -206,8 +186,7 @@ router.post("/api/auth", async (req, res) => {
 
                     // console.log("req.session.cookie: ", req.session.cookie, "\n")
                     // console.log("Debugging. Request:: ", req, "\n")
-
-
+                    console.log("Auth route userName sent: ", req.session.userName, "\n")
                     res.json({
                         isAuthenticated: true,
                         message: "Authorization successful",
@@ -216,11 +195,11 @@ router.post("/api/auth", async (req, res) => {
                         sessID: req.sessionID,
                         cookie: req.session.cookie
                     })
-                    res.redirect("/")
-
+                    // res.redirect("/")
                 }
             }
         } catch (err) {
+        console.log("Auth catch log:", err)
             res.json({isAuthenticated: false, message: err.message.toString()})
         }
     }

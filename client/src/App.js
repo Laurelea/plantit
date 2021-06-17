@@ -11,7 +11,7 @@ import {NavLink} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
 import MainStore from "./stores/MainStore";
-import { Observer } from 'mobx-react';
+import { Observer, observer } from 'mobx-react';
 import { action, observable, makeAutoObservable} from 'mobx';
 
 // import Cookies from 'universal-cookie';
@@ -24,139 +24,138 @@ const axios = require('axios').default;
 // });
 
 
+const App = observer(
+    class App extends React.Component {
 
-export default class App extends React.Component {
-//Это хук, надо переписать без него, использовать класс:
-//   const [data, setData] = React.useState(null);
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            apiResponse: "",
-            pageTitle: "React Components",
-            isAuthenticated: MainStore.isAuthenticated
-            // isAuthenticated: false
-        };
-        // makeAutoObservable(this)
-        // this.componentDidMount = this.componentDidMount.bind(this);
-        // this.axios = this.axios.bind(this);
-
-    }
-    // authStatus  = () => {
-    //     const authStatus = MainStore.isAuthenticated
-    //     return authStatus
-    // }
+        constructor(props) {
+            super(props);
+            this.state = {
+                apiResponse: "",
+                pageTitle: "React Components",
+                isAuthenticated: MainStore.isAuthenticated
+                // isAuthenticated: false
+            };
+        }
 
 
-  componentDidMount = () => {
-        // console.log("MainStore.isAuthenticated:  " , this.state.isAuthenticated)
+        componentDidMount = () => {
+            // console.log("MainStore.isAuthenticated:  " , this.state.isAuthenticated)
 
-      axios({
-          method: 'get',
-          url: '/api',
-          // responseType: 'json'
-      })
-          .then( (response) => {
-              console.log("get.response.data: ", response.data);
-              this.setState({
-                  apiResponse: response.data.message,
-                  pageTitle: response.data.title,
-                  userName: response.data.userName,
-                  userEmail: response.data.userEmail,
+            axios({
+                method: 'get',
+                url: '/api',
+                // responseType: 'json'
+            })
+                .then((response) => {
+                    console.log("get.response.data: ", response.data);
+                    this.setState({
+                        apiResponse: response.data.message,
+                        pageTitle: response.data.title,
+                        userName: response.data.userName,
+                        userEmail: response.data.userEmail,
 
-                  // unqieID: response.data.uniqueID
-              });
-              MainStore.setUser(response.data.userName, response.data.userEmail);
-              console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
-              MainStore.isAuthenticated = response.data.isAuthenticated
-              document.title = this.state.pageTitle;
-              console.log("this.state.pageTitle: ", this.state.pageTitle);
-              console.log("this.state.userName: ", this.state.userName);
-          })
-          .catch(function (error) {
-              // handle error
-              console.log(error);
-          })
-      // console.log("document.title: ", document.title)
-      console.log("this.state.pageTitle: ", this.state.pageTitle)
+                        // unqieID: response.data.uniqueID
+                    });
+                    MainStore.setUser(response.data.userName, response.data.userEmail);
+                    console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
+                    MainStore.isAuthenticated = response.data.isAuthenticated
+                    document.title = this.state.pageTitle;
+                    console.log("this.state.pageTitle: ", this.state.pageTitle);
+                    console.log("this.state.userName: ", this.state.userName);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            // console.log("document.title: ", document.title)
+            console.log("this.state.pageTitle: ", this.state.pageTitle)
 
-      // console.log(cookies.get("SID"))
-  }
-    render () {
+            // console.log(cookies.get("SID"))
+        }
 
-    return (
-        <div className="App">
-            <div className="mainContainer">
-                <Newheader/>
-                <div id="bodyContainer" className="horizontal-align">
-                    <div id="dbContainer" className="totheleft">
-                        {/*Это показывать только если авторизован*/}
-                        <Seebase/>
-                        {/*Иначе текст: авторизуйтесь для доступа к базе растений*/}
-                    </div>
-                    <div id="centralContainer" className="center">
-                        {/*Если не авторизован*/}
-                        {/*Текст приветствия для неавторизованных, ссылка на регистрацию*/}
-                        {/*<Noauth/>*/}
-                        {/*Если авторизован*/}
-                        {/*Текст, приглашающий посмотреть существующую базу или добавить что-то своё-->*/}
-                        {/*<Hasauth/>*/}
+        render() {
 
-                        {/*<Router>*/}
-                            <Switch>
-                                <Route path="/" exact render={() =>
-                                    <React.Fragment>
-                                        <h1>Home Page</h1>
-                                        {/*<button onClick={this.goToHomePage}>Click</button>*/}
-                                        <h2>{this.state.pageTitle}</h2>
+            return (
+                <div className="App">
+                    <div className="mainContainer">
+                        <Newheader/>
+                        <div id="bodyContainer" className="horizontal-align">
+                            <div id="dbContainer" className="totheleft">
+                                {/*Это показывать только если авторизован*/}
+                                <Seebase/>
+                                {/*Иначе текст: авторизуйтесь для доступа к базе растений*/}
+                            </div>
+                            <div id="centralContainer" className="center">
+                                {/*Если не авторизован*/}
+                                {/*Текст приветствия для неавторизованных, ссылка на регистрацию*/}
+                                {/*<Noauth/>*/}
+                                {/*Если авторизован*/}
+                                {/*Текст, приглашающий посмотреть существующую базу или добавить что-то своё-->*/}
+                                {/*<Hasauth/>*/}
+
+                                {/*<Router>*/}
+                                <Switch>
+                                    <Route path="/" exact render={() =>
+                                        <React.Fragment>
+                                            <h1>Home Page</h1>
+                                            {/*<button onClick={this.goToHomePage}>Click</button>*/}
+                                            <h2>{this.state.pageTitle}</h2>
 
 
-                                    </React.Fragment>
-                                }/>
-                                <Route path="/addPlant" exact component={Addplant}/>
-                                {/*        {Addplant}*/}
-                                {/*</Route>*/}
-                                <Route path="/newUser" exact component={Newuser}/>
-                                <Route path="/auth/login" exact component={Noauth}/>
-                                <Route path="/auth/logout" exact component={Noauth}/>
-                                <Route render={() => <h2>404 not found</h2>}/>
-                            </Switch>
-                        {/*</Router>*/}
-                        {/*<p>User Name is: {session.get("username")}</p>*/}
-                        <p>User Name is: {this.state.userName}</p>
-                        <p>Message from API: {this.state.apiResponse}</p>
-                        {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
-                        {/*<p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>*/}
+                                        </React.Fragment>
+                                    }/>
+                                    <Route path="/addPlant" exact component={Addplant}/>
+                                    {/*        {Addplant}*/}
+                                    {/*</Route>*/}
+                                    <Route path="/newUser" exact component={Newuser}/>
+                                    {/*<Route path="/auth/login" exact component={Noauth}/>*/}
+                                    <Route path="/logout" exact component={Noauth}/>
+                                    <Route render={() => <h2>404 not found</h2>}/>
+                                </Switch>
+                                {/*</Router>*/}
+                                {/*<p>User Name is: {session.get("username")}</p>*/}
+                                <p>User Name is: {MainStore.currentUser.userName}</p>
+                                <p>Message from API: {this.state.apiResponse}</p>
+                                {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
+                                {/*<p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>*/}
 
-                        <Observer>{() => <p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>}</Observer>
-                        <Observer>{() => <p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>}</Observer>
-                        {/*<Observer>{() => */}
-                        {
-                            <Observer>{() =>
-                                MainStore.isAuthenticated
-                            // true
-                                ? <span className="errorspan"
-                                        id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
-                                : <span className="errorspan"
-                                        id="authErrorSpan">{this.state.apiResponse}</span>
-                            }</Observer>
-                        }
-                         {/*}</Observer>*/}
-                        {/*<p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>*/}
-                    </div>
-                    <div id="authContainer" className="totheright">
-                        {/*Это показывать только если не авторизован*/}
-                        <Auth/>
-                        {/*Показывать если авторизован:*/}
-                        {/*            Вы вошли как: username*/}
-                        {/*            Какая-то статистика*/}
-                        {/*            Выйти?*/}
+                                <p>"MainStore.isAuthenticated:
+                                    " {MainStore.isAuthenticated.toString()}</p>
+                                <p>"MainStore.currentUser:
+                                    " {MainStore.currentUser.userName}</p>
+                                {/*<Observer>{() => */}
+                                {
+                                        MainStore.isAuthenticated
+                                            // true
+                                            ? <span className="errorspan"
+                                                    id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
+                                            : <span className="errorspan"
+                                                    id="authErrorSpan">{this.state.apiResponse}</span>
+                                }
+                                {/*}</Observer>*/}
+                                {/*<p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>*/}
+                            </div>
+                            <div id="authContainer" className="totheright">
+                                {/*Это показывать только если не авторизован*/}
+                                {
+                                    MainStore.isAuthenticated
+                                        // true
+                                        ? <span className="errorspan"
+                                                id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
+                                        : <Auth/>
+                                }
+
+                                {/*<Auth/>*/}
+                                {/*Показывать если авторизован:*/}
+                                {/*            Вы вошли как: username*/}
+                                {/*            Какая-то статистика*/}
+                                {/*            Выйти?*/}
+                            </div>
+                        </div>
+                        <Footer/>
                     </div>
                 </div>
-                <Footer/>
-            </div>
-        </div>
-    );
-}
-}
-// export default App;
+            );
+        }
+    })
+export default App;
