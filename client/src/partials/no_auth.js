@@ -1,9 +1,12 @@
 import React from 'react'
 import './../App.css';
 import MainStore from "../stores/MainStore";
+import { observer } from 'mobx-react';
+
 const axios = require('axios').default;
 
-export default class Noauth extends React.Component {
+const Noauth = observer (
+    class Noauth extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -15,12 +18,12 @@ export default class Noauth extends React.Component {
     CookiesDelete = () => {
 
         const cookies = document.cookie.split(";");
-        console.log("cookies", cookies)
+        // console.log("cookies", cookies)
         for (var i = 0; i < cookies.length; i++) {
             var cookie = cookies[i];
             var eqPos = cookie.indexOf("=");
             var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            console.log("name: ", name)
+            // console.log("name: ", name)
             // if (name === "SID") {
             //     console.log("name from if: ", name)
             document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
@@ -32,7 +35,7 @@ export default class Noauth extends React.Component {
     componentDidMount = () => {
         // console.log("MainStore.isAuthenticated:  " , this.state.isAuthenticated)
         axios({
-            method: 'get',
+            method: 'post',
             url: '/api/logout',
             // responseType: 'json'
         })
@@ -62,10 +65,11 @@ export default class Noauth extends React.Component {
             // window.location.replace("/")
 
             <React.Fragment>
-                <h2>Вы не авторизованы</h2>
+                <h2>You logged out</h2>
                 <div> Пожалуйста, авторизуйтесь в форме справа</div>
             </React.Fragment>
 
         )
     }
-}
+})
+export default Noauth

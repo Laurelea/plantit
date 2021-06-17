@@ -141,7 +141,7 @@ router.get("/api", async (req, res) => {
 });
 
 //Выход
-router.get("/api/logout", async (req, res) => {
+router.post("/api/logout", async (req, res) => {
     //Тут нужно стирать сессию из БД
     // const gotCookie = parseCookie(req.headers.cookie)
     // console.log("gotCookie", gotCookie)
