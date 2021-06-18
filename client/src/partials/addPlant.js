@@ -1,10 +1,43 @@
 import React from 'react'
 import './../App.css';
+import axios from "axios";
 
-export default function addPlant(props) {
+const addPlantHandler = async (event) => {
+        event.preventDefault();
+        const plantData = {
+            category: "Herbs",
+            sort: "Весенняя",
+            type : "Ромашка",
+            producer : "Поиск",
+            yeartype : "a1",
+            rootstock : "a2",
+            watering : '',
+            soil: ''
+        }
+        console.log("event.target", event.target.children)
+        // const plantData = event.target
+        const response = await axios.post('/api/addplant', plantData)
+            .then(response => {
+                console.log("post.response.data: ", response.data);
+                // this.setState({apiResponse: response.data.regSuccess, message: response.data.message});
+                // console.log("apiResponse: ", this.state.apiResponse)
+                // document.getElementById("apiID").innerText =  "API response:" + this.state.apiResponse
+            })
+            .then( response => {
+                console.log("Am I here?");
+                // this.resetForm()
+            })
+            .catch(error => {
+                // handle error
+                console.log(error);
+            })
+
+        // document.getElementsByClassName("errorspan")
+    }
+
+export default function addPlant() {
     return (
-        <form name='Форма для добавления нового растения' id='MyAddForm' action="pageName" method="get"
-              autoComplete="on">
+        <form name='Форма для добавления нового растения' id='MyAddForm' onSubmit={addPlantHandler} autoComplete="on">
             <h2 id="testBD">
                 Добавить новое растение
             </h2>

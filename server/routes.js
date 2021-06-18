@@ -102,7 +102,7 @@ router.get("/api", async (req, res) => {
                     state.isAuthenticated = true;
                     state.userName = foundSession.rows[0].sess.userName
                     state.userEmail = foundSession.rows[0].sess.userEmail
-                    console.log("State changed:", state)
+                    // console.log("State changed:", state)
                     return true
                 }
             }
@@ -118,7 +118,7 @@ router.get("/api", async (req, res) => {
     const callRoute = async function () {
         await parseCookie(req.headers.cookie, checkAuthorization)
         .then (() => {
-            console.log("Printing state before res", state)
+            // console.log("Printing state before res", state)
             // console.log("Printing result in then", result)
 
             res.json({
@@ -239,4 +239,11 @@ router.get("/api/getbase", async (req, res) => {
     console.log(baseToShow)
     res.send(baseToShow)
 })
+
+router.post("/api/addplant", async (req, res) => {
+    const plantAdded = await controller.addPlant(req.data)
+    console.log("Plant added: ", plantAdded)
+    res.send(plantAdded)
+})
+
 module.exports = app

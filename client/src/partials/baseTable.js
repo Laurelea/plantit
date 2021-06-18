@@ -17,7 +17,7 @@ const Reacttable = ({dbToPrint}) => {
         ];
         // const data = await observer (MainStore.dbToPrint)
         const data = dbToPrint
-        console.log("MainStore.dbToPrint baseTable:", MainStore.dbToPrint)
+        // console.log("MainStore.dbToPrint baseTable:", MainStore.dbToPrint)
         const {
             getTableProps,
             getTableBodyProps,
