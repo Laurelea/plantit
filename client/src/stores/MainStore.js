@@ -9,6 +9,10 @@ class MainStore {
         userName: "Default",
         userEmail: "default@default.ru"
     };
+    dbToPrint = [
+        {id: 1, name: "Гавриш"},
+        {id: 2, name: "Аэлита"}
+    ]
     constructor() {
         // this.isAuthenticated = false;
         makeAutoObservable(this)

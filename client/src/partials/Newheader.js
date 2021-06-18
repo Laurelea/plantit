@@ -27,37 +27,31 @@ const Newheader = observer(
                             <ul className="nav-mobile">
                                 <li className="active"><NavLink to="/" exact>ГЛАВНАЯ</NavLink></li>
                                 {MainStore.isAuthenticated
+                                    ? <li className="active"><NavLink to="/showBase" exact>БАЗА</NavLink>
+                                    </li>
+                                    : null}
+                                {MainStore.isAuthenticated
                                     ? <li className="active"><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink>
                                     </li>
                                     : null}
-                                {/*{stateApp.state.isLoggedIn*/}
-                                {/*    ? <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink></li>*/}
-                                {/*    : null}*/}
-                                {/*<Observer>{() =>*/}
-                                {MainStore.isAuthenticated
-                                        ?
-                                        <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink>
-                                        </li>
-                                        : null}
-                                {/*</Observer>*/}
-                                {/*<Observer>{() =>*/}
+                                {/*{MainStore.isAuthenticated*/}
+                                {/*        ?*/}
+                                {/*        <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink>*/}
+                                {/*        </li>*/}
+                                {/*        : null}*/}
                                 {!MainStore.isAuthenticated
                                         ? <li className="active"><NavLink to="/" exact>ВОЙТИ</NavLink></li>
                                         : null}
-                                {/*</Observer>*/}
                                 {MainStore.isAuthenticated
                                     ? <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
                                     : null}
-                                {/*<Observer>{() =>*/}
                                 {MainStore.isAuthenticated
                                         ? <li className="active"><NavLink to="/logout" exact>ВЫЙТИ</NavLink></li>
                                         // ? <a href="" onClick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
                                         // ? <a href="" onClick="$('<form method=POST action=/logout>').submit();return false">Выйти</a>
                                         : null}
-                            {/*</Observer>*/}
                                 {/*<li className="active"><NavLink to="/auth/logout" exact>ВЫЙТИ</NavLink></li>*/}
                             </ul>
-                            {/*// }</Observer>*/}
                         </div>
                     </nav>
                 </header>

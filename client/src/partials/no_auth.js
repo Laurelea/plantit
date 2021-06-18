@@ -43,7 +43,7 @@ const Noauth = observer (
                 this.CookiesDelete()
                 console.log("get.response.data: ", response.data);
                 this.setState({
-                    apiResponse: response.data.message,
+                    apiResponse: "You're logged out",
                 });
                 MainStore.dropUser();
                 // console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)

@@ -143,6 +143,7 @@ export default class Auth extends React.Component {
     render() {
         return (
             <div>
+                <h3>Авторизуйтесь для полного доступа</h3>
             <form className="authForm" onSubmit={this.loginHandler} id="authForm">
                 {/*action="login" method="post"*/}
                 <h2>Авторизация</h2>

@@ -1,7 +1,7 @@
 import React from 'react'
 import './../App.css';
 
-export default function Seebase(props) {
+export default function ShowBase(props) {
     return (
         <div className="DBwrapper">
             <h2>

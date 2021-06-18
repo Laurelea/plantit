@@ -96,3 +96,9 @@ module.exports.lookForSameSID = async function(browserCookie) {
     // console.log("cookiesFound.rows.length: ", cookiesFound.rows.length)
     return cookiesFound
 }
+
+module.exports.showDB = async function() {
+    const plantDB = await db.query('SELECT * FROM producer')
+    // console.log(plantDB)
+    return plantDB
+}

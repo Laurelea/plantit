@@ -2,7 +2,8 @@
 import React from 'react';
 import './App.css';
 import Newheader from "./partials/Newheader";
-import Seebase from "./partials/Seebase";
+import ShowBase from "./partials/showBase";
+import AllBase from "./partials/allBase";
 import Noauth from "./partials/no_auth";
 import Auth from "./partials/auth";
 import Footer from "./partials/footer";
@@ -13,6 +14,7 @@ import Newuser from "./partials/newUser";
 import MainStore from "./stores/MainStore";
 import { Observer, observer } from 'mobx-react';
 import { action, observable, makeAutoObservable} from 'mobx';
+import Account from "./partials/lk";
 
 // import Cookies from 'universal-cookie';
 //
@@ -47,17 +49,15 @@ const App = observer(
                 // responseType: 'json'
             })
                 .then((response) => {
-                    console.log("get.response.data: ", response.data);
+                    // console.log("get.response.data: ", response.data);
                     this.setState({
                         apiResponse: response.data.message,
                         pageTitle: response.data.title,
                         userName: response.data.userName,
                         userEmail: response.data.userEmail,
-
-                        // unqieID: response.data.uniqueID
                     });
                     MainStore.setUser(response.data.userName, response.data.userEmail);
-                    console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
+                    // console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
                     MainStore.isAuthenticated = response.data.isAuthenticated
                     document.title = this.state.pageTitle;
                     console.log("this.state.pageTitle: ", this.state.pageTitle);
@@ -82,7 +82,7 @@ const App = observer(
                         <div id="bodyContainer" className="horizontal-align">
                             <div id="dbContainer" className="totheleft">
                                 {/*Это показывать только если авторизован*/}
-                                <Seebase/>
+                                <ShowBase/>
                                 {/*Иначе текст: авторизуйтесь для доступа к базе растений*/}
                             </div>
                             <div id="centralContainer" className="center">
@@ -110,6 +110,8 @@ const App = observer(
                                     <Route path="/newUser" exact component={Newuser}/>
                                     {/*<Route path="/auth/login" exact component={Noauth}/>*/}
                                     <Route path="/logout" exact component={Noauth}/>
+                                    <Route path="/showBase" exact component={AllBase}/>
+                                    <Route path="/lk" exact component={Account}/>
                                     <Route render={() => <h2>404 not found</h2>}/>
                                 </Switch>
                                 {/*</Router>*/}

@@ -147,6 +147,7 @@ router.post("/api/logout", async (req, res) => {
     // console.log("gotCookie", gotCookie)
     req.session.destroy()
     res.json({ isAuthenticated: false});
+    // res.clearCookie("SID")
 });
 
 router.post("/api/auth", async (req, res) => {
@@ -231,5 +232,11 @@ router.post("/api/register", async (req, res) => {
         res.json ({regSuccess: false, message: e.message.toString()})
         console.log (e)
     }
+})
+
+router.get("/api/getbase", async (req, res) => {
+    const baseToShow = await controller.showDB()
+    console.log(baseToShow)
+    res.send(baseToShow)
 })
 module.exports = app
