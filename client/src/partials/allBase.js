@@ -3,77 +3,18 @@ import './../App.css';
 import MainStore from "../stores/MainStore";
 import { useTable } from "react-table";
 import Reacttable from "./baseTable";
-import { observer } from 'mobx-react';
 
 const axios = require('axios').default;
 
+// const state = getMyBase()
+let data = [];
 
-// const getMyBase = () => {
-//     axios({
-//         method: 'get',
-//         url: '/api/getbase',
-//         // responseType: 'json'
-//     })
-//         .then((response) => {
-//             console.log("get.response.data: ", response.data.rows);
-//             // const dbToPrint = response.data.rows
-//             // const myTable = Reacttable(dbToPrint)
-//
-//             MainStore.dbToPrint = response.data.rows
-//             console.log("MainStore.dbToPrint allBase :", MainStore.dbToPrint)
-//
-//         })
-//         .catch(function (error) {
-//             // handle error
-//             console.log(error);
-//         })}
-
-
-export default class AllBase extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dbToPrint: []
-        };
-        this.getMyBase = this.getMyBase.bind(this)
-
-    }
-    // getMyBase()
-    // componentDidMount = () => {
-    //     axios({
-    //         method: 'get',
-    //         url: '/api/getbase',
-    //         // responseType: 'json'
-    //     })
-    //         .then((response) => {
-    //             console.log("get.response.data: ", response.data.rows);
-    //             // const dbToPrint = response.data.rows
-    //             // const myTable = Reacttable(dbToPrint)
-    //
-    //             MainStore.dbToPrint = response.data.rows
-    //             console.log("MainStore.dbToPrint allBase :", MainStore.dbToPrint)
-    //
-    //         })
-    //         .catch(function (error) {
-    //             // handle error
-    //             console.log(error);
-    //         })
-    // }
-
-    // myFunc = async() => {
-    //     console.log("myFunc Inside myFunc:", MainStore.dbToPrint)
-    //     const data = await observer (
-    //         MainStore.dbToPrint
-    //     )
-    //     console.log("myFunc Inside myFunc:", data)
-    //
-    //     return (
-    //         <Reacttable dbToPrint = {data}/>
-    //     )
-    //
-    // }
-    getMyBase = async () => {
-        console.log("getMyBase: Inside getMyBase")
+async function getMyBase () {
+    // console.log(state.dbToPrint.length)
+    // if (state.dbToPrint.length == 0) {
+        console.log("State empty")
+        // console.log("getMyBase: Inside getMyBase")
+        // let toPrint;
         await axios({
             method: 'get',
             url: '/api/getbase',
@@ -91,16 +32,44 @@ export default class AllBase extends React.Component {
             //         }
             //     )
             // })
-            .then(response => this.setState({dbToPrint: response.data.rows}))
+            .then(response => {
+                    console.log("Got from DB:", response.data.rows)
+                    // this.setState({dbToPrint: response.data.rows})
+                    // return response.data.rows
+                    // return response.data.rows;
+                    data = response.data.rows;
+                }
+            )
             .catch(error => {
                 // handle error
                 console.log(error);
             })
-    }
+    // return toPrint
+    // } else {
+    //     console.log("State full")
+    // }
 
-    componentDidMount() {
-        this.getMyBase();
-    }
+}
+
+getMyBase()
+
+
+
+export default class AllBase extends React.Component {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         dbToPrint: []
+    //     };
+    //     // this.getMyBase = this.getMyBase.bind(this)
+    //     // this.getMyBase();
+    //
+    // }
+
+
+    // componentDidMount() {
+    //     getMyBase();
+    // }
 
     render() {
         return (
@@ -109,8 +78,8 @@ export default class AllBase extends React.Component {
                 {/*{this.myFunc()}*/}
                 <div>Тут будет база</div>
                 {/*{console.log("render: MainStore.dbToPrint from render:", MainStore.dbToPrint)}*/}
-                {console.log("this.state.dbToPrint", this.state.dbToPrint)}
-                <Reacttable dbToPrint={this.state.dbToPrint} />
+                {console.log("this.state.dbToPrint", data)}
+                <Reacttable dbToPrint={data} />
 
             </div>
         )

@@ -236,7 +236,7 @@ router.post("/api/register", async (req, res) => {
 
 router.get("/api/getbase", async (req, res) => {
     const baseToShow = await controller.showDB()
-    console.log(baseToShow)
+    // console.log(baseToShow)
     res.send(baseToShow)
 })
 

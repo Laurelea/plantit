@@ -49,7 +49,7 @@ const App = observer(
                 // responseType: 'json'
             })
                 .then((response) => {
-                    // console.log("get.response.data: ", response.data);
+                    console.log("get.response.data: ", response.data);
                     this.setState({
                         apiResponse: response.data.message,
                         pageTitle: response.data.title,

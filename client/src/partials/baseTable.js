@@ -18,6 +18,11 @@ const Reacttable = ({dbToPrint}) => {
         // const data = await observer (MainStore.dbToPrint)
         const data = dbToPrint
         // console.log("MainStore.dbToPrint baseTable:", MainStore.dbToPrint)
+        // const data = [
+        //     {id: 1, name: "Gavrish"},
+        //     {id: 2, name: "Aelita"}
+        // ]
+        console.log("Type of data: ", data)
         const {
             getTableProps,
             getTableBodyProps,
@@ -29,6 +34,9 @@ const Reacttable = ({dbToPrint}) => {
             data,
         });
         return (
+            <>
+                {        console.log("Started table")
+                }
             <table {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
@@ -52,6 +60,10 @@ const Reacttable = ({dbToPrint}) => {
                 })}
                 </tbody>
             </table>
+                {        console.log("Finished table")
+                }
+
+            </>
         );
 
     }
