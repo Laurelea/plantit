@@ -173,10 +173,11 @@ router.post("/api/auth", async (req, res) => {
 
                     //Create session in table session, return result - > its id
 
-                    // console.log(ifUser.rows[0])
+                    console.log("ifUser.rows[0] :", ifUser.rows[0])
                     req.session.userName = ifUser.rows[0].user_name
                     req.session.userEmail = ifUser.rows[0].email
                     req.session.isAuthenticated = true
+                    req.session.userID = ifUser.rows[0].user_id
 
                     req.session.save(err => {
                         if (err) {
@@ -194,7 +195,8 @@ router.post("/api/auth", async (req, res) => {
                         authUN: req.session.userName,
                         authEmail: req.session.userEmail,
                         sessID: req.sessionID,
-                        cookie: req.session.cookie
+                        cookie: req.session.cookie,
+                        userID: req.session.userID
                     })
                     // res.redirect("/")
                 }
@@ -242,7 +244,8 @@ router.get("/api/getbase", async (req, res) => {
 
 router.post("/api/addplant", async (req, res) => {
     // console.log("Req data to add:", req.data)
-    // console.log("Req body to add:", req.body)
+    console.log("Req body to add:", req.body)
+    // console.log("Req body to add:", req.body.userID)
     const plantAdded = await controller.addPlant(req.body)
     console.log("Plant added: ", plantAdded)
     res.send(plantAdded)

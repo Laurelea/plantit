@@ -21,7 +21,7 @@ a {
   background: rgba(9.4, 9.4, 9.4, 0.8);
   border: 3px solid red;
   margin: 0;
-  background: url('pics/body-bg.gif') 50% 0;
+  background: url('../pics/body-bg.gif') 50% 0;
   color: whitesmoke;
   /*align-self: center;*/
 }
@@ -96,7 +96,7 @@ a {
 
 h1 a {
   /*position: relative;*/
-  background: url('pics/logo.png') no-repeat 0 0;
+  background: url('../pics/logo.png') no-repeat 0 0;
   height: 58px;
   width: 187px;
   overflow: hidden;
@@ -114,7 +114,7 @@ h1 a {
 }
 
 .mainContainer {
-  background: url('pics/main-bg.jpg') no-repeat center 0;
+  background: url('../pics/main-bg.jpg') no-repeat center 0;
   width: 100%;
   min-height:100%;
   display: flex;
@@ -287,7 +287,7 @@ header, footer, .bodyContainer {
 }
 
 body {
-  background: url('pics/body-bg.gif') 50% 0;
+  background: url('../pics/body-bg.gif') 50% 0;
   width: 100%;
   height: 100vh;
   padding: 0;

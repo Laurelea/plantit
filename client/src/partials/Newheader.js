@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../App.css';
+import '../css/App.css';
 import {BrowserRouter as Router, NavLink, Route, Switch, Link} from "react-router-dom";
 import {Observer, observer} from 'mobx-react';
 import cn from 'classnames';

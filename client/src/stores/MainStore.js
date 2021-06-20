@@ -7,7 +7,8 @@ class MainStore {
     message = "default message";
     currentUser = {
         userName: "Default",
-        userEmail: "default@default.ru"
+        userEmail: "default@default.ru",
+        userID: 0
     };
     dbToPrint = [
         {id: 1, name: "Гавриш"},
@@ -18,8 +19,9 @@ class MainStore {
         makeAutoObservable(this)
     }
     @action
-    setUser(name, email) {
+    setUser(id, name, email) {
         this.currentUser = {
+            userID: id,
             userName: name,
             userEmail: email
         }

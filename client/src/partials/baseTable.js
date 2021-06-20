@@ -1,8 +1,7 @@
 
 import {useTable} from "react-table";
 import React from "react";
-import MainStore from "../stores/MainStore";
-import {observer} from "mobx-react";
+import '../css/table.css';
 
 const Reacttable = ({dbToPrint}) => {
         const columns = [
@@ -11,8 +10,25 @@ const Reacttable = ({dbToPrint}) => {
                 accessor: "id",
             },
             {
-                Header: "Name",
+                Header: "Категория",
+                accessor: "category",
+            },
+            {
+                Header: "Растение",
+                accessor: "product_name",
+            },
+            {
+                Header: "Сорт",
                 accessor: "name",
+            },
+            {
+                Header: "Производитель",
+                accessor: "producer_name",
+            }
+            ,
+            {
+                Header: "Добавил",
+                accessor: "user_name",
             }
         ];
         // const data = await observer (MainStore.dbToPrint)

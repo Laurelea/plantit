@@ -1,5 +1,5 @@
 import React from 'react'
-import './../App.css';
+import '../css/App.css';
 import {NavLink, Link} from "react-router-dom";
 import axios from "axios";
 import MainStore from "../stores/MainStore";
@@ -56,9 +56,11 @@ export default class Auth extends React.Component {
                         // message: "Authorization successful"
                     });
                     // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.authUN)
-                    // console.log("response.data.userName: ", response.data.authEmail)
+                    console.log("response.data.userID: ", response.data.userID)
 
-                    MainStore.setUser(response.data.authUN, response.data.authEmail);
+                    MainStore.setUser(response.data.userID, response.data.authUN, response.data.authEmail);
+                    console.log("Mainstore current user: ", MainStore.currentUser)
+
                     MainStore.isAuthenticated = true
                     // console.log("MainStore.isAuthenticated: ", MainStore.isAuthenticated)
                     // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)

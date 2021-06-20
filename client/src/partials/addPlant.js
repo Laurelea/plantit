@@ -1,6 +1,7 @@
 import React from 'react'
-import './../App.css';
+import '../css/App.css';
 import axios from "axios";
+import MainStore from "../stores/MainStore";
 
 const addPlantHandler = async (event) => {
         event.preventDefault();
@@ -12,10 +13,12 @@ const addPlantHandler = async (event) => {
             yeartype : (event.target.elements.yeartype.value == "a1") ? "однолетник" : "многолетник",
             rootstock : !!event.target.elements.rootstock.value,
             watering : event.target.elements.watering.value,
-            soil: event.target.elements.soil.value
+            soil: event.target.elements.soil.value,
+            user_id: MainStore.currentUser.userID
         }
+        console.log("MainStore.currentUser.userID: ", MainStore.currentUser.userID)
         // const test = event.target.elements.years.value
-        console.log(plantData)
+        console.log("plantData to send to server:", plantData)
         const response = await axios.post('/api/addplant', plantData)
             .then(response => {
                 console.log("post.response.data: ", response.data);
@@ -44,17 +47,17 @@ export default function addPlant() {
             <label><p>Выберите категорию:</p></label>
             <select name="category" required>
                 <option value="Herbs"></option>
-                <option value="Herbs" selected={true}>Травы</option>
+                <option value="Herbs" selected={false}>Травы</option>
                 <option value="Fruit">Фрукты</option>
                 <option value="Vegs">Овощи</option>
                 <option value="Decs">Декоративное</option>
             </select>
             <fieldset>
-                <input type='text' placeholder='Название сорта' autoFocus name='plantSort' required autoComplete="off" defaultValue={"Тест"}/>
+                <input type='text' placeholder='Сорт растения' autoFocus name='plantSort' required autoComplete="off" defaultValue={""}/>
 
-                <input type='text' placeholder='Название типа' name='product' required autoComplete="on" defaultValue = {"Тест"}/>
+                <input type='text' placeholder='Род растения' name='product' required autoComplete="on" defaultValue = {""}/>
 
-                <input type='text' placeholder='Производитель' name='producer' required autoComplete="on" defaultValue = {"Тест"}/>
+                <input type='text' placeholder='Производитель семян' name='producer' required autoComplete="on" defaultValue = {""}/>
             </fieldset>
             <fieldset>
                 <div>
@@ -65,7 +68,7 @@ export default function addPlant() {
                         <input className='radio' type='radio' name='yeartype' value="a1"/> Однолетник</label>
                     <label>
                         <input className='radio' type='radio' name='yeartype' value="a2"
-                               defaultChecked={true}/> Многолетник</label>
+                               defaultChecked={false}/> Многолетник</label>
                 </div>
             </fieldset>
             <fieldset>
@@ -74,7 +77,7 @@ export default function addPlant() {
                 </div>
                 <div>
                     <input className='radio' type='radio' name='rootstock' value="a1" /> Обязательно
-                    <input className='radio' type='radio' name='rootstock' value="a2" checked/> Необязательно
+                    <input className='radio' type='radio' name='rootstock' value="a2" defaultChecked={false}/> Необязательно
                 </div>
             </fieldset>
             <fieldset>

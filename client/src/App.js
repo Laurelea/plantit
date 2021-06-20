@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import React from 'react';
-import './App.css';
+import './css/App.css';
 import Newheader from "./partials/Newheader";
 import ShowBase from "./partials/showBase";
 import AllBase from "./partials/allBase";
@@ -56,7 +56,7 @@ const App = observer(
                         userName: response.data.userName,
                         userEmail: response.data.userEmail,
                     });
-                    MainStore.setUser(response.data.userName, response.data.userEmail);
+                    MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail);
                     // console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
                     MainStore.isAuthenticated = response.data.isAuthenticated
                     document.title = this.state.pageTitle;
@@ -68,7 +68,7 @@ const App = observer(
                     console.log(error);
                 })
             // console.log("document.title: ", document.title)
-            console.log("this.state.pageTitle: ", this.state.pageTitle)
+            // console.log("this.state.pageTitle: ", this.state.pageTitle)
 
             // console.log(cookies.get("SID"))
         }
@@ -115,17 +115,12 @@ const App = observer(
                                     <Route render={() => <h2>404 not found</h2>}/>
                                 </Switch>
                                 {/*</Router>*/}
-                                {/*<p>User Name is: {session.get("username")}</p>*/}
                                 <p>User Name is: {MainStore.currentUser.userName}</p>
                                 <p>Message from API: {this.state.apiResponse}</p>
-                                {/*<p>"document.cookie" {cookies.get("SID")}</p>*/}
-                                {/*<p>"MainStore.isAuthenticated: " {MainStore.isAuthenticated.toString()}</p>*/}
-
                                 <p>"MainStore.isAuthenticated:
                                     " {MainStore.isAuthenticated.toString()}</p>
                                 <p>"MainStore.currentUser:
                                     " {MainStore.currentUser.userName}</p>
-                                {/*<Observer>{() => */}
                                 {
                                         MainStore.isAuthenticated
                                             // true
@@ -134,24 +129,16 @@ const App = observer(
                                             : <span className="errorspan"
                                                     id="authErrorSpan">{this.state.apiResponse}</span>
                                 }
-                                {/*}</Observer>*/}
-                                {/*<p>"MainStore.currentUser: " {MainStore.currentUser.userName}</p>*/}
+
                             </div>
                             <div id="authContainer" className="totheright">
                                 {/*Это показывать только если не авторизован*/}
                                 {
                                     MainStore.isAuthenticated
-                                        // true
                                         ? <span className="errorspan"
                                                 id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
                                         : <Auth/>
                                 }
-
-                                {/*<Auth/>*/}
-                                {/*Показывать если авторизован:*/}
-                                {/*            Вы вошли как: username*/}
-                                {/*            Какая-то статистика*/}
-                                {/*            Выйти?*/}
                             </div>
                         </div>
                         <Footer/>
