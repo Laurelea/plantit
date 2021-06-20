@@ -3,7 +3,8 @@ import '../css/App.css';
 import axios from "axios";
 import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
-
+// import getMyBase from "./allBase"
+const allBase = require('./allBase')
 
 const addPlantHandler = async (event) => {
         event.preventDefault();
@@ -24,6 +25,7 @@ const addPlantHandler = async (event) => {
         console.log("plantData to send to server:", plantData)
         const response = await axios.post('/api/addplant', plantData)
             .then(response => {
+                allBase.getMyBase()
                 console.log("post.response.data: ", response.data);
                 // this.setState({apiResponse: response.data.regSuccess, message: response.data.message});
                 // console.log("apiResponse: ", this.state.apiResponse)
@@ -32,6 +34,7 @@ const addPlantHandler = async (event) => {
             .then( response => {
                 console.log("Am I here?");
                 // this.resetForm()
+
             })
             .catch(error => {
                 // handle error

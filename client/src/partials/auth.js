@@ -49,19 +49,26 @@ export default class Auth extends React.Component {
 
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
-                    this.setState({
-                        authUN: response.data.authUN,
-                        authEmail: response.data.authEmail,
-                        isAuthenticated: true,
-                        // message: "Authorization successful"
-                    });
-                    // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.authUN)
-                    console.log("response.data.userID: ", response.data.userID)
+                    try {
+                        this.setState({
+                            authUN: response.data.authUN,
+                            authEmail: response.data.authEmail,
+                            isAuthenticated: true,
+                            // message: "Authorization successful"
+                        });
+                        // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.authUN)
+                        console.log("response.data.userID: ", response.data.userID)
+                        console.log("response.data.numberOfPlants: ", response.data.numberOfPlants)
 
-                    MainStore.setUser(response.data.userID, response.data.authUN, response.data.authEmail);
-                    console.log("Mainstore current user: ", MainStore.currentUser)
+                        MainStore.setUser(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
+                        console.log("Mainstore current user numberOfPlants: ", MainStore.currentUser.numberOfPlants)
 
-                    MainStore.isAuthenticated = true
+                        MainStore.isAuthenticated = true
+                    } catch (e) {
+                        throw e
+                    }
+
+                    // MainStore.numberOfPlants = response.data.numberOfPlants
                     // console.log("MainStore.isAuthenticated: ", MainStore.isAuthenticated)
                     // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)
                 }

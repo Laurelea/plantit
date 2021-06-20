@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 const axios = require('axios').default;
 
 // const state = getMyBase()
-let data = [];
+// let data = [];
 
 async function getMyBase () {
     // console.log(state.dbToPrint.length)
@@ -23,8 +23,8 @@ async function getMyBase () {
                     console.log("ALLBASE Got from DB:", response.data.rows)
                     // this.setState({dbToPrint: response.data.rows})
                     // return response.data.rows
-                    data = response.data.rows;
-                    // MainStore.dbToPrint = response.data.rows;
+                    // data = response.data.rows;
+                    MainStore.dbToPrint = response.data.rows;
 
                 }
             )
@@ -60,8 +60,8 @@ const AllBase = observer(
             return (
                 <div ref={this.ref}>
                     <div>Тут будет база</div>
-                    {console.log("ALLBASE: this.state.dbToPrint", data)}
-                    <Reacttable dbToPrint={data}/>
+                    {console.log("ALLBASE: this.state.dbToPrint", MainStore.dbToPrint)}
+                    <Reacttable dbToPrint={MainStore.dbToPrint}/>
 
                 </div>
             )
@@ -69,3 +69,5 @@ const AllBase = observer(
     })
 
 export default AllBase;
+
+export {getMyBase};

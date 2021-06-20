@@ -388,3 +388,19 @@ a.button:hover {
   font-size: 120%;  background-color: #99a580;
 
 }
+
+.account-main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Roboto Thin", monospace;
+  /*margin: ;*/
+}
+.account-main-container a {
+  color: #b09609;
+}
+
+.account-main-container * {
+  padding: 5px;
+}

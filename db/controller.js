@@ -101,7 +101,7 @@ module.exports.showDB = async function() {
     // try {
         const plantDB = await db.query('SELECT sort.id, product.category, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
             'JOIN producer ON sort.producer_id=producer.id JOIN product ON sort.product_id=product.id JOIN users ON sort.user_id=users.user_id ORDER BY sort.id')
-        console.log("Controller plantDB: ", plantDB)
+        // console.log("Controller plantDB: ", plantDB)
         return plantDB
     // }
     // catch (err) {
@@ -158,4 +158,10 @@ module.exports.addPlant = async function (data) {
         return e
     }
 
+}
+
+module.exports.getNumberOfPlants = async function (id) {
+    const plantFound = await db.query('SELECT * FROM sort WHERE user_id=$1', [id])
+    console.log("id, plantFound.rows.length: ", id, plantFound.rows.length)
+    return plantFound.rows.length
 }

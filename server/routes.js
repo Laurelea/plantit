@@ -172,7 +172,8 @@ router.post("/api/auth", async (req, res) => {
                 if (!passCheck) {
                     throw new Error("Password incorrect")
                 } else {
-
+                    const numberOfPlants = await controller.getNumberOfPlants(ifUser.rows[0].user_id)
+                    console.log("Routes numberOfPlants", numberOfPlants)
                     //Create session in table session, return result - > its id
 
                     console.log("ifUser.rows[0] :", ifUser.rows[0])
@@ -180,6 +181,7 @@ router.post("/api/auth", async (req, res) => {
                     req.session.userEmail = ifUser.rows[0].email
                     req.session.isAuthenticated = true
                     req.session.userID = ifUser.rows[0].user_id
+                    req.session.numberOfPlants = numberOfPlants
 
                     req.session.save(err => {
                         if (err) {
@@ -198,7 +200,8 @@ router.post("/api/auth", async (req, res) => {
                         authEmail: req.session.userEmail,
                         sessID: req.sessionID,
                         cookie: req.session.cookie,
-                        userID: req.session.userID
+                        userID: req.session.userID,
+                        numberOfPlants: numberOfPlants
                     })
                     // res.redirect("/")
                 }
@@ -251,6 +254,14 @@ router.post("/api/addplant", async (req, res) => {
     const plantAdded = await controller.addPlant(req.body)
     console.log("Plant added: ", plantAdded)
     res.send(plantAdded)
+})
+
+router.get("/api/getNumberOfPlants", async(req, res) => {
+    console.log("routes req.body.id", req.body.id)
+    // console.log("routes req.body.id", req.body.data.id)
+    // console.log("routes req.body.id", req.data.id)
+    const result = await controller.getNumberOfPlants(req.body.id)
+    res.send(result)
 })
 
 module.exports = app

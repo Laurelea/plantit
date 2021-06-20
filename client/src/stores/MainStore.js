@@ -16,11 +16,12 @@ class MainStore {
         makeAutoObservable(this)
     }
     @action
-    setUser(id, name, email) {
+    setUser(id, name, email, number) {
         this.currentUser = {
             userID: id,
             userName: name,
-            userEmail: email
+            userEmail: email,
+            numberOfPlants: number
         }
     }
     @action
