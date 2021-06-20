@@ -8,12 +8,12 @@ table {
     background-color: #283c34;
     text-align: center;
     font-size: 18px;
-    /*width: 100%;*/
+    width: 90%;
 }
 th, td {
     margin: 0;
     /*padding: 0.5rem;*/
-    padding: 10px 20px;
+    padding: 10px 15px;
     border-bottom: 1px solid black;
     border-right: 1px solid black;
 }

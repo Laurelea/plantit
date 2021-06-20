@@ -101,7 +101,7 @@ module.exports.showDB = async function() {
     // try {
         const plantDB = await db.query('SELECT sort.id, product.category, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
             'JOIN producer ON sort.producer_id=producer.id JOIN product ON sort.product_id=product.id JOIN users ON sort.user_id=users.user_id ORDER BY sort.id')
-        console.log("plantDB: ", plantDB)
+        console.log("Controller plantDB: ", plantDB)
         return plantDB
     // }
     // catch (err) {

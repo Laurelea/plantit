@@ -98,10 +98,11 @@ router.get("/api", async (req, res) => {
                     console.log("Printing state if no cookie in DB:", state)
                     throw new Error ("Browser cookie ID doesn't match anything in the DB")
                 } else {
-                    console.log("Changing state...", foundSession.rows[0].sess.userName)
+                    console.log("Changing state...", foundSession.rows[0].sess.userID)
                     state.isAuthenticated = true;
                     state.userName = foundSession.rows[0].sess.userName
                     state.userEmail = foundSession.rows[0].sess.userEmail
+                    state.userID = foundSession.rows[0].sess.userID
                     // console.log("State changed:", state)
                     return true
                 }
@@ -127,6 +128,7 @@ router.get("/api", async (req, res) => {
                 userName: state.userName,
                 userEmail: state.userEmail,
                 title: "From Server With Love",
+                userID: state.userID
                 // unqieID: uniqueID
             });
         })

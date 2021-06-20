@@ -10,10 +10,7 @@ class MainStore {
         userEmail: "default@default.ru",
         userID: 0
     };
-    dbToPrint = [
-        {id: 1, name: "Гавриш"},
-        {id: 2, name: "Аэлита"}
-    ]
+    dbToPrint = []
     constructor() {
         // this.isAuthenticated = false;
         makeAutoObservable(this)
@@ -30,7 +27,8 @@ class MainStore {
     dropUser() {
         this.currentUser = {
             userName: "Default",
-            userEmail: "default@default.ru"
+            userEmail: "default@default.ru",
+            userID: 0
         }
     }
 }

@@ -12,8 +12,7 @@ import {NavLink} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
 import MainStore from "./stores/MainStore";
-import { Observer, observer } from 'mobx-react';
-import { action, observable, makeAutoObservable} from 'mobx';
+import { observer } from 'mobx-react';
 import Account from "./partials/lk";
 
 // import Cookies from 'universal-cookie';
@@ -40,10 +39,10 @@ const App = observer(
         }
 
 
-        componentDidMount = () => {
+        componentDidMount = async() => {
             // console.log("MainStore.isAuthenticated:  " , this.state.isAuthenticated)
 
-            axios({
+            await axios({
                 method: 'get',
                 url: '/api',
                 // responseType: 'json'
@@ -52,16 +51,21 @@ const App = observer(
                     console.log("get.response.data: ", response.data);
                     this.setState({
                         apiResponse: response.data.message,
-                        pageTitle: response.data.title,
-                        userName: response.data.userName,
-                        userEmail: response.data.userEmail,
                     });
-                    MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail);
-                    // console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
-                    MainStore.isAuthenticated = response.data.isAuthenticated
-                    document.title = this.state.pageTitle;
-                    console.log("this.state.pageTitle: ", this.state.pageTitle);
-                    console.log("this.state.userName: ", this.state.userName);
+                    if (response.data.isAuthenticated) {
+                        this.setState({
+                            pageTitle: response.data.title,
+                            userName: response.data.userName,
+                            userEmail: response.data.userEmail,
+                        });
+                        MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail);
+                        // console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
+                        MainStore.isAuthenticated = true
+                        document.title = this.state.pageTitle;
+                    } else {
+                        MainStore.isAuthenticated = false
+                        throw new Error
+                    }
                 })
                 .catch(function (error) {
                     // handle error
@@ -121,6 +125,8 @@ const App = observer(
                                     " {MainStore.isAuthenticated.toString()}</p>
                                 <p>"MainStore.currentUser:
                                     " {MainStore.currentUser.userName}</p>
+                                <p>"MainStore.currentUser ID:
+                                    " {MainStore.currentUser.userID}</p>
                                 {
                                         MainStore.isAuthenticated
                                             // true
