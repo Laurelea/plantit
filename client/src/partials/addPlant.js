@@ -5,36 +5,17 @@ import axios from "axios";
 const addPlantHandler = async (event) => {
         event.preventDefault();
         const plantData = {
-            category: "Herbs",
-            sort: "Весенняя",
-            type : "Ромашка",
-            producer : "Поиск",
-            yeartype : "a1",
-            rootstock : "a2",
-            watering : '',
-            soil: ''
+            category: event.target.elements.category.value,
+            plantSort: event.target.elements.plantSort.value,
+            product : event.target.elements.product.value,
+            producer : event.target.elements.producer.value,
+            yeartype : (event.target.elements.yeartype.value == "a1") ? "однолетник" : "многолетник",
+            rootstock : !!event.target.elements.rootstock.value,
+            watering : event.target.elements.watering.value,
+            soil: event.target.elements.soil.value
         }
-        const test = event.target.elements.years.value
-        console.log(test)
-    //     const test = []
-    //     const getElementsWithDepth = (el, level = 0) =>
-    //         [...el.children].reduce((acc, n) => {
-    //             acc.push(...getElementsWithDepth(n, level + 1));
-    //             return acc;
-    //         }, [ { el, level } ]);
-    //     // console.log(getElementsWithDepth(event.target))
-    //     function handleform (){
-    //         for (const elem of getElementsWithDepth(event.target)) {
-    //             if (elem.el.name && elem.el.value) {
-    //                 console.log(elem.el.name, elem.el.value)
-    //             }
-    //         }
-    //
-    // }
-
-        // handleform()
-        // console.log("event.target", event.target.childNodes)
-        // const plantData = event.target
+        // const test = event.target.elements.years.value
+        console.log(plantData)
         const response = await axios.post('/api/addplant', plantData)
             .then(response => {
                 console.log("post.response.data: ", response.data);
@@ -69,11 +50,11 @@ export default function addPlant() {
                 <option value="Decs">Декоративное</option>
             </select>
             <fieldset>
-                <input type='text' placeholder='Название сорта' autoFocus name='sort' required autoComplete="off" value = "Тест"/>
+                <input type='text' placeholder='Название сорта' autoFocus name='plantSort' required autoComplete="off" defaultValue={"Тест"}/>
 
-                <input type='text' placeholder='Название типа' name='type' required autoComplete="on" value = "Тест"/>
+                <input type='text' placeholder='Название типа' name='product' required autoComplete="on" defaultValue = {"Тест"}/>
 
-                <input type='text' placeholder='Производитель' name='producer' required autoComplete="on" value = "Тест"/>
+                <input type='text' placeholder='Производитель' name='producer' required autoComplete="on" defaultValue = {"Тест"}/>
             </fieldset>
             <fieldset>
                 <div>
@@ -81,10 +62,10 @@ export default function addPlant() {
                 </div>
                 <div>
                     <label>
-                        <input className='radio' type='radio' name='years' value="a1"/> Однолетник</label>
+                        <input className='radio' type='radio' name='yeartype' value="a1"/> Однолетник</label>
                     <label>
-                        <input className='radio' type='radio' name='years' value="a2"
-                               checked={true}/> Многолетник</label>
+                        <input className='radio' type='radio' name='yeartype' value="a2"
+                               defaultChecked={true}/> Многолетник</label>
                 </div>
             </fieldset>
             <fieldset>

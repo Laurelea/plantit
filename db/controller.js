@@ -105,37 +105,49 @@ module.exports.showDB = async function() {
 
 module.exports.addPlant = async function (data) {
     try {
-        let {category, sort, type, producer, yeartype, rootstock, watering, soil} = data
+        let {category, plantSort, product, producer, yeartype, rootstock, watering, soil} = await data
+        console.log ("Category:", category)
         //Search for product type:
-        const ifProdExists = await db.query('SELECT * FROM product WHERE name = $1', [type])
+        const ifProdExists = await db.query('SELECT * FROM product WHERE name = $1', [product])
         console.log("ifProdExists :", ifProdExists.rows)
+        let productID;
         if (ifProdExists.rows.length == 0) {
             const addProduct = await db.query('INSERT INTO product(name, yeartype, rootstock, soil, watering, category) ' +
-                'VALUES ($1) RETURNING *', [type, yeartype, rootstock, soil, watering, category])
+                'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [product, yeartype, rootstock, soil, watering, category])
+            productID =  addProduct.rows[0].id
             console.log("addProduct :", addProduct.rows)
         } else {
-            console.log("Product exists")
+            console.log("Product exists :", ifProdExists.rows[0].id)
+            productID =  ifProdExists.rows[0].id
         }
         const ifProducerExists = await db.query('SELECT * FROM producer WHERE name = $1', [producer])
+        console.log("ifProducerExists :", ifProducerExists.rows)
+        let producerID;
         if (ifProducerExists.rows.length == 0) {
             const addProducer = await db.query('INSERT INTO producer(name) VALUES ($1) RETURNING *', [producer])
             console.log("addProducer :", addProducer.rows)
-
+            producerID =  addProducer.rows[0].id
         } else {
-            console.log("Producer exists")
+            console.log("Producer exists :", producerID =  ifProducerExists.rows[0].id)
+            producerID =  ifProducerExists.rows[0].id
+
         }
-        const ifSortExists = await db.query('SELECT * FROM sort WHERE name = $1 AND product = $2 AND producer = $3', [sort, type, producer])
+
+
+        const ifSortExists = await db.query('SELECT * FROM sort WHERE name = $1 AND product_id = $2 AND producer_id = $3',
+            [plantSort, productID, producerID])
         console.log("ifSortExists :", ifSortExists)
         if (ifSortExists.rows.length != 0) {
             throw new Error("Такое растение уже есть")
             // console.log(Error)
         } else {
-            const newPlant = await db.query('INSERT INTO sort(name) VALUES ($1) RETURNING *',
-                [sort])
+            const newPlant = await db.query('INSERT INTO sort(name, product_id, producer_id) VALUES ($1, $2, $3) RETURNING *',
+                [plantSort, productID, producerID])
             console.log("New Sort:", newPlant)
+            return newPlant
         }
         // return newPlant
-        return newPlant
+
     } catch (e) {
         console.log(e)
         return e

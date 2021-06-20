@@ -135,7 +135,7 @@ router.get("/api", async (req, res) => {
     })
     }
 
-    callRoute()
+    await callRoute()
 
 
 });
@@ -241,7 +241,9 @@ router.get("/api/getbase", async (req, res) => {
 })
 
 router.post("/api/addplant", async (req, res) => {
-    const plantAdded = await controller.addPlant(req.data)
+    // console.log("Req data to add:", req.data)
+    // console.log("Req body to add:", req.body)
+    const plantAdded = await controller.addPlant(req.body)
     console.log("Plant added: ", plantAdded)
     res.send(plantAdded)
 })
