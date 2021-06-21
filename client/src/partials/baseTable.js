@@ -3,36 +3,11 @@ import {useTable} from "react-table";
 import React from "react";
 import '../css/table.css';
 
-const Reacttable = ({dbToPrint}) => {
-        const columns = [
-            {
-                Header: "ID",
-                accessor: "id",
-            },
-            {
-                Header: "Категория",
-                accessor: "category",
-            },
-            {
-                Header: "Растение",
-                accessor: "product_name",
-            },
-            {
-                Header: "Сорт",
-                accessor: "name",
-            },
-            {
-                Header: "Производитель",
-                accessor: "producer_name",
-            }
-            ,
-            {
-                Header: "Добавил",
-                accessor: "user_name",
-            }
-        ];
+const Reacttable = (props) => {
+
         // const data = await observer (MainStore.dbToPrint)
-        const data = dbToPrint
+        const data = props.dbToPrint
+        const columns = props.columns
         // console.log("MainStore.dbToPrint baseTable:", MainStore.dbToPrint)
         // const data = [
         //     {id: 1, name: "Gavrish"},

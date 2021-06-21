@@ -35,7 +35,33 @@ async function getMyBase () {
 
 getMyBase()
 
-
+const columns = [
+    {
+        Header: "ID",
+        accessor: "id",
+    },
+    {
+        Header: "Категория",
+        accessor: "category",
+    },
+    {
+        Header: "Растение",
+        accessor: "product_name",
+    },
+    {
+        Header: "Сорт",
+        accessor: "name",
+    },
+    {
+        Header: "Производитель",
+        accessor: "producer_name",
+    }
+    ,
+    {
+        Header: "Добавил",
+        accessor: "user_name",
+    }
+];
 const AllBase = observer(
     class AllBase extends React.Component {
         constructor(props) {
@@ -61,7 +87,7 @@ const AllBase = observer(
                 <div ref={this.ref}>
                     <div>Тут будет база</div>
                     {console.log("ALLBASE: this.state.dbToPrint", MainStore.dbToPrint)}
-                    <Reacttable dbToPrint={MainStore.dbToPrint}/>
+                    <Reacttable dbToPrint={MainStore.dbToPrint} columns = {columns}/>
 
                 </div>
             )

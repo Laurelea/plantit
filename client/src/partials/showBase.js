@@ -1,5 +1,6 @@
 import React from 'react'
 import '../css/App.css';
+import {NavLink} from "react-router-dom";
 
 export default function ShowBase(props) {
     return (
@@ -11,7 +12,7 @@ export default function ShowBase(props) {
                 <img src='../pics/vegs.jpg' alt="Vegs"/>
                 <dl className="def-list-1">
                     <dt>
-                        <a href="/vegs"> Овощи </a>
+                        <NavLink to="/vegs"> Овощи </NavLink>
                     </dt>
                     <dd>
                         Различные овощи - бахчевые, бобовые и тп.
@@ -22,7 +23,7 @@ export default function ShowBase(props) {
                 <img src="../pics/fruits.jpg"/>
                 <dl className="def-list-1">
                     <dt>
-                        <a href="/vegs"> Фрукты </a>
+                        <NavLink to="/fruit"> Фрукты </NavLink>
                     </dt>
                     <dd>
                         Различные фрукты и ягоды
@@ -33,7 +34,7 @@ export default function ShowBase(props) {
                 <img src="../pics/herbs.jpg"/>
                 <dl className="def-list-1">
                     <dt>
-                        <a href="/vegs"> Травы </a>
+                        <NavLink to="/herbs"> Травы </NavLink>
                     </dt>
                     <dd>
                         Травы - пряные, лечебные и в чай
@@ -44,7 +45,7 @@ export default function ShowBase(props) {
                 <img src="../pics/decs.jpg"/>
                 <dl className="def-list-1">
                     <dt>
-                        <a href="/vegs"> Декоративные </a>
+                        <NavLink to="/decs"> Декоративные </NavLink>
                     </dt>
                     <dd>
                         Цветы

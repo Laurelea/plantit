@@ -103,6 +103,7 @@ router.get("/api", async (req, res) => {
                     state.userName = foundSession.rows[0].sess.userName
                     state.userEmail = foundSession.rows[0].sess.userEmail
                     state.userID = foundSession.rows[0].sess.userID
+                    state.numberOfPlants = foundSession.rows[0].sess.numberOfPlants
                     // console.log("State changed:", state)
                     return true
                 }
@@ -128,7 +129,8 @@ router.get("/api", async (req, res) => {
                 userName: state.userName,
                 userEmail: state.userEmail,
                 title: "From Server With Love",
-                userID: state.userID
+                userID: state.userID,
+                numberOfPlants: state.numberOfPlants
                 // unqieID: uniqueID
             });
         })
@@ -144,9 +146,6 @@ router.get("/api", async (req, res) => {
 
 //Выход
 router.post("/api/logout", async (req, res) => {
-    //Тут нужно стирать сессию из БД
-    // const gotCookie = parseCookie(req.headers.cookie)
-    // console.log("gotCookie", gotCookie)
     req.session.destroy()
     res.json({ isAuthenticated: false});
     // res.clearCookie("SID")
@@ -262,6 +261,27 @@ router.get("/api/getNumberOfPlants", async(req, res) => {
     // console.log("routes req.body.id", req.data.id)
     const result = await controller.getNumberOfPlants(req.body.id)
     res.send(result)
+})
+
+router.get("/api/vegs", async (req, res) => {
+    const vegs = await controller.vegs()
+    console.log("Vegs from Routes")
+    res.send(vegs)
+})
+router.get("/api/fruit", async (req, res) => {
+    const fruit = await controller.fruit()
+    console.log("Fruit from Routes")
+    res.send(fruit)
+})
+router.get("/api/herbs", async (req, res) => {
+    const herbs = await controller.herbs()
+    console.log("Herbs from Routes")
+    res.send(herbs)
+})
+router.get("/api/decs", async (req, res) => {
+    const decs = await controller.decs()
+    console.log("Decs from Routes")
+    res.send(decs)
 })
 
 module.exports = app

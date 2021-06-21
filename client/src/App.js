@@ -4,6 +4,10 @@ import './css/App.css';
 import Newheader from "./partials/Newheader";
 import ShowBase from "./partials/showBase";
 import AllBase from "./partials/allBase";
+import Vegs from "./partials/vegs"
+import Fruit from "./partials/fruit"
+import Herbs from "./partials/herbs"
+import Decs from "./partials/decs"
 import Noauth from "./partials/no_auth";
 import Auth from "./partials/auth";
 import Footer from "./partials/footer";
@@ -58,8 +62,8 @@ const App = observer(
                             userName: response.data.userName,
                             userEmail: response.data.userEmail,
                         });
-                        MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail);
-                        // console.log("MainStore.currentUser.userName", MainStore.currentUser.userName)
+                        MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
+                        console.log("APP MainStore.currentUser.userName", MainStore.currentUser.userName)
                         MainStore.isAuthenticated = true
                         document.title = this.state.pageTitle;
                     } else {
@@ -116,6 +120,10 @@ const App = observer(
                                     <Route path="/logout" exact component={Noauth}/>
                                     <Route path="/showBase" exact component={AllBase}/>
                                     <Route path="/lk" exact component={Account}/>
+                                    <Route path="/vegs" exact component={Vegs}/>
+                                    <Route path="/fruit" exact component={Fruit}/>
+                                    <Route path="/herbs" exact component={Herbs}/>
+                                    <Route path="/decs" exact component={Decs}/>
                                     <Route render={() => <h2>404 not found</h2>}/>
                                 </Switch>
                                 {/*</Router>*/}

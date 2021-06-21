@@ -62,6 +62,8 @@ export default class Auth extends React.Component {
 
                         MainStore.setUser(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
                         console.log("Mainstore current user numberOfPlants: ", MainStore.currentUser.numberOfPlants)
+                        console.log("Mainstore current user userID: ", MainStore.currentUser.userID)
+
 
                         MainStore.isAuthenticated = true
                     } catch (e) {

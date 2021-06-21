@@ -10,11 +10,15 @@ class MainStore {
         userEmail: "default@default.ru",
         userID: 0
     };
-    dbToPrint = []
+    dbToPrint = [];
+    vegs = [];
+    fruit = [];
+    herbs = [];
+    decs = [];
     constructor() {
         // this.isAuthenticated = false;
         makeAutoObservable(this)
-    }
+    };
     @action
     setUser(id, name, email, number) {
         this.currentUser = {
