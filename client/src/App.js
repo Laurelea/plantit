@@ -18,10 +18,10 @@ import Newuser from "./partials/newUser";
 import MainStore from "./stores/MainStore";
 import { observer } from 'mobx-react';
 import Account from "./partials/lk";
+import { createBrowserHistory } from "history";
 
-// import Cookies from 'universal-cookie';
-//
-// const cookies = new Cookies();
+const customHistory = createBrowserHistory();
+
 
 const axios = require('axios').default;
 // const authStatus = observer(() => {
@@ -117,7 +117,7 @@ const App = observer(
                                     {/*</Route>*/}
                                     <Route path="/newUser" exact component={Newuser}/>
                                     {/*<Route path="/auth/login" exact component={Noauth}/>*/}
-                                    <Route path="/logout" exact component={Noauth}/>
+                                    {/*<Route path="/logout" exact component={Noauth}/>*/}
                                     <Route path="/showBase" exact component={AllBase}/>
                                     <Route path="/lk" exact component={Account}/>
                                     <Route path="/vegs" exact component={Vegs}/>
@@ -125,6 +125,7 @@ const App = observer(
                                     <Route path="/herbs" exact component={Herbs}/>
                                     <Route path="/decs" exact component={Decs}/>
                                     <Route render={() => <h2>404 not found</h2>}/>
+                                    <Router history={customHistory} />
                                 </Switch>
                                 {/*</Router>*/}
                                 <p>User Name is: {MainStore.currentUser.userName}</p>
@@ -162,3 +163,5 @@ const App = observer(
         }
     })
 export default App;
+
+export {customHistory};

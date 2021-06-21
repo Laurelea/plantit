@@ -64,7 +64,7 @@ const Fruit = observer(
             return (
                 <div>
                     <h2>Фрукты</h2>
-                    {console.log("Fruit: this.state.fruit", MainStore.fruit)}
+                    {/*{console.log("Fruit: this.state.fruit", MainStore.fruit)}*/}
                     <Reacttable dbToPrint={MainStore.fruit} columns={columns}/>
 
                 </div>

@@ -1,23 +1,40 @@
 import React, {Component} from 'react';
 import '../css/App.css';
-import {BrowserRouter as Router, NavLink, Route, Switch, Link} from "react-router-dom";
-import {Observer, observer} from 'mobx-react';
-import cn from 'classnames';
+import {BrowserRouter as Router, NavLink, Route, Switch, Link}  from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import {observer} from 'mobx-react';
 import MainStore from '../stores/MainStore';
-// import ul from "./ul"
-// const home = (
-//     <>
-//         <h1>Home Page </h1>
-//     </>
-// )
+import Logout from "./no_auth";
+const App = require ("../App")
+// const { match, history } = props
+// import { createBrowserHistory } from "history";
+//
+// const customHistory = createBrowserHistory();
+// type Props = RouteComponentProps
 
+async function LogoutHandler (event) {
+    event.preventDefault()
+    // const history = useHistory();
+    console.log("This is logout, babe")
+    await Logout()
+    // window.location.replace("/")
+
+    // this.history.pushState(null, '/')
+    // history.push('/');
+    // // return (<Redirect to="/" />)
+    App.customHistory.push('/');
+    // return null
+}
 
 const Newheader = observer(
     class Newheader extends Component {
         render() {
-
             return (
+
                 <header className="Newheader">
+                    {/*<Switch>*/}
+                    {/*<Router history={customHistory} />*/}
+                    {/*</Switch>*/}
                     <h1 id="mainheader" className="logo">
                         <NavLink to="/"> Моя Дача. Проект по посадке растений.</NavLink>
                     </h1>
@@ -46,7 +63,7 @@ const Newheader = observer(
                                     ? <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
                                     : null}
                                 {MainStore.isAuthenticated
-                                        ? <li className="active"><NavLink to="/logout" exact>ВЫЙТИ</NavLink></li>
+                                        ? <li className="active"><NavLink to="/logout" exact onClick = {LogoutHandler}>ВЫЙТИ</NavLink></li>
                                         // ? <a href="" onClick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
                                         // ? <a href="" onClick="$('<form method=POST action=/logout>').submit();return false">Выйти</a>
                                         : null}

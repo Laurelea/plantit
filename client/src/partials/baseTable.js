@@ -26,8 +26,8 @@ const Reacttable = (props) => {
         });
         return (
             <>
-                {        console.log("Started table")
-                }
+                {/*{        console.log("Started table")*/}
+                {/*}*/}
             <table {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
@@ -51,8 +51,8 @@ const Reacttable = (props) => {
                 })}
                 </tbody>
             </table>
-                {        console.log("Finished table")
-                }
+                {/*{        console.log("Finished table")*/}
+                {/*}*/}
 
             </>
         );

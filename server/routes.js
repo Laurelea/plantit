@@ -32,7 +32,7 @@ app.use(express.urlencoded({
 app.use(
     session({
         genid: (req) => {
-            console.log('Inside the session middleware')
+            // console.log('Inside the session middleware')
             return uuidv4.uuid() // use UUIDs for session IDs
         },
         name: "SID",
@@ -155,7 +155,7 @@ router.post("/api/auth", async (req, res) => {
 
     const {email, password} = req.body
         console.log("req.body: ", req.body)
-        console.log('Inside GET /login callback function', "\n")
+        // console.log('Inside GET /login callback function', "\n")
         // console.log("Login req.sessionID", req.sessionID, "\n")
         // console.log("req.session: ", req.session, "\n")
         try {

@@ -33,7 +33,8 @@ class MainStore {
         this.currentUser = {
             userName: "Default",
             userEmail: "default@default.ru",
-            userID: 0
+            userID: "default",
+            numberOfPlants: "default"
         }
     }
 }
