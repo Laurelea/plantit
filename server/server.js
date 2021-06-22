@@ -1,37 +1,89 @@
 const express = require("express");
 const PORT = process.env.PORT || 3003;
 const app = express();
-// const router = express.Router();
 const db = require('../db/dbConnect');
 const routes = require ("./routes");
-const pino = require('pino')
-const expressPino = require('express-pino-logger')
-const logger = pino({level: process.env.LOG_LEVEL || 'info'})
-const expressLoger = expressPino({logger})
+// const { Server } = require("socket.io");
+//Logs:
+// const pino = require('pino')
+// const expressPino = require('express-pino-logger')
+// const logger = pino({level: process.env.LOG_LEVEL || 'info'})
+// const expressLoger = expressPino({logger})
+//End Logs
+
+
 
 app.use(express.urlencoded({
     extended: true,
 }))
 app.use(express.json())
-app.use(expressLoger)
+
+//Logs
+// app.use(expressLoger)
+//End logs
+
 // app.use(router);
 app.use('/', routes);
 app.use((req, res, next) => {
-    console.log('%0', req)
+    // console.log('%0', req)
 })
 
-// app.use(
-//     session({
-//         secret: `some secret value`,
-//         resave: false,
-//         saveUninitialized: false,
-//         store: new pgSession({
-//             pool: db,
-//             tableName: 'sessions'
-//         }),
-//         cookie: {maxAge: 1000 * 60 * 60 * 24}
-//     })
-// )
+//Chat part
+const server = require('http').createServer(app);
+
+//End chat part
+
+// let numberOfUsers = 0;
+
+//End chat part
+// let server;
+
+
+
+
+const io = require("socket.io")(server, {
+    cors: {
+        origin: '*'
+    }
+
+});
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    // numberOfUsers  += 1;
+    // socket.username = "Guest";
+
+    socket.on('disconnect', () => {
+        numberOfUsers  -= 1;
+        console.log (`Всего юзеров: `+ numberOfUsers)
+        console.log('user disconnected');
+
+        io.emit('disconnect', {username : socket.username, number: numberOfUsers})
+        console.log(socket.username +' disconnected')
+    });
+    // //Это слушатель событий. Общий вид: socket.on(eventName, listener)
+    // //Получает с сокета клиента инфу о событии и массив данных
+    // socket.on('change_username', (data) => {
+    //     console.log(socket.username + ' change username on ' + data.username)
+    //     socket.username = data.username
+    //     // io.sockets.emit ("", {});
+    //
+    //     //io.emit - трансляция абсолютно всем участникам, в том числе тому, кто вызывает событие.
+    //     io.emit('new', {username : socket.username, number: numberOfUsers})
+    //     console.log(socket.username +' new user')
+    // });
+    // socket.on('new_message', (data) => {
+    //     //Это выводится в браузере:
+    //     io.sockets.emit('add_message', {message : data.message, username : socket.username, className:data.className});
+    //     console.log(socket.username +' send message ' + data.message)
+    // });
+    // socket.on('typing', (data) => {
+    //     //broadcast означает, что сообщение покажут всем участникам, кроме того, кто печатает: (вызывает событие). Это тоже выводится в браузере:
+    //     socket.broadcast.emit('typing', {username : socket.username})
+    //     console.log(socket.username +' typing')
+    // });
+});
+
 async function start() {
     try {
         //Подключение БД:
@@ -42,7 +94,8 @@ async function start() {
             }
         })
         //Это сам запуск сервера:
-        app.listen(PORT, () => {
+        // server.listen(PORT, () => {
+        server.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)
         })
     } catch (e) {
@@ -51,3 +104,4 @@ async function start() {
     // db.end()
 }
 start()
+

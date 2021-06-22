@@ -32,7 +32,7 @@ const columns = [
 async function getVegs () {
     // console.log(state.dbToPrint.length)
     // if (state.dbToPrint.length == 0) {
-    console.log("Vegs State empty")
+    // console.log("Vegs State empty")
     // console.log("getMyBase: Inside getMyBase")
     await axios({
         method: 'get',

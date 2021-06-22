@@ -32,7 +32,7 @@ const columns = [
 async function getDecs () {
     // console.log(state.dbToPrint.length)
     // if (state.dbToPrint.length == 0) {
-    console.log("Decs State empty")
+    // console.log("Decs State empty")
     // console.log("getMyBase: Inside getMyBase")
     await axios({
         method: 'get',

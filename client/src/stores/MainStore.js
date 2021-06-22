@@ -52,4 +52,4 @@ class MainStore {
 // export const withStore = (Component) => (props) => {
 //     return <Component {...props} store={useStore()} />;
 // };
-export default new MainStore
+export default new MainStore()

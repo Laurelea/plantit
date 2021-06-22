@@ -37,8 +37,8 @@ const axios = require('axios').default;
 // }
 // numberOfPlantsAdded()
 
-console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.numberOfPlants)
-console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.userName)
+// console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.numberOfPlants)
+// console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.userName)
 
 const Account = observer(
     class Account extends React.Component {

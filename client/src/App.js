@@ -19,7 +19,7 @@ import MainStore from "./stores/MainStore";
 import { observer } from 'mobx-react';
 import Account from "./partials/lk";
 import { createBrowserHistory } from "history";
-
+import Chat from "./partials/chat"
 const customHistory = createBrowserHistory();
 
 
@@ -63,7 +63,7 @@ const App = observer(
                             userEmail: response.data.userEmail,
                         });
                         MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
-                        console.log("APP MainStore.currentUser.userName", MainStore.currentUser.userName)
+                        // console.log("APP MainStore.currentUser.userName", MainStore.currentUser.userName)
                         MainStore.isAuthenticated = true
                         document.title = this.state.pageTitle;
                     } else {
@@ -126,6 +126,7 @@ const App = observer(
                                     <Route path="/decs" exact component={Decs}/>
                                     <Route render={() => <h2>404 not found</h2>}/>
                                     <Router history={customHistory} />
+                                    <Route path="/chat" exact component={Chat}/>
                                 </Switch>
                                 {/*</Router>*/}
                                 <p>User Name is: {MainStore.currentUser.userName}</p>
@@ -150,8 +151,11 @@ const App = observer(
                                 {/*Это показывать только если не авторизован*/}
                                 {
                                     MainStore.isAuthenticated
-                                        ? <span className="errorspan"
+                                        ? <div>
+                                            <span className="errorspan"
                                                 id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
+                                            <Chat/>
+                                        </div>
                                         : <Auth/>
                                 }
                             </div>

@@ -32,7 +32,7 @@ const columns = [
 async function getFruit () {
     // console.log(state.dbToPrint.length)
     // if (state.dbToPrint.length == 0) {
-    console.log("Fruit State empty")
+    // console.log("Fruit State empty")
     // console.log("getMyBase: Inside getMyBase")
     await axios({
         method: 'get',

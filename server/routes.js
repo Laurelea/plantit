@@ -71,14 +71,14 @@ parseCookie = async function (str, callback) {
 
 //test for server: HomePage Route For Server:
 router.get("/api", async (req, res) => {
-    console.log("Cookie SID from req (browser): ", req.headers.cookie, "\n")
+    // console.log("Cookie SID from req (browser): ", req.headers.cookie, "\n")
     let state = {
         isAuthenticated: false,
         message: "Hello from server!",
         userName: "Default",
         userEmail: "default",
     }
-    console.log("Printing state 1", state)
+    // console.log("Printing state 1", state)
 
     checkAuthorization = async (SIDcookieValueInBrowser) => {
         try {
@@ -91,7 +91,7 @@ router.get("/api", async (req, res) => {
             //Если есть:
             } else {
                 const foundSession = await controller.lookForSameSID(SIDcookieValueInBrowser)
-                console.log("Number of cookies found:", foundSession.rows.length)
+                // console.log("Number of cookies found:", foundSession.rows.length)
                 // console.log("Found cookie:", foundSession)
                 if (foundSession.rows.length ==0) {
                     state.isAuthenticated = false;
@@ -265,22 +265,22 @@ router.get("/api/getNumberOfPlants", async(req, res) => {
 
 router.get("/api/vegs", async (req, res) => {
     const vegs = await controller.vegs()
-    console.log("Vegs from Routes")
+    // console.log("Vegs from Routes")
     res.send(vegs)
 })
 router.get("/api/fruit", async (req, res) => {
     const fruit = await controller.fruit()
-    console.log("Fruit from Routes")
+    // console.log("Fruit from Routes")
     res.send(fruit)
 })
 router.get("/api/herbs", async (req, res) => {
     const herbs = await controller.herbs()
-    console.log("Herbs from Routes")
+    // console.log("Herbs from Routes")
     res.send(herbs)
 })
 router.get("/api/decs", async (req, res) => {
     const decs = await controller.decs()
-    console.log("Decs from Routes")
+    // console.log("Decs from Routes")
     res.send(decs)
 })
 

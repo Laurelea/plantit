@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="aca595fc-52cb-4783-861f-a94bd62d6cf1" name="Default Changelist" comment="Res is callback, but nothing works">
+      <change afterPath="$PROJECT_DIR$/server/Dockerfile" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1t9xZy170xSqWgAidJpNZIXv0zd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\ЯндексДиск-Laurelea-ru\_Coding\Projects\react-node-app\db" />
+      <recent name="D:\ЯндексДиск-Laurelea-ru\_Coding\Projects\react-node-app\client\public" />
+      <recent name="D:\ЯндексДиск-Laurelea-ru\_Coding\Projects\react-node-app\client\src" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aca595fc-52cb-4783-861f-a94bd62d6cf1" name="Default Changelist" comment="" />
+      <created>1622195188358</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1622195188358</updated>
+      <workItem from="1622195197880" duration="12441000" />
+      <workItem from="1622467987268" duration="8508000" />
+      <workItem from="1622525094698" duration="56272000" />
+      <workItem from="1622795091712" duration="58224000" />
+      <workItem from="1623300801705" duration="10467000" />
+      <workItem from="1623316887499" duration="27091000" />
+      <workItem from="1623734304399" duration="81407000" />
+      <workItem from="1624029998964" duration="216000" />
+      <workItem from="1624030223048" duration="1422000" />
+      <workItem from="1624034714112" duration="870000" />
+    </task>
+    <task id="LOCAL-00001" summary="Before correcting reg form">
+      <created>1623061018445</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1623061018445</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Before correcting reg form">
+      <created>1623061123633</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1623061123633</updated>
+    </task>
+    <task id="LOCAL-00003" summary="test it!">
+      <created>1623144379837</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1623144379837</updated>
+    </task>
+    <task id="LOCAL-00004" summary="before final session realisation">
+      <created>1623392850801</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1623392850801</updated>
+    </task>
+    <task id="LOCAL-00005" summary="before chnaging res as callback">
+      <created>1623407762824</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1623407762825</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Res is callback, but nothing works">
+      <created>1623409676090</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1623409676090</updated>
+    </task>
+    <task id="LOCAL-00007" summary="before full promise">
+      <created>1623735683179</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1623735683179</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Before appending mobx">
+      <created>1623743195018</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1623743195018</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Mobx Provider не работает">
+      <created>1623762717833</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1623762717833</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Стора заработала.">
+      <created>1623765129689</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1623765129689</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Перед подключением observer">
+      <created>1623823028640</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1623823028640</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Before logout">
+      <created>1623825451161</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1623825451161</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Before logout 2">
+      <created>1623917472403</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1623917472403</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Logout ver. 1">
+      <created>1623922643444</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1623922643444</updated>
+    </task>
+    <task id="LOCAL-00015" summary="table rewrite">
+      <created>1624013082034</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1624013082034</updated>
+    </task>
+    <task id="LOCAL-00016" summary="не работают таблицы из БД, извлечение данных из форм">
+      <created>1624021257364</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1624021257364</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/client" />
+    </ignored-roots>
+    <MESSAGE value="Before correcting reg form" />
+    <MESSAGE value="test it!" />
+    <MESSAGE value="before final session realisation" />
+    <MESSAGE value="before chnaging res as callback" />
+    <MESSAGE value="Res is callback, but nothing works" />
+    <MESSAGE value="before full promise" />
+    <MESSAGE value="Before appending mobx" />
+    <MESSAGE value="Mobx Provider не работает" />
+    <MESSAGE value="Стора заработала." />
+    <MESSAGE value="Перед подключением observer" />
+    <MESSAGE value="Before logout" />
+    <MESSAGE value="Before logout 2" />
+    <MESSAGE value="Logout ver. 1" />
+    <MESSAGE value="table rewrite" />
+    <MESSAGE value="не работают таблицы из БД, извлечение данных из форм" />
+    <option name="LAST_COMMIT_MESSAGE" value="не работают таблицы из БД, извлечение данных из форм" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="549" y="43" key="#server/Dockerfile" timestamp="1624034986601">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="549" y="43" key="#server/Dockerfile/0.0.1680.1010@0.0.1680.1010" timestamp="1624034986601" />
+    <state x="620" y="260" key="FileChooserDialogImpl" timestamp="1624030218518">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="620" y="260" key="FileChooserDialogImpl/0.0.1680.1010@0.0.1680.1010" timestamp="1624030218518" />
+    <state x="649" y="419" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1624030193281">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="649" y="419" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1680.1010@0.0.1680.1010" timestamp="1624030193281" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/server/routes.js</url>
+          <line>152</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
