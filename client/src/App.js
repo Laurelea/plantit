@@ -113,20 +113,17 @@ const App = observer(
                                         </React.Fragment>
                                     }/>
                                     <Route path="/addPlant" exact component={Addplant}/>
-                                    {/*        {Addplant}*/}
-                                    {/*</Route>*/}
                                     <Route path="/newUser" exact component={Newuser}/>
-                                    {/*<Route path="/auth/login" exact component={Noauth}/>*/}
-                                    {/*<Route path="/logout" exact component={Noauth}/>*/}
                                     <Route path="/showBase" exact component={AllBase}/>
                                     <Route path="/lk" exact component={Account}/>
                                     <Route path="/vegs" exact component={Vegs}/>
                                     <Route path="/fruit" exact component={Fruit}/>
                                     <Route path="/herbs" exact component={Herbs}/>
                                     <Route path="/decs" exact component={Decs}/>
+                                    <Route path="/chat" exact component={Chat}/>
                                     <Route render={() => <h2>404 not found</h2>}/>
                                     <Router history={customHistory} />
-                                    <Route path="/chat" exact component={Chat}/>
+
                                 </Switch>
                                 {/*</Router>*/}
                                 <p>User Name is: {MainStore.currentUser.userName}</p>
@@ -151,7 +148,7 @@ const App = observer(
                                 {/*Это показывать только если не авторизован*/}
                                 {
                                     MainStore.isAuthenticated
-                                        ? <div>
+                                        ? <div className="chat_section">
                                             <span className="errorspan"
                                                 id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
                                             <Chat/>

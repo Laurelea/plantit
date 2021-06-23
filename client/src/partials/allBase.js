@@ -12,7 +12,7 @@ const axios = require('axios').default;
 async function getMyBase () {
     // console.log(state.dbToPrint.length)
     // if (state.dbToPrint.length == 0) {
-        console.log("ALLBASE State empty")
+    //     console.log("ALLBASE State empty")
         // console.log("getMyBase: Inside getMyBase")
         await axios({
             method: 'get',
