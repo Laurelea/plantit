@@ -8,6 +8,6 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY ../.. .
 
 ENTRYPOINT node server/server.js
