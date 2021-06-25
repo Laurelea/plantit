@@ -10,4 +10,4 @@ const db = new Pool({
     }
 })
 
-module.exports = {db}
+module.exports = db
