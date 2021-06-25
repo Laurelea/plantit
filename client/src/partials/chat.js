@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 export default function Chat () {
 
     useEffect(async () => {
-        let socket = await io.connect("http://localhost:3003");
+        let socket = await io.connect("test-app-esoftchat.herokuapp.com");
         let message = document.getElementById('message');
         // let username = document.getElementById('username');
         let send_message = document.getElementById('send_message');
