@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "test-app-esoftchat.herokuapp.com",
+  "proxy": "91.205.1.68.52",
   "scripts": {
     "start": "set PORT=3002 && react-app-rewired start",
     "build": "react-app-rewireds build",
