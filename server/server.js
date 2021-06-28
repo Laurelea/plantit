@@ -11,6 +11,13 @@ const routes = require ("./routes");
 // const expressLoger = expressPino({logger})
 //End Logs
 
+app.use((req, res, next) => {
+        if (req.header('x-forwarded-proto') !== 'http')
+            res.redirect(`http://${req.header('host')}${req.url}`)
+        else
+            next()
+    }
+)
 
 
 app.use(express.urlencoded({
@@ -25,9 +32,9 @@ app.use(express.json())
 // app.use(router);
 app.use('/', routes);
 // app.use(chat);
-app.use((req, res, next) => {
-    // console.log('%0', req)
-})
+// app.use((req, res, next) => {
+//     // console.log('%0', req)
+// })
 
 const server = require('http').createServer(app);
 
