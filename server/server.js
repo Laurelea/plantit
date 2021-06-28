@@ -19,6 +19,7 @@ app.use((req, res, next) => {
     }
 )
 
+app.use(express.static(path.join(__dirname, '../client')));
 
 app.use(express.urlencoded({
     extended: true,
