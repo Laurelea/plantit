@@ -20,7 +20,8 @@
     "pg": "^8.6.0",
     "pino": "^6.11.3",
     "socket.io": "^4.1.2",
-    "uuidv4": "^6.2.10"
+    "uuidv4": "^6.2.10",
+    "concurrently": "^6.2.0"
   },
   "devDependencies": {
     "pino-pretty": "^5.0.2"
