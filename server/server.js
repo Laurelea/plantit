@@ -3,6 +3,7 @@ const PORT = process.env.PORT || 3003;
 const app = express();
 const db = require('../db/dbConnect');
 const routes = require ("./routes");
+const path = require("path");
 // const chat = require("./chat-server")
 //Logs:
 // const pino = require('pino')
