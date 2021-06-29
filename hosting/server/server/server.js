@@ -3,7 +3,7 @@ const PORT = process.env.PORT || 3003;
 const app = express();
 const db = require('../db/dbConnect');
 const routes = require ("./routes");
-// const chat = require("./chat-server")
+const path = require("path");
 //Logs:
 // const pino = require('pino')
 // const expressPino = require('express-pino-logger')
@@ -11,7 +11,18 @@ const routes = require ("./routes");
 // const expressLoger = expressPino({logger})
 //End Logs
 
+app.use((req, res, next) => {
+        if (req.header('x-forwarded-proto') !== 'http')
+            res.redirect(`http://${req.header('host')}${req.url}`)
+        else
+            next()
+    }
+)
 
+app.use(express.static(path.join(__dirname, '../client')));
+
+// app.use(express.static('../../client/public'));
+// app.use(express.static('src'));
 
 app.use(express.urlencoded({
     extended: true,
@@ -22,12 +33,10 @@ app.use(express.json())
 // app.use(expressLoger)
 //End logs
 
-// app.use(router);
 app.use('/', routes);
-// app.use(chat);
-app.use((req, res, next) => {
-    // console.log('%0', req)
-})
+// app.use((req, res, next) => {
+//     // console.log('%0', req)
+// })
 
 const server = require('http').createServer(app);
 
@@ -91,6 +100,7 @@ async function start() {
     try {
         //Подключение БД:
         await db.connect((err) => {
+            console.log("DB!")
             if (err) {
                 // Передача ошибки в обработчик express
                 return console.error('error fetching client from pool', err)
@@ -98,8 +108,11 @@ async function start() {
         })
         //Это сам запуск сервера:
         // server.listen(PORT, () => {
-        server.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`)
+        server.listen(PORT, "localhost", () => {
+            console.log(server.address(), `Server is running on port ${PORT}`)
+            require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+                console.log('addr: ' + add);
+            })
         })
     } catch (e) {
         console.log("Caught: ", e)

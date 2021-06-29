@@ -71,6 +71,7 @@ parseCookie = async function (str, callback) {
 
 //test for server: HomePage Route For Server:
 router.get("/api", async (req, res) => {
+    console.log("Router /api req.protocol", req.protocol)
     // console.log("Cookie SID from req (browser): ", req.headers.cookie, "\n")
     let state = {
         isAuthenticated: false,

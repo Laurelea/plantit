@@ -10,8 +10,8 @@ RUN npm install
 
 COPY . /usr/src/app
 
-EXPOSE 8080
+EXPOSE 80
 
-ENTRYPOINT node server/server.js
+#ENTRYPOINT node server/server.js
 
-#RUN npm run build
+RUN npm run build

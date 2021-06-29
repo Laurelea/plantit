@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import React from 'react';
 import './css/App.css';
 import Newheader from "./partials/Newheader";
@@ -8,11 +7,9 @@ import Vegs from "./partials/vegs"
 import Fruit from "./partials/fruit"
 import Herbs from "./partials/herbs"
 import Decs from "./partials/decs"
-import Noauth from "./partials/no_auth";
 import Auth from "./partials/auth";
 import Footer from "./partials/footer";
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
-import {NavLink} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
 import MainStore from "./stores/MainStore";

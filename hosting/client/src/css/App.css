@@ -1,7 +1,7 @@
 
-* {
-  border: 0 none transparent  !important;
-}
+/** {*/
+/*  border: 0 none transparent  !important;*/
+/*}*/
 
 a {
   text-decoration: none; /*убираем подчеркивание текста ссылок*/
@@ -114,7 +114,7 @@ h1 a {
 }
 
 .mainContainer {
-  background: url('../pics/main-bg.jpg') no-repeat center 0;
+  background: url('/src/pics/main-bg.jpg') no-repeat center 0;
   width: 100%;
   min-height:100%;
   display: flex;
@@ -169,8 +169,7 @@ button {
   /*width: 60%;*/
 }
 button:hover {
-  /*font-size: 120%;  */
-  background-color: #99a580;
+  font-size: 120%;  background-color: #99a580;
 
 }
 
@@ -261,7 +260,6 @@ dt {
   align-items: flex-start;
   /*justify-content: flex-end;*/
   padding-right: 30px;
-  height: 95%;
 }
 
 .center{
@@ -291,7 +289,7 @@ header, footer, .bodyContainer {
 body {
   background: url('../pics/body-bg.gif') 50% 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   padding: 0;
   margin: 0;
 }
@@ -405,10 +403,4 @@ a.button:hover {
 
 .account-main-container * {
   padding: 5px;
-}
-
-.chat_section {
-  /*height: 70vh;*/
-  /*max-height: ;*/
-  border: 2px green solid;
 }
