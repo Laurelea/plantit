@@ -17,8 +17,9 @@ import { observer } from 'mobx-react';
 import Account from "./partials/lk";
 import { createBrowserHistory } from "history";
 import Chat from "./partials/chat"
-const customHistory = createBrowserHistory();
+import {API_URL} from "./config";
 
+const customHistory = createBrowserHistory();
 
 const axios = require('axios').default;
 // const authStatus = observer(() => {
@@ -45,11 +46,11 @@ const App = observer(
 
             await axios({
                 method: 'get',
-                url: '/api',
+                url: API_URL +'api',
                 // responseType: 'json'
             })
                 .then((response) => {
-                    console.log("get.response.data: ", response.data);
+                    // console.log("get.response.data: ", response.data);
                     this.setState({
                         apiResponse: response.data.message,
                     });
@@ -65,7 +66,7 @@ const App = observer(
                         document.title = this.state.pageTitle;
                     } else {
                         MainStore.isAuthenticated = false
-                        throw new Error
+                        throw new Error("Auth problems")
                     }
                 })
                 .catch(function (error) {

@@ -3,6 +3,7 @@ import '../css/App.css';
 import Reacttable from "./baseTable";
 import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
+import {API_URL} from "../config";
 
 const axios = require('axios').default;
 const columns = [
@@ -29,22 +30,22 @@ const columns = [
     }
 ];
 
-async function getFruit () {
+async function getVegs () {
     // console.log(state.dbToPrint.length)
     // if (state.dbToPrint.length == 0) {
-    // console.log("Fruit State empty")
+    // console.log("Vegs State empty")
     // console.log("getMyBase: Inside getMyBase")
     await axios({
         method: 'get',
-        url: '/api/fruit',
+        url: API_URL + 'api/vegs',
         // responseType: 'json'
     })
         .then(response => {
-                console.log("Fruit Got from DB:", response.data.rows)
+                console.log("Vegs Got from DB:", response.data.rows)
                 // this.setState({dbToPrint: response.data.rows})
                 // return response.data.rows
                 // data = response.data.rows;
-                MainStore.fruit = response.data.rows;
+                MainStore.vegs = response.data.rows;
             }
         )
         .catch(error => {
@@ -52,26 +53,26 @@ async function getFruit () {
         })
 }
 
-getFruit()
+getVegs()
 
 
-const Fruit = observer(
-    class Fruit extends React.Component {
+const Vegs = observer(
+    class Vegs extends React.Component {
         constructor(props) {
             super(props);
         }
         render() {
             return (
                 <div>
-                    <h2>Фрукты</h2>
-                    {/*{console.log("Fruit: this.state.fruit", MainStore.fruit)}*/}
-                    <Reacttable dbToPrint={MainStore.fruit} columns={columns}/>
+                    <h2>Овощи</h2>
+                    {console.log("Vegs: this.state.vegs", MainStore.vegs)}
+                    <Reacttable dbToPrint={MainStore.vegs} columns={columns}/>
 
                 </div>
             )
         }
     })
 
-export default Fruit;
+export default Vegs;
 
-export {getFruit};
+export {getVegs};

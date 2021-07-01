@@ -3,6 +3,7 @@ import '../css/App.css';
 import Reacttable from "./baseTable";
 import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
+import {API_URL} from "../config";
 
 const axios = require('axios').default;
 const columns = [
@@ -36,7 +37,7 @@ async function getHerbs () {
     // console.log("getMyBase: Inside getMyBase")
     await axios({
         method: 'get',
-        url: '/api/herbs',
+        url: API_URL +'api/herbs',
         // responseType: 'json'
     })
         .then(response => {

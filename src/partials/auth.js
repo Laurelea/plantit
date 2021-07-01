@@ -3,6 +3,7 @@ import '../css/App.css';
 import {NavLink, Link} from "react-router-dom";
 import axios from "axios";
 import MainStore from "../stores/MainStore";
+import {API_URL} from "../config";
 
 // const cookies = new Cookies();
 
@@ -37,7 +38,7 @@ export default class Auth extends React.Component {
             password: this.state.pwValue,
             email: this.state.loginValue,
         }
-        const response = await axios.post('/api/auth', authData,  { withCredentials: true })
+        const response = await axios.post(API_URL + 'api/auth', authData)
             .then(response => {
                 console.log("post.response.data: ", response.data);
 

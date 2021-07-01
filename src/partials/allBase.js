@@ -3,7 +3,7 @@ import '../css/App.css';
 import Reacttable from "./baseTable";
 import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
-
+import {API_URL} from "../config";
 const axios = require('axios').default;
 
 // const state = getMyBase()
@@ -16,7 +16,7 @@ async function getMyBase () {
         // console.log("getMyBase: Inside getMyBase")
         await axios({
             method: 'get',
-            url: '/api/getbase',
+            url:    API_URL + 'api/getbase',
             // responseType: 'json'
         })
             .then(response => {

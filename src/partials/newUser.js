@@ -2,6 +2,7 @@ import React from 'react'
 import '../css/App.css';
 
 import axios from "axios";
+import {API_URL} from "../config";
 
 export default class newUser extends React.Component {
     constructor(props) {
@@ -192,7 +193,7 @@ export default class newUser extends React.Component {
             password: this.state.password,
             email: this.state.email,
         }
-        const response = await axios.post('/api/register', regData, {withCredentials: true})
+        const response = await axios.post(API_URL + 'api/register', regData)
             .then(response => {
                 console.log("post.response.data: ", response.data);
                 this.setState({apiResponse: response.data.regSuccess, message: response.data.message});

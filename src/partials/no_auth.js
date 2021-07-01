@@ -1,6 +1,7 @@
 import React from 'react'
 import '../css/App.css';
 import MainStore from "../stores/MainStore";
+import {API_URL} from "../config";
 
 const axios = require('axios').default;
 
@@ -23,7 +24,7 @@ function CookiesDelete() {
 export default async function Logout () {
     await axios({
         method: 'post',
-        url: '/api/logout',
+        url: API_URL + 'api/logout',
         // responseType: 'json'
     })
         .then( (response) => {
