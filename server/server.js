@@ -1,5 +1,5 @@
 const express = require("express");
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 8080;
 const app = express();
 const db = require('../db/dbConnect');
 const routes = require ("./routes");
@@ -115,7 +115,7 @@ async function start() {
         })
         //Это сам запуск сервера:
         // server.listen(PORT, () => {
-        server.listen(process.env.PORT || 3003, () => {
+        server.listen(process.env.PORT || 8080, () => {
             console.log(server.address(), `Server is running on port ${PORT}`)
             require('dns').lookup(require('os').hostname(), function (err, add, fam) {
                 console.log('addr: ' + add);
