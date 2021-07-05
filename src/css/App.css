@@ -413,5 +413,6 @@ a.button:hover {
   line-height: 1.5;
 }
 #foot {
+  margin-top: 10px;
   margin-bottom: 20px;
 }
