@@ -87,26 +87,29 @@ const App = observer(
                         <Newheader/>
                         <div id="bodyContainer" className="horizontal-align">
                             <div id="dbContainer" className="totheleft">
-                                {/*Это показывать только если авторизован*/}
-                                <ShowBase/>
-                                {/*Иначе текст: авторизуйтесь для доступа к базе растений*/}
+                                {/*/!*Это показывать только если авторизован*!/*/}
+                                {/*<ShowBase/>*/}
+                                {/*/!*Иначе текст: авторизуйтесь для доступа к базе растений*!/*/}
+                                {
+                                    MainStore.isAuthenticated
+                                        ? <ShowBase/>
+                                        : <div>
+                                            <span className="errorspan"> Please, log in to see the plant base </span>
+                                    </div>
+                                }
                             </div>
                             <div id="centralContainer" className="center">
-                                {/*Если не авторизован*/}
-                                {/*Текст приветствия для неавторизованных, ссылка на регистрацию*/}
-                                {/*<Noauth/>*/}
-                                {/*Если авторизован*/}
-                                {/*Текст, приглашающий посмотреть существующую базу или добавить что-то своё-->*/}
-                                {/*<Hasauth/>*/}
 
-                                {/*<Router>*/}
                                 <Switch>
                                     <Route path="/" exact render={() =>
                                         <React.Fragment>
                                             <h1>Home Page</h1>
                                             {/*<button onClick={this.goToHomePage}>Click</button>*/}
-                                            <h2>{this.state.pageTitle}</h2>
-
+                                            {/*<h2>{this.state.pageTitle}</h2>*/}
+                                            <p id="welcomep">
+                                                PlantIt! - это удобный инструмент для огородника, позволяющий вести историю посадок и применения различных садовых технологий,
+                                                а также общаться с единомышленниками.
+                                            </p>
 
                                         </React.Fragment>
                                     }/>
@@ -123,23 +126,23 @@ const App = observer(
                                     <Router history={customHistory} />
 
                                 </Switch>
-                                {/*</Router>*/}
-                                <p>User Name is: {MainStore.currentUser.userName}</p>
-                                <p>Message from API: {this.state.apiResponse}</p>
-                                <p>"MainStore.isAuthenticated:
-                                    " {MainStore.isAuthenticated.toString()}</p>
-                                <p>"MainStore.currentUser:
-                                    " {MainStore.currentUser.userName}</p>
-                                <p>"MainStore.currentUser ID:
-                                    " {MainStore.currentUser.userID}</p>
-                                {
-                                        MainStore.isAuthenticated
-                                            // true
-                                            ? <span className="errorspan"
-                                                    id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
-                                            : <span className="errorspan"
-                                                    id="authErrorSpan">{this.state.apiResponse}</span>
-                                }
+                                {/*<p>User Name is: {MainStore.currentUser.userName}</p>*/}
+                                {/*<p>Message from API: {this.state.apiResponse}</p>*/}
+                                {/*<p>"MainStore.isAuthenticated:*/}
+                                {/*    " {MainStore.isAuthenticated.toString()}</p>*/}
+                                {/*<p>"MainStore.currentUser:*/}
+                                {/*    " {MainStore.currentUser.userName}</p>*/}
+                                {/*<p>"MainStore.currentUser ID:*/}
+                                {/*    " {MainStore.currentUser.userID}</p>*/}
+                                {/*{*/}
+                                {/*        MainStore.isAuthenticated*/}
+                                {/*            // true*/}
+                                {/*            ? <span className="errorspan"*/}
+                                {/*                    id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>*/}
+                                {/*            : <span className="errorspan"*/}
+                                {/*                    id="authErrorSpan">{this.state.apiResponse}</span>*/}
+                                {/*}*/}
+
 
                             </div>
                             <div id="authContainer" className="totheright">
@@ -148,10 +151,14 @@ const App = observer(
                                     MainStore.isAuthenticated
                                         ? <div className="chat_section">
                                             <span className="errorspan"
-                                                id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>
+                                                id="authSuccessSpan">You're logged in as {MainStore.currentUser.userName}</span>
                                             <Chat/>
                                         </div>
-                                        : <Auth/>
+                                        :
+                                        // <div> span className="errorspan">{this.state.apiResponse}</span>
+                                        <Auth/>
+                                // </div>
+
                                 }
                             </div>
                         </div>

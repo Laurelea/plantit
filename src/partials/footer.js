@@ -7,8 +7,8 @@ export default function Footer(props) {
 //     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 //     <script src="chat.js"></script>
         <footer>
-            <div id="foot">
-                Это футер
+            <div id="foot" >
+                Связаться с разработчиком: laurelea@mail.ru
             </div>
         </footer>
 

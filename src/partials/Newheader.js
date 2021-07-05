@@ -51,10 +51,10 @@ const Newheader = observer(
                                     ? <li className="active"><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink>
                                     </li>
                                     : null}
-                                {MainStore.isAuthenticated
-                                    ? <li className="active"><NavLink to="/chat" exact>ЧАТ</NavLink>
-                                    </li>
-                                    : null}
+                                {/*{MainStore.isAuthenticated*/}
+                                {/*    ? <li className="active"><NavLink to="/chat" exact>ЧАТ</NavLink>*/}
+                                {/*    </li>*/}
+                                {/*    : null}*/}
                                 {/*{MainStore.isAuthenticated*/}
                                 {/*        ?*/}
                                 {/*        <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink>*/}

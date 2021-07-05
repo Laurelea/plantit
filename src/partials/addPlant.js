@@ -5,6 +5,7 @@ import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
 // import getMyBase from "./allBase"
 const allBase = require('./allBase')
+// let result;
 
 const addPlantHandler = async (event) => {
         event.preventDefault();
@@ -19,21 +20,33 @@ const addPlantHandler = async (event) => {
             soil: event.target.elements.soil.value,
             user_id: MainStore.currentUser.userID
         }
-        console.log("MainStore.currentUser.userID: ", MainStore.currentUser.userID)
-        console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)
+        // console.log("MainStore.currentUser.userID: ", MainStore.currentUser.userID)
+        // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)
         // const test = event.target.elements.years.value
         console.log("plantData to send to server:", plantData)
         const response = await axios.post('/api/addplant', plantData)
             .then(response => {
                 allBase.getMyBase()
                 console.log("post.response.data: ", response.data);
+                if (response.data.command == "INSERT") {
+                    console.log("added ok")
+                    window.alert("added ok")
+                    // result = "Plant added successfully"
+                } else {
+                    console.log("Error: " + response.data)
+                    window.alert("error ((")
+                    // result = response.data.error
+                }
+                // result = response.data.rowCount
+
                 // this.setState({apiResponse: response.data.regSuccess, message: response.data.message});
                 // console.log("apiResponse: ", this.state.apiResponse)
                 // document.getElementById("apiID").innerText =  "API response:" + this.state.apiResponse
             })
             .then( response => {
-                console.log("Am I here?");
+                // console.log("Am I here?");
                 // this.resetForm()
+                document.getElementById("MyAddForm").reset()
 
             })
             .catch(error => {
@@ -46,10 +59,17 @@ const addPlantHandler = async (event) => {
 
 const addPlant = observer(
     class addPlant extends React.Component {
+        // constructor(props) {
+        //     super(props);
+        //     this.state = {
+        //         result: "",
+        //     };
+        // }
         render() {
             return (
                 <form name='Форма для добавления нового растения' id='MyAddForm' onSubmit={addPlantHandler}
                       autoComplete="on">
+                    {/*<span className="errorspan">{result}</span>*/}
                     <h2 id="testBD">
                         Добавить новое растение
                     </h2>

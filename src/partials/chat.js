@@ -53,7 +53,7 @@ export default function Chat () {
             chatroom.append(div)
         });
         message && message.addEventListener('keypress', (event) => {
-                // console.log("Typing!" + event.target.value)
+                console.log("Typing!" + event.target.value)
                 socket.emit("typing");
             }
         );
