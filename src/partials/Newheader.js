@@ -17,12 +17,12 @@ async function LogoutHandler (event) {
     // const history = useHistory();
     console.log("This is logout, babe")
     await Logout()
-    // window.location.replace("/")
+    window.location.replace("/")
 
     // this.history.pushState(null, '/')
     // history.push('/');
     // // return (<Redirect to="/" />)
-    App.customHistory.push('/');
+    // App.customHistory.push('/');
     // return null
 }
 

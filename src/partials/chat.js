@@ -8,7 +8,7 @@ import io from 'socket.io-client'
 export default function Chat () {
 
     useEffect(async () => {
-        let socket = await io.connect("https://esoft-api.herokuapp.com/");
+        let socket = await io.connect("https://es-plantit.herokuapp.com/");
         let message = document.getElementById('message');
         // let username = document.getElementById('username');
         let send_message = document.getElementById('send_message');
@@ -20,7 +20,7 @@ export default function Chat () {
         let alertClasses = ['secondary', 'danger', 'success', 'warning', 'info', 'light'];
         let alertClass = alertClasses[random];
 
-        set_username.addEventListener('click', () => {
+        set_username && set_username.addEventListener('click', () => {
             document.getElementById("input_zone").hidden = false;
             document.getElementById("chatroom").hidden = false;
             document.getElementById("enter_button").hidden = true;
@@ -29,7 +29,7 @@ export default function Chat () {
             })
         })
 
-        send_message.addEventListener("click",(event) => {
+        send_message && send_message.addEventListener("click",(event) => {
             socket.emit("new_message", {
                 message: message.value,
                 className: alertClass
@@ -52,7 +52,7 @@ export default function Chat () {
             div.innerHTML = '<b>' + data.username + "</b>: " + data.message;
             chatroom.append(div)
         });
-        message.addEventListener('keypress', (event) => {
+        message && message.addEventListener('keypress', (event) => {
                 // console.log("Typing!" + event.target.value)
                 socket.emit("typing");
             }
