@@ -2,39 +2,29 @@ import React from "react";
 import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
 import {NavLink} from "react-router-dom";
-import App from '../css/App.css';
 // const controller = require('../../../db/controller')
 const axios = require('axios').default;
 
 // let result;
 //
-// async function numberOfPlantsAdded  () {
-//     let result;
-//     console.log("LK MainStore.currentUser.userID", MainStore.currentUser.userID)
-//     console.log("LK MainStore.currentUser.userID", MainStore.currentUser.userName)
-//     await axios({
-//         method: 'get',
-//         url: '/api/getNumberOfPlants',
-//         data: {id: MainStore.currentUser.userID}
-//         // responseType: 'json'
-//     })
-//         .then(response => {
-//                 console.log("LK Got Plants::", response.data.rows.length)
-//                 result = response.data.rows.length
-//                 console.log("LK number: ", result)
-//                     // this.setState({dbToPrint: response.data.rows})
-//                 // return response.data.rows
-//                 // data = response.data.rows;
-//                 // MainStore.dbToPrint = response.data.rows;
-//
-//             }
-//         )
-//         .catch(error => {
-//             console.log(error);
-//         })
-//
-//
-// }
+async function numberOfPlantsAdded  () {
+    console.log("LK MainStore.currentUser.userID", MainStore.currentUser.userID)
+    console.log("LK MainStore.currentUser.userID", MainStore.currentUser.userName)
+    const data = {id: MainStore.currentUser.userID}
+    await axios.post('/api/getNumberOfPlants', data)
+        .then(response => {
+                console.log("LK Got Plants: response.data: ", response.data)
+                    // this.setState({dbToPrint: response.data.rows})
+                // return response.data.rows
+                // data = response.data.rows;
+                // MainStore.dbToPrint = response.data.rows;
+                MainStore.currentUser.numberOfPlants = response.data;
+            }
+        )
+        .catch(error => {
+            console.log("numberOfPlantsAdded error: ", error);
+        })
+}
 // numberOfPlantsAdded()
 
 // console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.numberOfPlants)
@@ -63,3 +53,4 @@ const Account = observer(
 )
 
 export default Account;
+export {numberOfPlantsAdded};

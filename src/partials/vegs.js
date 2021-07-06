@@ -41,7 +41,7 @@ async function getVegs () {
         // responseType: 'json'
     })
         .then(response => {
-                console.log("Vegs Got from DB:", response.data.rows)
+                // console.log("Vegs Got from DB:", response.data.rows)
                 // this.setState({dbToPrint: response.data.rows})
                 // return response.data.rows
                 // data = response.data.rows;

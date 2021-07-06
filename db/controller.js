@@ -161,9 +161,14 @@ module.exports.addPlant = async function (data) {
 }
 
 module.exports.getNumberOfPlants = async function (id) {
-    const plantFound = await db.query('SELECT * FROM sort WHERE user_id=$1', [id])
-    console.log("id, plantFound.rows.length: ", id, plantFound.rows.length)
-    return plantFound.rows.length
+    try {
+        const plantFound = await db.query('SELECT * FROM sort WHERE user_id=$1', [id])
+        console.log("getNumberOfPlants controller id, plantFound.rows.length: ", id, plantFound.rows.length)
+        return plantFound.rows.length
+    } catch (error) {
+        console.log("controller getNumberOfPlants error: ", error)
+        return error
+    }
 }
 
 module.exports.vegs = async () => {

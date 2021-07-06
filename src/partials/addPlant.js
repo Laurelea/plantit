@@ -5,6 +5,7 @@ import MainStore from "../stores/MainStore";
 import { observer } from 'mobx-react';
 // import getMyBase from "./allBase"
 const allBase = require('./allBase')
+const lk = require('./lk')
 // let result;
 
 const addPlantHandler = async (event) => {
@@ -24,9 +25,10 @@ const addPlantHandler = async (event) => {
         // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)
         // const test = event.target.elements.years.value
         console.log("plantData to send to server:", plantData)
-        const response = await axios.post('/api/addplant', plantData)
+        await axios.post('/api/addplant', plantData)
             .then(response => {
-                allBase.getMyBase()
+                allBase.getMyBase();
+                lk.numberOfPlantsAdded();
                 console.log("post.response.data: ", response.data);
                 if (response.data.command == "INSERT") {
                     console.log("added ok")
@@ -74,9 +76,9 @@ const addPlant = observer(
                         Добавить новое растение
                     </h2>
                     <label><p>Выберите категорию:</p></label>
-                    <select name="category" required>
-                        <option value="Herbs"></option>
-                        <option value="Herbs" selected={false}>Травы</option>
+                    <select name="category" required defaultValue="Herbs">
+                        <option value="Herbs">Травы</option>
+                        {/*<option value="Herbs" selected={false}></option>*/}
                         <option value="Fruit">Фрукты</option>
                         <option value="Vegs">Овощи</option>
                         <option value="Decs">Декоративное</option>

@@ -20,7 +20,7 @@ async function getMyBase () {
             // responseType: 'json'
         })
             .then(response => {
-                    console.log("ALLBASE Got from DB:", response.data.rows)
+                    // console.log("ALLBASE Got from DB:", response.data.rows)
                     // this.setState({dbToPrint: response.data.rows})
                     // return response.data.rows
                     // data = response.data.rows;

@@ -262,12 +262,11 @@ router.post("/api/addplant", async (req, res) => {
     res.send(plantAdded)
 })
 
-router.get("/api/getNumberOfPlants", async(req, res) => {
-    console.log("routes req.body.id", req.body.id)
-    // console.log("routes req.body.id", req.body.data.id)
-    // console.log("routes req.body.id", req.data.id)
+router.post("/api/getNumberOfPlants", async(req, res) => {
+    console.log("routes getNumberOfPlants req.body.id", req.body.id)
     const result = await controller.getNumberOfPlants(req.body.id)
-    res.send(result)
+    console.log("routes getNumberOfPlants result: ", result)
+    res.json(result)
 })
 
 router.get("/api/vegs", async (req, res) => {

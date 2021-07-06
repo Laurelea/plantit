@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import '../css/App.css';
-import {BrowserRouter as Router, NavLink, Route, Switch, Link}  from "react-router-dom";
-import {useHistory} from "react-router-dom";
+import {NavLink}  from "react-router-dom";
+// import {useHistory} from "react-router-dom";
 import {observer} from 'mobx-react';
 import MainStore from '../stores/MainStore';
 import Logout from "./no_auth";
-const App = require ("../App")
+// const App = require ("../App")
 // const { match, history } = props
 // import { createBrowserHistory } from "history";
 //

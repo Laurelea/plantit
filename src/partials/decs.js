@@ -41,7 +41,7 @@ async function getDecs () {
         // responseType: 'json'
     })
         .then(response => {
-                console.log("Decs Got from DB:", response.data.rows)
+                // console.log("Decs Got from DB:", response.data.rows)
                 // this.setState({dbToPrint: response.data.rows})
                 // return response.data.rows
                 // data = response.data.rows;
