@@ -9,6 +9,7 @@ table {
     text-align: center;
     font-size: 14px;
     width: 90%;
+    /*padding: 0.5rem;*/
 }
 th, td {
     margin: 0;

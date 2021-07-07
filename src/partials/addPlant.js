@@ -76,7 +76,7 @@ const addPlant = observer(
                         Добавить новое растение
                     </h2>
                     <label><p>Выберите категорию:</p></label>
-                    <select name="category" required defaultValue="Herbs">
+                    <select name="category" required defaultValue>
                         <option value="Herbs">Травы</option>
                         {/*<option value="Herbs" selected={false}></option>*/}
                         <option value="Fruit">Фрукты</option>
@@ -84,12 +84,10 @@ const addPlant = observer(
                         <option value="Decs">Декоративное</option>
                     </select>
                     <fieldset>
-                        <input type='text' placeholder='Сорт растения' autoFocus name='plantSort' required
-                               autoComplete="off" defaultValue={""}/>
-
-                        <input type='text' placeholder='Род растения' name='product' required autoComplete="on"
+                        <input type='text' placeholder='Род растения: кабачок, томат, клубника и тп.' name='product' required autoComplete="on"
                                defaultValue={""}/>
-
+                        <input type='text' placeholder='Сорт растения: Машенька, Гигант, Роузи и тп.' autoFocus name='plantSort' required
+                               autoComplete="off" defaultValue={""}/>
                         <input type='text' placeholder='Производитель семян' name='producer' required autoComplete="on"
                                defaultValue={""}/>
                     </fieldset>

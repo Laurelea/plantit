@@ -1,6 +1,11 @@
 const db = require('./dbConnect')
 const bcrypt = require('bcrypt')
 
+function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+}
+
+
 module.exports.getUser = async function (email) {
     // console.log('Email to check: ', email)
     const ifUser = await db.query('SELECT * FROM users WHERE email=$1', [email])
@@ -116,23 +121,23 @@ module.exports.addPlant = async function (data) {
         // console.log ("category:", category)
         // console.log ("UserID controller:", userID)
         //Search for product type:
-        const ifProdExists = await db.query('SELECT * FROM product WHERE product_name = $1', [product])
+        const ifProdExists = await db.query('SELECT * FROM product WHERE product_name = $1', [capitalizeFirstLetter(product)])
         // console.log("ifProdExists :", ifProdExists.rows)
         let productID;
         if (ifProdExists.rows.length == 0) {
             const addProduct = await db.query('INSERT INTO product(product_name, yeartype, rootstock, soil, watering, category) ' +
-                'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [product, yeartype, rootstock, soil, watering, category])
+                'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [capitalizeFirstLetter(product), yeartype, rootstock, soil, watering, category])
             productID =  addProduct.rows[0].id
             // console.log("addProduct :", addProduct.rows)
         } else {
             console.log("Product exists :", ifProdExists.rows[0].id)
             productID =  ifProdExists.rows[0].id
         }
-        const ifProducerExists = await db.query('SELECT * FROM producer WHERE producer_name = $1', [producer])
+        const ifProducerExists = await db.query('SELECT * FROM producer WHERE producer_name = $1', [capitalizeFirstLetter(producer)])
         // console.log("ifProducerExists :", ifProducerExists.rows)
         let producerID;
         if (ifProducerExists.rows.length == 0) {
-            const addProducer = await db.query('INSERT INTO producer(producer_name) VALUES ($1) RETURNING *', [producer])
+            const addProducer = await db.query('INSERT INTO producer(producer_name) VALUES ($1) RETURNING *', [capitalizeFirstLetter(producer)])
             // console.log("addProducer :", addProducer.rows)
             producerID =  addProducer.rows[0].id
         } else {
@@ -140,7 +145,7 @@ module.exports.addPlant = async function (data) {
             producerID =  ifProducerExists.rows[0].id
         }
         const ifSortExists = await db.query('SELECT * FROM sort WHERE name = $1 AND product_id = $2 AND producer_id = $3',
-            [plantSort, productID, producerID])
+            [capitalizeFirstLetter(plantSort), productID, producerID])
         // console.log("ifSortExists :", ifSortExists)
         if (ifSortExists.rows.length != 0) {
             throw new Error("Такое растение уже есть")
@@ -148,7 +153,7 @@ module.exports.addPlant = async function (data) {
         } else {
             // console.log("userID: ", userID)
             const newPlant = await db.query('INSERT INTO sort(name, product_id, producer_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
-                [plantSort, productID, producerID, user_id])
+                [capitalizeFirstLetter(plantSort), productID, producerID, user_id])
             // console.log("New Sort:", newPlant)
             return newPlant
         }

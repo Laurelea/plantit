@@ -1,33 +1,54 @@
 
-import {useTable, usePagination} from "react-table";
+import {useTable, usePagination, useSortBy} from "react-table";
 import React from "react";
 import '../css/table.css';
 
 const Reacttable = (props) => {
-
-        // const data = await observer (MainStore.dbToPrint)
         const data = props.dbToPrint
         const columns = props.columns
-        // console.log("MainStore.dbToPrint baseTable:", MainStore.dbToPrint)
-        // const data = [
-        //     {id: 1, name: "Gavrish"},
-        //     {id: 2, name: "Aelita"}
-        // ]
-        console.log("Type of data: ", data)
         const {
             getTableProps,
             getTableBodyProps,
             headerGroups,
-            rows,
             prepareRow,
-        } = useTable({
+            page,
+            canPreviousPage,
+            canNextPage,
+            pageOptions,
+            pageCount,
+            gotoPage,
+            nextPage,
+            previousPage,
+            setPageSize,
+            state: { pageIndex, pageSize },
+        } = useTable(
+            {
             columns,
             data,
-        });
+            initialState: {pageIndex: 2},
+        },
+            usePagination,
+            useSortBy
+        );
         return (
             <>
                 {/*{        console.log("Started table")*/}
                 {/*}*/}
+            {/*<pre>*/}
+            {/*    <code>*/}
+            {/*      {JSON.stringify(*/}
+            {/*          {*/}
+            {/*              pageIndex,*/}
+            {/*              pageSize,*/}
+            {/*              pageCount,*/}
+            {/*              canNextPage,*/}
+            {/*              canPreviousPage,*/}
+            {/*          },*/}
+            {/*          null,*/}
+            {/*          2*/}
+            {/*      )}*/}
+            {/*    </code>*/}
+            {/*</pre>*/}
             <table {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
@@ -39,7 +60,7 @@ const Reacttable = (props) => {
                 ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                {rows.map((row, i) => {
+                {page.map((row, i) => {
                     prepareRow(row);
                     return (
                         <tr {...row.getRowProps()}>
@@ -53,7 +74,54 @@ const Reacttable = (props) => {
             </table>
                 {/*{        console.log("Finished table")*/}
                 {/*}*/}
-
+                <div className="pagination">
+                    <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                        {'<<'}
+                    </button>
+                    {' '}
+                    <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                        {'<'}
+                    </button>
+                    {' '}
+                    <button onClick={() => nextPage()} disabled={!canNextPage}>
+                        {'>'}
+                    </button>
+                    {' '}
+                    <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                        {'>>'}
+                    </button>
+                    {' '}
+                    <span>
+          Page{' '}
+                        <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>{' '}
+        </span>
+                    <span>
+          | Go to page:{' '}
+                        <input
+                            type="number"
+                            defaultValue={pageIndex + 1}
+                            onChange={e => {
+                                const page = e.target.value ? Number(e.target.value) - 1 : 0
+                                gotoPage(page)
+                            }}
+                            style={{width: '100px'}}
+                        />
+        </span>{' '}
+                    <select
+                        value={pageSize}
+                        onChange={e => {
+                            setPageSize(Number(e.target.value))
+                        }}
+                    >
+                        {[10, 20, 30, 40, 50].map(pageSize => (
+                            <option key={pageSize} value={pageSize}>
+                                Show {pageSize}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </>
         );
 
