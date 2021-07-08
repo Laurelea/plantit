@@ -120,3 +120,8 @@ p.message {
     max-height: 450px;
 
 }
+
+#feedback {
+    font-family: "Roboto Thin", monospace;
+    color: dodgerblue;
+}

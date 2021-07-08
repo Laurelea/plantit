@@ -92,7 +92,7 @@ router.get("/api", async (req, res) => {
             //Если куки SID нет в браузере
             if (!SIDcookieValueInBrowser) {
                 state.isAuthenticated = false;
-                console.log("Printing state if no cookie:", state)
+                // console.log("Printing state if no cookie:", state)
 
                 throw new Error ("No SID cookie found in the browser")
             //Если есть:
@@ -182,7 +182,7 @@ router.post("/api/auth", async (req, res) => {
                     console.log("Routes numberOfPlants", numberOfPlants)
                     //Create session in table session, return result - > its id
 
-                    console.log("ifUser.rows[0] :", ifUser.rows[0])
+                    // console.log("ifUser.rows[0] :", ifUser.rows[0])
                     req.session.userName = ifUser.rows[0].user_name
                     req.session.userEmail = ifUser.rows[0].email
                     req.session.isAuthenticated = true

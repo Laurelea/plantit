@@ -86,7 +86,7 @@ const AllBase = observer(
             return (
                 <div ref={this.ref}>
                     {/*<div>Тут будет база</div>*/}
-                    {console.log("ALLBASE: this.state.dbToPrint", MainStore.dbToPrint)}
+                    {/*{console.log("ALLBASE: this.state.dbToPrint", MainStore.dbToPrint)}*/}
                     <Reacttable dbToPrint={MainStore.dbToPrint} columns = {columns}/>
 
                 </div>

@@ -35,7 +35,7 @@ const addPlantHandler = async (event) => {
                     window.alert("added ok")
                     // result = "Plant added successfully"
                 } else {
-                    console.log("Error: " + response.data)
+                    console.log("Error addplant: " + response.data)
                     window.alert("error ((")
                     // result = response.data.error
                 }

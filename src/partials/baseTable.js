@@ -25,7 +25,7 @@ const Reacttable = (props) => {
             {
             columns,
             data,
-            initialState: {pageIndex: 2},
+            initialState: {pageIndex: 1},
         },
             useSortBy,
             usePagination

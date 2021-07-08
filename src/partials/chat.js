@@ -8,7 +8,8 @@ import io from 'socket.io-client'
 export default function Chat () {
 
     useEffect(async () => {
-        let socket = await io.connect("https://es-plantit.herokuapp.com/");
+        // let socket = await io.connect("https://es-plantit.herokuapp.com/");
+        let socket = await io.connect("http://localhost:8080");
         let message = document.getElementById('message');
         // let username = document.getElementById('username');
         let send_message = document.getElementById('send_message');
@@ -40,11 +41,11 @@ export default function Chat () {
             feedback.innerHTML =
                 "<p>" + 'Total users now: ' + data.number + "</p>" +
                 "<p><i>" + data.username + " joined the Chat" + "</i></p>"
-            console.log("Smth");
+            console.log("User connected: ", data.username);
         })
 
         socket.on("add_message", data => {
-            console.log(data);
+            // console.log(data);
             feedback.innerHTML = "";
             message.value = "";
             const div = document.createElement('div');
@@ -53,7 +54,7 @@ export default function Chat () {
             chatroom.append(div)
         });
         message && message.addEventListener('keypress', (event) => {
-                console.log("Typing!" + event.target.value)
+                // console.log("Typing!" + event.target.value)
                 socket.emit("typing");
             }
         );
