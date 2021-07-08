@@ -166,7 +166,7 @@ export default class Auth extends React.Component {
                             placeholder='Email'
                             name='login'
                             // pattern="[a-zA-Z]+"
-                            defaultValue= "laurelea@mail.ru"
+                            // defaultValue= "laurelea@mail.ru"
                             required
                             onChange={this.handleChange}
                         />
@@ -184,7 +184,7 @@ export default class Auth extends React.Component {
                             placeholder='Пароль'
                             name='password'
                             required
-                            defaultValue = "qwerty12"
+                            // defaultValue = "qwerty12"
                             // value = "qwerty12"
 
                             onChange={this.handleChange}

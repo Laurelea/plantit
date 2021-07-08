@@ -60,7 +60,7 @@ export default function Chat () {
         );
         socket.on("typing", data => {
             // console.log("Chat got typing event from server")
-            feedback.innerHTML = "<p><i>" + data.username + " prints message..." + "</i></p>";
+            feedback.innerHTML = "<p><i>" + data.username + " is typing ..." + "</i></p>";
             // const div = document.createElement('div');
             // div.className = 'alert alert-' + data.className;
             // div.innerHTML = '<p><i>' + data.username + " prints message..." + "</i></p> ";
