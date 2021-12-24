@@ -9,7 +9,7 @@ const axios = require('axios').default;
 // const state = getMyBase()
 // let data = [];
 
-async function getMyBase () {
+const getMyBase = async() => {
     // console.log(state.dbToPrint.length)
     // if (state.dbToPrint.length == 0) {
         console.log("ALLBASE State empty")

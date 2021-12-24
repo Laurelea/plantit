@@ -50,7 +50,7 @@ app.use(
 app.use(router);
 
 
-parseCookie = async function (str, callback) {
+parseCookie = async (str, callback) => {
     const myStr = await str
         .split(';')
         .map(v => v.split('='))
@@ -124,26 +124,26 @@ router.get("/api", async (req, res) => {
         }
     }
 
-    const callRoute = async function () {
+    const callRoute = async () => {
         await parseCookie(req.headers.cookie, checkAuthorization)
-        .then (() => {
-            // console.log("Printing state before res", state)
-            // console.log("Printing result in then", result)
+            .then(() => {
+                // console.log("Printing state before res", state)
+                // console.log("Printing result in then", result)
 
-            res.json({
-                isAuthenticated: state.isAuthenticated,
-                message: state.message,
-                userName: state.userName,
-                userEmail: state.userEmail,
-                title: "From Server With Love",
-                userID: state.userID,
-                numberOfPlants: state.numberOfPlants
-                // unqieID: uniqueID
-            });
-        })
-        .catch(err => {
-            console.log("Err from final catch in then - res", err)
-    })
+                res.json({
+                    isAuthenticated: state.isAuthenticated,
+                    message: state.message,
+                    userName: state.userName,
+                    userEmail: state.userEmail,
+                    title: "From Server With Love",
+                    userID: state.userID,
+                    numberOfPlants: state.numberOfPlants
+                    // unqieID: uniqueID
+                });
+            })
+            .catch(err => {
+                console.log("Err from final catch in then - res", err)
+            })
     }
 
     await callRoute()
@@ -159,7 +159,6 @@ router.post("/api/logout", async (req, res) => {
 });
 
 router.post("/api/auth", async (req, res) => {
-
     const {email, password} = req.body
         console.log("req.body: ", req.body)
         // console.log('Inside GET /login callback function', "\n")

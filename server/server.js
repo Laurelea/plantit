@@ -103,7 +103,7 @@ app.get("*", (req, res) => {
     // res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
-async function start() {
+const start = async () => {
     try {
         //Подключение БД:
         await db.connect((err) => {

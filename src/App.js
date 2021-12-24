@@ -29,7 +29,6 @@ const axios = require('axios').default;
 
 const App = observer(
     class App extends React.Component {
-
         constructor(props) {
             super(props);
             this.state = {
@@ -39,7 +38,6 @@ const App = observer(
                 // isAuthenticated: false
             };
         }
-
 
         componentDidMount = async() => {
             // console.log("MainStore.isAuthenticated:  " , this.state.isAuthenticated)
