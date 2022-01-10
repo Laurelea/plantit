@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
 import {NavLink} from "react-router-dom";
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import React from "react";
 
 const showUL = observer( () => {

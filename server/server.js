@@ -26,21 +26,13 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname)));
 app.use(express.static(path.join(__dirname, '../build')));
-// app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(express.urlencoded({
     extended: true,
 }))
 app.use(express.json())
 
-//Logs
-// app.use(expressLoger)
-//End logs
-
 app.use('/', routes);
-// app.use((req, res, next) => {
-//     // console.log('%0', req)
-// })
 
 const server = require('http').createServer(app);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import { observer } from 'mobx-react';
 import {NavLink} from "react-router-dom";
 // const controller = require('../../../db/controller')

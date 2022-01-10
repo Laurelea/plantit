@@ -3,7 +3,7 @@ import '../css/App.css';
 import {NavLink}  from "react-router-dom";
 // import {useHistory} from "react-router-dom";
 import {observer} from 'mobx-react';
-import MainStore from '../stores/MainStore';
+import MainStore from '../store/MainStore';
 import Logout from "./no_auth";
 // const App = require ("../App")
 // const { match, history } = props

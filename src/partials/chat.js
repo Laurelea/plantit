@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 // import {observer} from 'mobx-react';
-import MainStore from '../stores/MainStore';
+import MainStore from '../store/MainStore';
 import '../css/chat.css';
 import io from 'socket.io-client'
 

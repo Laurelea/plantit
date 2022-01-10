@@ -1,7 +1,7 @@
 import React  from 'react'
 import '../css/App.css';
 import Reacttable from "./baseTable";
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import { observer } from 'mobx-react';
 import {API_URL} from "../config";
 

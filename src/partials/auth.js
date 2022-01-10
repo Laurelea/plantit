@@ -2,7 +2,7 @@ import React from 'react'
 import '../css/App.css';
 import {NavLink, Link} from "react-router-dom";
 import axios from "axios";
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import {API_URL} from "../config";
 
 // const cookies = new Cookies();

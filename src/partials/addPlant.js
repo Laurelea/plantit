@@ -1,7 +1,7 @@
 import React from 'react'
 import '../css/App.css';
 import axios from "axios";
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import { observer } from 'mobx-react';
 // import getMyBase from "./allBase"
 const allBase = require('./allBase')

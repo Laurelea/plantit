@@ -1,6 +1,6 @@
 import React from 'react'
 import '../css/App.css';
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import {API_URL} from "../config";
 
 const axios = require('axios').default;

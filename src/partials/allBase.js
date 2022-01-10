@@ -1,7 +1,7 @@
 import React, { useLayoutEffect }  from 'react'
 import '../css/App.css';
 import Reacttable from "./baseTable";
-import MainStore from "../stores/MainStore";
+import MainStore from "../store/MainStore";
 import { observer } from 'mobx-react';
 import {API_URL} from "../config";
 const axios = require('axios').default;
@@ -25,7 +25,6 @@ const getMyBase = async() => {
                     // return response.data.rows
                     // data = response.data.rows;
                     MainStore.dbToPrint = response.data.rows;
-
                 }
             )
             .catch(error => {
