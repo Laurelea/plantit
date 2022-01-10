@@ -13,7 +13,6 @@ import {Switch, Route} from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
 import MainStore from "./store/MainStore";
-import { observer } from 'mobx-react';
 import Account from "./partials/lk";
 import Chat from "./partials/chat"
 import {API_URL} from "./config";
@@ -27,7 +26,7 @@ class App extends React.Component {
         this.state = {
             apiResponse: "",
             pageTitle: "React Components",
-            isAuthenticated: MainStore.isAuthenticated
+            isAuthenticated: this.props.isAuthenticated
         };
     }
 
@@ -38,7 +37,7 @@ class App extends React.Component {
             // responseType: 'json'
         })
             .then((response) => {
-                // console.log("get.response.data: ", response.data);
+                console.log("get.response.data: ", response.data);
                 this.setState({
                     apiResponse: response.data.message,
                 });
@@ -48,17 +47,17 @@ class App extends React.Component {
                         userName: response.data.userName,
                         userEmail: response.data.userEmail,
                     });
-                    MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
-                    // console.log("APP MainStore.currentUser.userName", MainStore.currentUser.userName)
-                    MainStore.isAuthenticated = true
+                    // MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
+                    this.props.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
+                    // MainStore.isAuthenticated = true;
+                    this.props.authorize();
                     document.title = this.state.pageTitle;
                 } else {
-                    MainStore.isAuthenticated = false
+                    this.props.unauthorize();
                     throw new Error("Auth problems")
                 }
             })
             .catch(function (error) {
-                // handle error
                 console.log(error);
             })
     }
@@ -150,8 +149,17 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        counter: state.counter
+        counter: state.counter,
+        isAuthenticated: state.isAuthenticated
     }
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+    return {
+        authorize: () => dispatch({type: 'authorized'}),
+        unauthorize: () => dispatch({type: 'unauthorized'}),
+        setUser: (userID, userName, userEmail, numberOfPlants) => dispatch({type: 'setUser', payload: {userID, userName, userEmail, numberOfPlants}})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
