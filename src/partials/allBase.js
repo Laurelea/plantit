@@ -66,29 +66,14 @@ const AllBase = observer(
     class AllBase extends React.Component {
         constructor(props) {
             super(props);
-            // this.state = {
-            //     data: MainStore.dbToPrint
-            // }
-
-
-            // getMyBase();
-
         }
         ref = React.createRef();
-
-
-        // componentDidMount() {
-        //     getMyBase();
-        // }
-
         render() {
-
             return (
                 <div ref={this.ref}>
                     {/*<div>Тут будет база</div>*/}
                     {/*{console.log("ALLBASE: this.state.dbToPrint", MainStore.dbToPrint)}*/}
                     <Reacttable dbToPrint={MainStore.dbToPrint} columns = {columns}/>
-
                 </div>
             )
         }
