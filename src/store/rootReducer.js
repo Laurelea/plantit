@@ -1,18 +1,48 @@
+import {AUTHORIZE, SETMESSAGE, SETUSER, UNAUTHORIZE} from "./types";
+
 const initialState = {
-    counter: 10,
-    isAuthenticated: false
+    counter: 50,
+    isAuthenticated: false,
+    message: "default message",
+    currentUser: {
+        userName: "Default",
+        userEmail: "default@default.ru",
+        userID: 0,
+        numberOfPlants: 0
+    },
+    dbToPrint: [],
+    vegs: [],
+    fruit: [],
+    herbs: [],
+    decs: []
 }
 
-export default function rootReducer (state=initialState, action) {
+const rootReducer = (state=initialState, action) => {
     switch(action.type) {
-        case 'authorized':
+        case AUTHORIZE:
             return {
                 isAuthenticated: true
             }
-        case 'unauthorized':
+        case UNAUTHORIZE:
             return {
                 isAuthenticated: false
             }
+        case SETUSER:
+            return {
+                currentUser: {
+                    userName: action.payload.userName,
+                    userEmail: action.payload.userEmail,
+                    userID: action.payload.userID,
+                    numberOfPlants: action.payload.numberOfPlants
+                }
+            }
+        case SETMESSAGE: {
+            return {
+                message: action.payload.message
+            }
+        }
+        default: return state
     }
-    return state
 }
+
+export default rootReducer

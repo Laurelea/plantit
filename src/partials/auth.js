@@ -2,21 +2,18 @@ import React from 'react'
 import '../css/App.css';
 import {NavLink, Link} from "react-router-dom";
 import axios from "axios";
-import MainStore from "../store/MainStore";
 import {API_URL} from "../config";
 
 // const cookies = new Cookies();
 
-export default class Auth extends React.Component {
-
+class Auth extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loginValue: '',
             pwValue: '',
             loginValid: false,
-            pwValid: false,
-            isAuthenticated: false
+            pwValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -43,30 +40,27 @@ export default class Auth extends React.Component {
                 console.log("post.response.data: ", response.data);
 
                 //При любом результате авторизации:
-                this.setState({
-                    // apiResponse: response.data.isAuthenticated,
-                    message: response.data.message,
-                });
+                this.props.setMessage(response.data.message);
 
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
                     try {
-                        this.setState({
-                            authUN: response.data.authUN,
-                            authEmail: response.data.authEmail,
-                            isAuthenticated: true,
-                            // message: "Authorization successful"
-                        });
+                        // this.setState({
+                        //     authUN: response.data.authUN,
+                        //     authEmail: response.data.authEmail,
+                        //     isAuthenticated: true,
+                        //     // message: "Authorization successful"
+                        // });
                         // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.authUN)
                         console.log("response.data.userID: ", response.data.userID)
                         console.log("response.data.numberOfPlants: ", response.data.numberOfPlants)
 
-                        MainStore.setUser(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
-                        console.log("Mainstore current user numberOfPlants: ", MainStore.currentUser.numberOfPlants)
-                        console.log("Mainstore current user userID: ", MainStore.currentUser.userID)
+                        this.props.setUser(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
+                        console.log("Mainstore current user numberOfPlants: ", this.props.currentUser.numberOfPlants)
+                        console.log("Mainstore current user userID: ",  this.props.currentUser.userID)
 
 
-                        MainStore.isAuthenticated = true
+                        this.props.authorize()
                     } catch (e) {
                         throw e
                     }
@@ -223,3 +217,5 @@ export default class Auth extends React.Component {
         )
     }
 }
+
+export default Auth

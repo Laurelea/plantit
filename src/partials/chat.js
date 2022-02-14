@@ -5,7 +5,7 @@ import '../css/chat.css';
 import io from 'socket.io-client'
 
 
-export default function Chat () {
+const Chat =  () => {
 
     useEffect(async () => {
         let socket = await io.connect("https://es-plantit.herokuapp.com/");
@@ -99,3 +99,5 @@ export default function Chat () {
         </React.Fragment>
     )
 }
+
+export default Chat

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './css/App.css';
 import Newheader from "./partials/Newheader";
 import ShowBase from "./partials/showBase";
@@ -9,14 +9,14 @@ import Herbs from "./partials/herbs"
 import Decs from "./partials/decs"
 import Auth from "./partials/auth";
 import Footer from "./partials/footer";
-import {Switch, Route} from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
-import MainStore from "./store/MainStore";
 import Account from "./partials/lk";
 import Chat from "./partials/chat"
-import {API_URL} from "./config";
-import {connect} from 'react-redux';
+import { API_URL } from "./config";
+import { connect } from 'react-redux';
+import {authorize, setUser, smthAsync, unauthorize} from "./store/actions";
 
 const axios = require('axios').default;
 
@@ -25,10 +25,9 @@ class App extends React.Component {
         super(props);
         this.state = {
             apiResponse: "",
-            pageTitle: "React Components",
-            isAuthenticated: this.props.isAuthenticated
+            pageTitle: "React Components"
         };
-    }
+    };
 
     componentDidMount = async() => {
         await axios({
@@ -43,9 +42,7 @@ class App extends React.Component {
                 });
                 if (response.data.isAuthenticated) {
                     this.setState({
-                        pageTitle: response.data.title,
-                        userName: response.data.userName,
-                        userEmail: response.data.userEmail,
+                        pageTitle: response.data.title
                     });
                     // MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
                     this.props.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
@@ -74,7 +71,7 @@ class App extends React.Component {
                             {/*<ShowBase/>*/}
                             {/*/!*Иначе текст: авторизуйтесь для доступа к базе растений*!/*/}
                             {
-                                MainStore.isAuthenticated
+                                this.props.isAuthenticated
                                     ? <ShowBase/>
                                     : <div>
                                         <span className="errorspan"> Please, log in to see the plant base </span>
@@ -129,10 +126,10 @@ class App extends React.Component {
                         <div id="authContainer" className="totheright">
                             {/*Это показывать только если не авторизован*/}
                             {
-                                MainStore.isAuthenticated
+                                this.props.isAuthenticated
                                     ? <div className="chat_section">
                                         <span className="errorspan"
-                                            id="authSuccessSpan">You're logged in as {MainStore.currentUser.userName}</span>
+                                            id="authSuccessSpan">You're logged in as {this.props.currentUser.userName}</span>
                                         <Chat/>
                                     </div>
                                     :
@@ -147,19 +144,33 @@ class App extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+// опеределяем props, которые будут переданы в App на основе общего стейта из сторы
+const mapStateToProps = (state) => {
     return {
         counter: state.counter,
-        isAuthenticated: state.isAuthenticated
+        isAuthenticated: state.isAuthenticated,
+        message: state.message,
+        currentUser: state.currentUser
     }
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
     return {
-        authorize: () => dispatch({type: 'authorized'}),
-        unauthorize: () => dispatch({type: 'unauthorized'}),
-        setUser: (userID, userName, userEmail, numberOfPlants) => dispatch({type: 'setUser', payload: {userID, userName, userEmail, numberOfPlants}})
+        authorize: () => dispatch(authorize()),
+        unauthorize: () => dispatch(unauthorize()),
+        setUser: (userID, userName, userEmail, numberOfPlants) => dispatch(setUser(userID, userName, userEmail, numberOfPlants)),
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants))
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// Другая запись:
+
+// export default connect(
+//     (state: AppState) => ({
+//         user: state.auth.user,
+//         isLoggedIn: state.auth.isLoggedIn,
+//     }),
+//     {},
+// )(SystemStatus);
