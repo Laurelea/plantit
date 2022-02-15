@@ -1,82 +1,70 @@
 import React, {Component} from 'react';
 import '../css/App.css';
 import {NavLink}  from "react-router-dom";
-// import {useHistory} from "react-router-dom";
-import {observer} from 'mobx-react';
-import MainStore from '../store/MainStore';
-import Logout from "./no_auth";
-// const App = require ("../App")
-// const { match, history } = props
-// import { createBrowserHistory } from "history";
-//
-// const customHistory = createBrowserHistory();
-// type Props = RouteComponentProps
+import {connect} from "react-redux";
+import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
+import {default as axios} from "axios";
+import {API_URL} from "../config";
+// import Logout from "./no_auth";
 
-async function LogoutHandler (event) {
-    event.preventDefault()
-    // const history = useHistory();
-    console.log("This is logout, babe")
-    await Logout()
-    window.location.replace("/")
+// const Logout = async() => {
+//     await axios({
+//         method: 'post',
+//         url: API_URL + 'api/logout'
+//     })
+//         .then( (response) => {
+//             CookiesDelete()
+//             console.log("Logout get.response.data: ", response.data);
+//             // props.unauthorize();
+//             console.log("document.cookie: ", document.cookie);
+//         })
+//         .catch(function (error) {
+//             console.log("No_auth error:", error);
+//         })
 
-    // this.history.pushState(null, '/')
-    // history.push('/');
-    // // return (<Redirect to="/" />)
-    // App.customHistory.push('/');
-    // return null
+const Newheader = (props) =>  {
+    const LogoutHandler = async(event) => {
+        event.preventDefault();
+        console.log("This is logout, babe");
+        await props.unauthorize()
+        await window.location.replace("/")
+    };
+    return (
+        <header className="Newheader">
+            <h1 id="mainheader" className="logo">
+                <NavLink to="/"> Моя Дача. Проект по посадке растений.</NavLink>
+            </h1>
+            <nav className="Nav">
+                <div className="nav-wrapper">
+                    <ul className="nav-mobile">
+                        <li className="active"><NavLink to="/" exact>ГЛАВНАЯ</NavLink></li>
+                        {props.isAuthenticated
+                            ? <React.Fragment>
+                                <li className="active"><NavLink to="/showBase" exact>БАЗА</NavLink></li>
+                                <li className="active"><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink></li>
+                                <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink></li>
+                                <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
+                                <li className="active"><NavLink to="/logout" exact onClick = {LogoutHandler}>ВЫЙТИ</NavLink></li>
+                            </React.Fragment>
+                            : <li className="active"><NavLink to="/" exact>ТЕСТ</NavLink></li>}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    )
 }
 
-const Newheader = observer(
-    class Newheader extends Component {
-        render() {
-            return (
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.isAuthenticated
+    }
+}
 
-                <header className="Newheader">
-                    {/*<Switch>*/}
-                    {/*<Router history={customHistory} />*/}
-                    {/*</Switch>*/}
-                    <h1 id="mainheader" className="logo">
-                        <NavLink to="/"> Моя Дача. Проект по посадке растений.</NavLink>
-                    </h1>
-                    <nav className="Nav">
-                        <div className="nav-wrapper">
-                            {/*<Observer>{() =>*/}
-                            <ul className="nav-mobile">
-                                <li className="active"><NavLink to="/" exact>ГЛАВНАЯ</NavLink></li>
-                                {MainStore.isAuthenticated
-                                    ? <li className="active"><NavLink to="/showBase" exact>БАЗА</NavLink>
-                                    </li>
-                                    : null}
-                                {MainStore.isAuthenticated
-                                    ? <li className="active"><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink>
-                                    </li>
-                                    : null}
-                                {/*{MainStore.isAuthenticated*/}
-                                {/*    ? <li className="active"><NavLink to="/chat" exact>ЧАТ</NavLink>*/}
-                                {/*    </li>*/}
-                                {/*    : null}*/}
-                                {/*{MainStore.isAuthenticated*/}
-                                {/*        ?*/}
-                                {/*        <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink>*/}
-                                {/*        </li>*/}
-                                {/*        : null}*/}
-                                {!MainStore.isAuthenticated
-                                        ? <li className="active"><NavLink to="/" exact>ВОЙТИ</NavLink></li>
-                                        : null}
-                                {MainStore.isAuthenticated
-                                    ? <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
-                                    : null}
-                                {MainStore.isAuthenticated
-                                        ? <li className="active"><NavLink to="/logout" exact onClick = {LogoutHandler}>ВЫЙТИ</NavLink></li>
-                                        // ? <a href="" onClick="$(document.body).append($('<form method=POST action=/logout>'));$('form').submit();return false">Выйти</a>
-                                        // ? <a href="" onClick="$('<form method=POST action=/logout>').submit();return false">Выйти</a>
-                                        : null}
-                                {/*<li className="active"><NavLink to="/auth/logout" exact>ВЫЙТИ</NavLink></li>*/}
-                            </ul>
-                        </div>
-                    </nav>
-                </header>
-            )
-        }
-    })
-export default Newheader
+const mapDispatchToProps = (dispatch) => {
+    return {
+        unauthorize: () => dispatch(unauthorize())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Newheader);
+

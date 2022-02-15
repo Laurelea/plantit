@@ -50,24 +50,7 @@ app.use(
 app.use(router);
 
 
-parseCookie = async (str, callback) => {
-    const myStr = await str
-        .split(';')
-        .map(v => v.split('='))
-        .reduce((acc, v) => {
-            acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1]
-                    .trim()
-                    .replace(/[^.]*$/, '')
-                    .replace(/.$/, '')
-                    .replace(/^.{4}/, '')
-                // .replace(/^.?(.*)/, '')
-            );
-            return acc;
-        }, {});
-    const result = await callback(myStr.SID)
-    console.log("Result of callback:", result)
-    return result
-}
+
 
 //test for server: HomePage Route For Server:
 
@@ -87,38 +70,56 @@ router.get("/api", async (req, res) => {
     }
     // console.log("Printing state 1", state)
 
+    parseCookie = async (str, callback) => {
+        //Если куки нет в браузере
+        if (!str) {
+            state.isAuthenticated = false;
+            // console.log("Printing state if no cookie:", state)
+
+            throw new Error("No SID cookie found in the browser")
+            //Если есть:
+        } else {
+            const myStr = await str
+                .split(';')
+                .map(v => v.split('='))
+                .reduce((acc, v) => {
+                    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1]
+                            .trim()
+                            .replace(/[^.]*$/, '')
+                            .replace(/.$/, '')
+                            .replace(/^.{4}/, '')
+                        // .replace(/^.?(.*)/, '')
+                    );
+                    return acc;
+                }, {});
+            const result = await callback(myStr.SID)
+            console.log("Result of callback:", result)
+            return result
+        }
+    }
+
     checkAuthorization = async (SIDcookieValueInBrowser) => {
         try {
-            //Если куки SID нет в браузере
-            if (!SIDcookieValueInBrowser) {
+            const foundSession = await controller.lookForSameSID(SIDcookieValueInBrowser)
+            // console.log("Number of cookies found:", foundSession.rows.length)
+            // console.log("Found cookie:", foundSession)
+            if (foundSession.rows.length == 0) {
                 state.isAuthenticated = false;
-                // console.log("Printing state if no cookie:", state)
-
-                throw new Error ("No SID cookie found in the browser")
-            //Если есть:
+                console.log("Printing state if no cookie in DB:", state)
+                throw new Error("Browser cookie ID doesn't match anything in the DB")
             } else {
-                const foundSession = await controller.lookForSameSID(SIDcookieValueInBrowser)
-                // console.log("Number of cookies found:", foundSession.rows.length)
-                // console.log("Found cookie:", foundSession)
-                if (foundSession.rows.length ==0) {
-                    state.isAuthenticated = false;
-                    console.log("Printing state if no cookie in DB:", state)
-                    throw new Error ("Browser cookie ID doesn't match anything in the DB")
-                } else {
-                    console.log("Changing state...", foundSession.rows[0].sess.userID)
-                    state.isAuthenticated = true;
-                    state.userName = foundSession.rows[0].sess.userName
-                    state.userEmail = foundSession.rows[0].sess.userEmail
-                    state.userID = foundSession.rows[0].sess.userID
-                    state.numberOfPlants = foundSession.rows[0].sess.numberOfPlants
-                    // console.log("State changed:", state)
-                    return true
-                }
+                console.log("Changing state...", foundSession.rows[0].sess.userID)
+                state.isAuthenticated = true;
+                state.userName = foundSession.rows[0].sess.userName
+                state.userEmail = foundSession.rows[0].sess.userEmail
+                state.userID = foundSession.rows[0].sess.userID
+                state.numberOfPlants = foundSession.rows[0].sess.numberOfPlants
+                // console.log("State changed:", state)
+                return true
             }
         } catch (err) {
             state.message = err.message.toString()
             console.log("Grand mistake:", state)
-
             console.log("Error while checking authorization: ", err)
             return err
         }

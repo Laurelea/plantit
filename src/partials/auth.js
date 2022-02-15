@@ -3,6 +3,8 @@ import '../css/App.css';
 import {NavLink, Link} from "react-router-dom";
 import axios from "axios";
 import {API_URL} from "../config";
+import {connect} from "react-redux";
+import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
 
 // const cookies = new Cookies();
 
@@ -13,7 +15,9 @@ class Auth extends React.Component {
             loginValue: '',
             pwValue: '',
             loginValid: false,
-            pwValid: false
+            pwValid: false,
+            loginErrorMessage: '',
+            pwErrorMessage: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -45,32 +49,16 @@ class Auth extends React.Component {
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
                     try {
-                        // this.setState({
-                        //     authUN: response.data.authUN,
-                        //     authEmail: response.data.authEmail,
-                        //     isAuthenticated: true,
-                        //     // message: "Authorization successful"
-                        // });
-                        // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.authUN)
                         console.log("response.data.userID: ", response.data.userID)
                         console.log("response.data.numberOfPlants: ", response.data.numberOfPlants)
 
-                        this.props.setUser(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
+                        this.props.authorize(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
                         console.log("Mainstore current user numberOfPlants: ", this.props.currentUser.numberOfPlants)
                         console.log("Mainstore current user userID: ",  this.props.currentUser.userID)
-
-
-                        this.props.authorize()
                     } catch (e) {
                         throw e
                     }
-
-                    // MainStore.numberOfPlants = response.data.numberOfPlants
-                    // console.log("MainStore.isAuthenticated: ", MainStore.isAuthenticated)
-                    // console.log("MainStore.currentUser.userName: ", MainStore.currentUser.userName)
                 }
-                // window.location.replace("/")
-                // this.resetForm()
             })
             .catch(error => {
                 // handle error
@@ -204,11 +192,15 @@ class Auth extends React.Component {
                         Войти
                     </button>
                     {
-                        this.state.authUN
+                        this.props.isAuthenticated
                             ? <span className="errorspan"
-                                    id="authSuccessSpan">{this.state.message} {"\n"} You're logged in as {this.state.userName}</span>
+                                    id="authSuccessSpan">{this.props.message} {"\n"} You're logged in as {this.props.userName}</span>
                             : <span className="errorspan"
-                                    id="authErrorSpan">{this.state.message}</span>
+                                    id="authErrorSpan">{
+                                this.props.message
+                                    ? this.props.message
+                                    : null
+                            }</span>
                     }
                 </fieldset>
             </form>
@@ -218,4 +210,22 @@ class Auth extends React.Component {
     }
 }
 
-export default Auth
+const mapStateToProps = (state) => {
+    return {
+        counter: state.counter,
+        isAuthenticated: state.isAuthenticated,
+        message: state.message,
+        currentUser: state.currentUser
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
+        unauthorize: () => dispatch(unauthorize()),
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
+        setMessage: message => dispatch(setMessage(message))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

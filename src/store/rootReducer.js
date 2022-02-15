@@ -1,9 +1,9 @@
-import {AUTHORIZE, SETMESSAGE, SETUSER, UNAUTHORIZE} from "./types";
+import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE} from "./types";
 
 const initialState = {
     counter: 50,
     isAuthenticated: false,
-    message: "default message",
+    message: undefined,
     currentUser: {
         userName: "Default",
         userEmail: "default@default.ru",
@@ -20,15 +20,10 @@ const initialState = {
 const rootReducer = (state=initialState, action) => {
     switch(action.type) {
         case AUTHORIZE:
+            console.log('authorized success');
             return {
-                isAuthenticated: true
-            }
-        case UNAUTHORIZE:
-            return {
-                isAuthenticated: false
-            }
-        case SETUSER:
-            return {
+                ...state,
+                isAuthenticated: true,
                 currentUser: {
                     userName: action.payload.userName,
                     userEmail: action.payload.userEmail,
@@ -36,8 +31,21 @@ const rootReducer = (state=initialState, action) => {
                     numberOfPlants: action.payload.numberOfPlants
                 }
             }
+        case UNAUTHORIZE:
+            return {
+                ...state,
+                isAuthenticated: false,
+                message: initialState.message,
+                currentUser: {
+                    userName: initialState.currentUser.userName,
+                    userEmail: initialState.currentUser.userEmail,
+                    userID: initialState.currentUser.userID,
+                    numberOfPlants: initialState.currentUser.numberOfPlants
+                }
+            }
         case SETMESSAGE: {
             return {
+                ...state,
                 message: action.payload.message
             }
         }

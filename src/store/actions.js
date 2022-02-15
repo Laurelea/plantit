@@ -1,16 +1,21 @@
 import {
     AUTHORIZE,
     UNAUTHORIZE,
-    SETUSER, SETMESSAGE
+    SETMESSAGE
 } from "./types";
+import Logout from '../partials/no_auth'
 
-export const authorize = () => {
+export const authorize = (userID, userName, userEmail, numberOfPlants) => {
     return {
-        type: AUTHORIZE
+        type: AUTHORIZE,
+        payload: {
+            userID, userName, userEmail, numberOfPlants
+        }
     }
 };
 
 export const unauthorize = () => {
+    Logout();
     return {
         type: UNAUTHORIZE
     }
@@ -20,17 +25,8 @@ export const unauthorize = () => {
 export function smthAsync(userID, userName, userEmail, numberOfPlants) {
     return (dispatch) => {
         setTimeout(() => {
-            dispatch(setUser(userID, userName, userEmail, numberOfPlants))
+            dispatch(authorize(userID, userName, userEmail, numberOfPlants))
         }, 3000)
-    }
-}
-
-export const setUser = (userID, userName, userEmail, numberOfPlants) => {
-    return {
-        type: SETUSER,
-        payload: {
-            userID, userName, userEmail, numberOfPlants
-        }
     }
 }
 

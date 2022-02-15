@@ -16,7 +16,7 @@ import Account from "./partials/lk";
 import Chat from "./partials/chat"
 import { API_URL } from "./config";
 import { connect } from 'react-redux';
-import {authorize, setUser, smthAsync, unauthorize} from "./store/actions";
+import {authorize, setMessage, smthAsync, unauthorize} from "./store/actions";
 
 const axios = require('axios').default;
 
@@ -35,7 +35,7 @@ class App extends React.Component {
             url: API_URL +'api',
             // responseType: 'json'
         })
-            .then((response) => {
+            .then( async(response) => {
                 console.log("get.response.data: ", response.data);
                 this.setState({
                     apiResponse: response.data.message,
@@ -44,10 +44,8 @@ class App extends React.Component {
                     this.setState({
                         pageTitle: response.data.title
                     });
-                    // MainStore.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
-                    this.props.setUser(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
+                    await this.props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
                     // MainStore.isAuthenticated = true;
-                    this.props.authorize();
                     document.title = this.state.pageTitle;
                 } else {
                     this.props.unauthorize();
@@ -105,23 +103,6 @@ class App extends React.Component {
                                 <Route render={() => <h2>404 not found</h2>}/>
 
                             </Switch>
-                            {/*<p>User Name is: {MainStore.currentUser.userName}</p>*/}
-                            {/*<p>Message from API: {this.state.apiResponse}</p>*/}
-                            {/*<p>"MainStore.isAuthenticated:*/}
-                            {/*    " {MainStore.isAuthenticated.toString()}</p>*/}
-                            {/*<p>"MainStore.currentUser:*/}
-                            {/*    " {MainStore.currentUser.userName}</p>*/}
-                            {/*<p>"MainStore.currentUser ID:*/}
-                            {/*    " {MainStore.currentUser.userID}</p>*/}
-                            {/*{*/}
-                            {/*        MainStore.isAuthenticated*/}
-                            {/*            // true*/}
-                            {/*            ? <span className="errorspan"*/}
-                            {/*                    id="authSuccessSpan">{this.state.apiResponse} {"\n"} You're logged in as {MainStore.currentUser.userName}</span>*/}
-                            {/*            : <span className="errorspan"*/}
-                            {/*                    id="authErrorSpan">{this.state.apiResponse}</span>*/}
-                            {/*}*/}
-
                         </div>
                         <div id="authContainer" className="totheright">
                             {/*Это показывать только если не авторизован*/}
@@ -156,10 +137,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        authorize: () => dispatch(authorize()),
+        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
         unauthorize: () => dispatch(unauthorize()),
-        setUser: (userID, userName, userEmail, numberOfPlants) => dispatch(setUser(userID, userName, userEmail, numberOfPlants)),
-        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants))
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
+        setMessage: message => dispatch(setMessage(message))
     }
 }
 
