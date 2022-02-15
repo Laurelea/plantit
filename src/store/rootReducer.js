@@ -10,7 +10,7 @@ const initialState = {
         userID: 0,
         numberOfPlants: 0
     },
-    dbToPrint: [],
+    dbToPrint: undefined,
     vegs: [],
     fruit: [],
     herbs: [],

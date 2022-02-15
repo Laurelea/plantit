@@ -6,7 +6,7 @@ import {
     GETBASE
 } from "./types";
 import Logout from '../partials/logout'
-import { getMyBase } from "../partials/allBase";
+import {getMyBase} from "../partials/allBase";
 
 export const authorize = (userID, userName, userEmail, numberOfPlants) => {
     return {
@@ -42,6 +42,17 @@ export function smthAsync(userID, userName, userEmail, numberOfPlants) {
     }
 }
 
+export const updateBase = () => async(dispatch) => {
+    const base = await getMyBase();
+    console.log('updateBase: ', base)
+    dispatch(({
+        type: GETBASE,
+        payload: {
+            base
+        }
+    }));
+}
+
 export const setMessage = (message) => {
     return {
         type: SETMESSAGE,
@@ -52,12 +63,12 @@ export const setMessage = (message) => {
 }
 
 export const getBase = () => {
-    const base = getMyBase();
+    let base = getMyBase()
     console.log('base from actions: ', base)
     return {
         type: GETBASE,
         payload: {
-            base
+            base: getMyBase()
         }
     }
 }
