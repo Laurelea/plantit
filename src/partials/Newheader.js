@@ -3,24 +3,6 @@ import '../css/App.css';
 import {NavLink}  from "react-router-dom";
 import {connect} from "react-redux";
 import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
-import {default as axios} from "axios";
-import {API_URL} from "../config";
-// import Logout from "./no_auth";
-
-// const Logout = async() => {
-//     await axios({
-//         method: 'post',
-//         url: API_URL + 'api/logout'
-//     })
-//         .then( (response) => {
-//             CookiesDelete()
-//             console.log("Logout get.response.data: ", response.data);
-//             // props.unauthorize();
-//             console.log("document.cookie: ", document.cookie);
-//         })
-//         .catch(function (error) {
-//             console.log("No_auth error:", error);
-//         })
 
 const Newheader = (props) =>  {
     const LogoutHandler = async(event) => {

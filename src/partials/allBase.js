@@ -1,38 +1,27 @@
-import React, { useLayoutEffect }  from 'react'
+import React from 'react';
 import '../css/App.css';
 import Reacttable from "./baseTable";
-import MainStore from "../store/MainStore";
-import { observer } from 'mobx-react';
 import {API_URL} from "../config";
+import {authorize, getBase, setMessage, smthAsync, unauthorize} from "../store/actions";
+import {connect} from "react-redux";
 const axios = require('axios').default;
 
-// const state = getMyBase()
-// let data = [];
-
-const getMyBase = async() => {
-    // console.log(state.dbToPrint.length)
-    // if (state.dbToPrint.length == 0) {
-        console.log("ALLBASE State empty")
-        // console.log("getMyBase: Inside getMyBase")
-        await axios({
-            method: 'get',
-            url:    API_URL + 'api/getbase',
-            // responseType: 'json'
+export const getMyBase = async() => {
+    console.log("ALLBASE State empty");
+    await axios({
+        method: 'get',
+        url:    API_URL + 'api/getbase'
+    })
+        .then(response => {
+            return response.data.rows
+                // console.log(response.data.rows);
+            }
+        )
+        .catch(error => {
+            console.log(error);
         })
-            .then(response => {
-                    // console.log("ALLBASE Got from DB:", response.data.rows)
-                    // this.setState({dbToPrint: response.data.rows})
-                    // return response.data.rows
-                    // data = response.data.rows;
-                    MainStore.dbToPrint = response.data.rows;
-                }
-            )
-            .catch(error => {
-                console.log(error);
-            })
+    // return response.data.rows
 }
-
-getMyBase()
 
 const columns = [
     {
@@ -61,23 +50,32 @@ const columns = [
         accessor: "user_name",
     }
 ];
-const AllBase = observer(
-    class AllBase extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        ref = React.createRef();
-        render() {
-            return (
-                <div ref={this.ref}>
-                    {/*<div>Тут будет база</div>*/}
-                    {/*{console.log("ALLBASE: this.state.dbToPrint", MainStore.dbToPrint)}*/}
-                    <Reacttable dbToPrint={MainStore.dbToPrint} columns = {columns}/>
-                </div>
-            )
-        }
-    })
+const AllBase = (props) => {
+    console.log('allbase props:', props)
+    props.getBase();
+    // const ref = React.createRef();
+    return (
+        // <div ref={this.ref}>
+        <div>
+            {/*<Reacttable dbToPrint={props.dbToPrint} columns = {columns}/>*/}
+        </div>
+    )
+}
 
-export default AllBase;
+const mapStateToProps = (state) => {
+    return {
+        dbToPrint: state.dbToPrint
+    }
+}
 
-export {getMyBase};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
+        unauthorize: () => dispatch(unauthorize()),
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
+        setMessage: message => dispatch(setMessage(message)),
+        getBase: () => dispatch(getBase())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllBase);

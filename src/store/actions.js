@@ -1,9 +1,12 @@
 import {
     AUTHORIZE,
     UNAUTHORIZE,
-    SETMESSAGE
+    SETMESSAGE,
+    UPDATEUSERINFO,
+    GETBASE
 } from "./types";
-import Logout from '../partials/no_auth'
+import Logout from '../partials/logout'
+import { getMyBase } from "../partials/allBase";
 
 export const authorize = (userID, userName, userEmail, numberOfPlants) => {
     return {
@@ -21,6 +24,15 @@ export const unauthorize = () => {
     }
 };
 
+export const updateUserInfo = (number) => {
+    return {
+        type: UPDATEUSERINFO,
+        payload: {
+            number
+        }
+    }
+}
+
 // Асинхронное действие - может вызывать другое действие. Зачем??
 export function smthAsync(userID, userName, userEmail, numberOfPlants) {
     return (dispatch) => {
@@ -35,6 +47,17 @@ export const setMessage = (message) => {
         type: SETMESSAGE,
         payload: {
             message
+        }
+    }
+}
+
+export const getBase = () => {
+    const base = getMyBase();
+    console.log('base from actions: ', base)
+    return {
+        type: GETBASE,
+        payload: {
+            base
         }
     }
 }

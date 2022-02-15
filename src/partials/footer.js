@@ -1,7 +1,7 @@
 import React from 'react'
 import '../css/App.css';
 
-export default function Footer(props) {
+const Footer = (props) => {
     return (
 // <script src="myDacha.js"></script>
 //     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -13,3 +13,5 @@ export default function Footer(props) {
         </footer>
 
 ) }
+
+export default Footer

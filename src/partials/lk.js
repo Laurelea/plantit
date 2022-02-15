@@ -5,31 +5,6 @@ import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
 import {connect} from "react-redux";
 const axios = require('axios').default;
 
-// let result;
-//
-async function numberOfPlantsAdded  () {
-    console.log("LK MainStore.currentUser.userID", MainStore.currentUser.userID)
-    console.log("LK MainStore.currentUser.userID", MainStore.currentUser.userName)
-    const data = {id: MainStore.currentUser.userID}
-    await axios.post('/api/getNumberOfPlants', data)
-        .then(response => {
-                console.log("LK Got Plants: response.data: ", response.data)
-                    // this.setState({dbToPrint: response.data.rows})
-                // return response.data.rows
-                // data = response.data.rows;
-                // MainStore.dbToPrint = response.data.rows;
-                MainStore.currentUser.numberOfPlants = response.data;
-            }
-        )
-        .catch(error => {
-            console.log("numberOfPlantsAdded error: ", error);
-        })
-}
-// numberOfPlantsAdded()
-
-// console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.numberOfPlants)
-// console.log("MainStore.currentUser.numberOfPlants", MainStore.currentUser.userName)
-
 const Account = (props) => {
     return (
         <div className="account-main-container">
@@ -61,4 +36,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);
-export {numberOfPlantsAdded};

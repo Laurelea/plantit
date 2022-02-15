@@ -1,4 +1,4 @@
-import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE} from "./types";
+import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE} from "./types";
 
 const initialState = {
     counter: 50,
@@ -47,6 +47,21 @@ const rootReducer = (state=initialState, action) => {
             return {
                 ...state,
                 message: action.payload.message
+            }
+        }
+        case UPDATEUSERINFO: {
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser,
+                    numberOfPlants: action.payload.number
+                }
+            }
+        }
+        case GETBASE: {
+            return {
+                ...state,
+                dbToPrint: action.payload.base
             }
         }
         default: return state

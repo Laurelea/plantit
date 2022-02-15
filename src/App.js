@@ -49,7 +49,7 @@ class App extends React.Component {
                     document.title = this.state.pageTitle;
                 } else {
                     this.props.unauthorize();
-                    throw new Error("Auth problems")
+                    throw new Error("API response: unauthorized")
                 }
             })
             .catch(function (error) {

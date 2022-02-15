@@ -1,7 +1,5 @@
 import React from 'react'
 import {API_URL} from "../config";
-// import {connect} from "react-redux";
-// import {setMessage, smthAsync, unauthorize} from "../store/actions";
 
 const axios = require('axios').default;
 
@@ -31,15 +29,5 @@ const Logout = async() => {
             console.log("No_auth error:", error);
         })
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         unauthorize: () => dispatch(unauthorize()),
-//         smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
-//         setMessage: message => dispatch(setMessage(message))
-//     }
-// }
-
-// export default connect({}, mapDispatchToProps)(Logout);
 
 export default Logout
