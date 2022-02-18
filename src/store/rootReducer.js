@@ -1,4 +1,4 @@
-import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE, GETVEGS} from "./types";
+import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE} from "./types";
 
 const initialState = {
     apiResponse: "",
@@ -12,11 +12,7 @@ const initialState = {
         userID: 0,
         numberOfPlants: 0
     },
-    dbToPrint: undefined,
-    vegs: undefined,
-    fruit: [],
-    herbs: [],
-    decs: []
+    dbToPrint: undefined
 }
 
 const rootReducer = (state=initialState, action) => {
@@ -64,12 +60,6 @@ const rootReducer = (state=initialState, action) => {
             return {
                 ...state,
                 dbToPrint: action.payload.base
-            }
-        }
-        case GETVEGS: {
-            return {
-                ...state,
-                vegs: action.payload.vegs
             }
         }
         default: return state

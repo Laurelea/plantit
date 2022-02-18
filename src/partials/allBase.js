@@ -18,7 +18,7 @@ export const getMyBase = async() => {
     return response.data.rows
 }
 
-const columns = [
+export const columns = [
     {
         Header: "ID",
         accessor: "id",
