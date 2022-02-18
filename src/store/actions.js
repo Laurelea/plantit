@@ -3,10 +3,12 @@ import {
     UNAUTHORIZE,
     SETMESSAGE,
     UPDATEUSERINFO,
-    GETBASE
+    GETBASE,
+    GETVEGS
 } from "./types";
 import Logout from '../partials/logout'
 import {getMyBase} from "../partials/allBase";
+import {getVegs} from "../partials/vegs";
 
 export const authorize = (userID, userName, userEmail, numberOfPlants) => {
     return {
@@ -72,3 +74,14 @@ export const getBase = () => {
         }
     }
 }
+
+// export const getVegs = () => {
+//     let vegs = getVegs()
+//     console.log('vegs from actions: ', vegs)
+//     return {
+//         type: GETVEGS,
+//         payload: {
+//             vegs: getVegs()
+//         }
+//     }
+// }

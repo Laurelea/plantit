@@ -1,9 +1,9 @@
 import React  from 'react'
 import '../css/App.css';
 import Reacttable from "./baseTable";
-import MainStore from "../store/MainStore";
-import { observer } from 'mobx-react';
 import {API_URL} from "../config";
+import {authorize, getBase, setMessage, smthAsync, unauthorize, updateBase} from "../store/actions";
+import {connect} from "react-redux";
 
 const axios = require('axios').default;
 const columns = [
@@ -30,49 +30,56 @@ const columns = [
     }
 ];
 
-async function getVegs () {
-    // console.log(state.dbToPrint.length)
-    // if (state.dbToPrint.length == 0) {
-    // console.log("Vegs State empty")
-    // console.log("getMyBase: Inside getMyBase")
-    await axios({
+export const getVegs = async () => {
+    console.log('get vegs run')
+    const response = await axios({
         method: 'get',
         url: API_URL + 'api/vegs',
-        // responseType: 'json'
     })
         .then(response => {
-                // console.log("Vegs Got from DB:", response.data.rows)
-                // this.setState({dbToPrint: response.data.rows})
-                // return response.data.rows
-                // data = response.data.rows;
-                MainStore.vegs = response.data.rows;
+                console.log('vegs response:', response.data.rows);
             }
         )
         .catch(error => {
             console.log(error);
         })
+    return response.data.rows
 }
 
-getVegs()
+const Vegs = (props) => {
+    console.log('vegs props:', props)
+    getVegs()
+    // props.getVegs();
+    return (
+            <div>
+                <h2>Овощи</h2>
+                { props.dbToPrint
+                    ?
+                    <Reacttable dbToPrint={props.dbToPrint.filter(row => row.category === 'Vegs')} columns = {columns}/>
+                    : null }
+                {/*<Reacttable dbToPrint={props.vegs} columns={columns}/>*/}
+            </div>
+        )
+}
 
 
-const Vegs = observer(
-    class Vegs extends React.Component {
-        constructor(props) {
-            super(props);
-        }
-        render() {
-            return (
-                <div>
-                    <h2>Овощи</h2>
-                    {console.log("Vegs: this.state.vegs", MainStore.vegs)}
-                    <Reacttable dbToPrint={MainStore.vegs} columns={columns}/>
+const mapStateToProps = (state) => {
+    return {
+        dbToPrint: state.dbToPrint,
+        vegs: state.vegs
+    }
+}
 
-                </div>
-            )
-        }
-    })
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
+        unauthorize: () => dispatch(unauthorize()),
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
+        setMessage: message => dispatch(setMessage(message)),
+        getBase: () => dispatch(getBase()),
+        updateBase: () => dispatch(updateBase()),
+        getVegs: () => dispatch(getVegs())
+    }
+}
 
-export default Vegs;
-
-export {getVegs};
+export default connect(mapStateToProps, mapDispatchToProps)(Vegs);

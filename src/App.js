@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/App.css';
 import Newheader from "./partials/Newheader";
 import ShowBase from "./partials/showBase";
@@ -20,46 +20,41 @@ import {authorize, setMessage, smthAsync, unauthorize} from "./store/actions";
 
 const axios = require('axios').default;
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            apiResponse: "",
-            pageTitle: "React Components"
-        };
-    };
-
-    componentDidMount = async() => {
-        await axios({
+const App = (props) => {
+    {console.log('APP:', props)}
+    // const [state, setState] = useState({
+    //     apiResponse: 'initital empty response',
+    //     pageTitle: 'Initial App page title'
+    // });
+    useEffect(() => {
+        axios({
             method: 'get',
             url: API_URL +'api',
             // responseType: 'json'
         })
-            .then( async(response) => {
+            .then( async response => {
                 console.log("get.response.data: ", response.data);
-                this.setState({
-                    apiResponse: response.data.message,
-                });
+                // setState({
+                //     apiResponse: response.data.message,
+                // });
                 if (response.data.isAuthenticated) {
-                    this.setState({
-                        pageTitle: response.data.title
-                    });
-                    await this.props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
-                    // MainStore.isAuthenticated = true;
-                    document.title = this.state.pageTitle;
+                    // setState({
+                    //     ...state,
+                    //     pageTitle: response.data.title
+                    // });
+                    await props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
+                    // document.title = state.pageTitle;
                 } else {
-                    this.props.unauthorize();
+                    await props.unauthorize();
                     throw new Error("API response: unauthorized")
                 }
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log(error);
             })
-    }
+    }, [])
 
-    render() {
-        console.log('APP:', this.props);
-        return (
+    return (
             <div className="App">
                 <div className="mainContainer">
                     <Newheader/>
@@ -69,7 +64,7 @@ class App extends React.Component {
                             {/*<ShowBase/>*/}
                             {/*/!*Иначе текст: авторизуйтесь для доступа к базе растений*!/*/}
                             {
-                                this.props.isAuthenticated
+                                props.isAuthenticated
                                     ? <ShowBase/>
                                     : <div>
                                         <span className="errorspan"> Please, log in to see the plant base </span>
@@ -107,10 +102,10 @@ class App extends React.Component {
                         <div id="authContainer" className="totheright">
                             {/*Это показывать только если не авторизован*/}
                             {
-                                this.props.isAuthenticated
+                                props.isAuthenticated
                                     ? <div className="chat_section">
                                         <span className="errorspan"
-                                            id="authSuccessSpan">You're logged in as {this.props.currentUser.userName}</span>
+                                            id="authSuccessSpan">You're logged in as {props.currentUser.userName}</span>
                                         <Chat/>
                                     </div>
                                     :
@@ -122,8 +117,19 @@ class App extends React.Component {
                 </div>
             </div>
         );
-    }
+
 }
+
+// App.getInitialProps = async (context) => {
+//     const isLoggedIn = context.store.getState().auth.isLoggedIn;
+//     if (context.req && !isLoggedIn) {
+//         await needLogin(context.res);
+//     }
+//     return {
+//         path: context.asPath,
+//     };
+// };
+
 
 // опеределяем props, которые будут переданы в App на основе общего стейта из сторы
 const mapStateToProps = (state) => {
@@ -131,7 +137,9 @@ const mapStateToProps = (state) => {
         counter: state.counter,
         isAuthenticated: state.isAuthenticated,
         message: state.message,
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        apiResponse: state.apiResponse,
+        pageTitle: state.pageTitle
     }
 }
 

@@ -11,7 +11,7 @@ class MainStore {
         userID: 0
     };
     dbToPrint = [];
-    vegs = [];
+    // vegs = [];
     fruit = [];
     herbs = [];
     decs = [];

@@ -269,11 +269,11 @@ router.post("/api/getNumberOfPlants", async(req, res) => {
     res.json(result)
 })
 
-router.get("/api/vegs", async (req, res) => {
-    const vegs = await controller.vegs()
-    // console.log("Vegs from Routes")
-    res.send(vegs)
-})
+// router.get("/api/vegs", async (req, res) => {
+//     const vegs = await controller.vegs()
+//     // console.log("Vegs from Routes")
+//     res.send(vegs)
+// })
 router.get("/api/fruit", async (req, res) => {
     const fruit = await controller.fruit()
     // console.log("Fruit from Routes")

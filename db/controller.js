@@ -176,17 +176,17 @@ module.exports.getNumberOfPlants = async function (id) {
     }
 }
 
-module.exports.vegs = async () => {
-    try {
-        const vegs = await db.query('SELECT sort.id, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
-            'JOIN producer ON sort.producer_id=producer.id JOIN product ON sort.product_id=product.id JOIN users ON sort.user_id=users.user_id ' +
-            'WHERE product.category=$1', ["Vegs"]);
-        return vegs
-    }
-    catch (err) {
-        console.log("Vegs error:", err)
-    }
-}
+// module.exports.vegs = async () => {
+//     try {
+//         const vegs = await db.query('SELECT sort.id, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
+//             'JOIN producer ON sort.producer_id=producer.id JOIN product ON sort.product_id=product.id JOIN users ON sort.user_id=users.user_id ' +
+//             'WHERE product.category=$1', ["Vegs"]);
+//         return vegs
+//     }
+//     catch (err) {
+//         console.log("Vegs error:", err)
+//     }
+// }
 module.exports.fruit = async () => {
     try {
         const fruit = await db.query('SELECT sort.id, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +

@@ -1,6 +1,8 @@
-import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE} from "./types";
+import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE, GETVEGS} from "./types";
 
 const initialState = {
+    apiResponse: "",
+    pageTitle: "React Components",
     counter: 50,
     isAuthenticated: false,
     message: undefined,
@@ -11,7 +13,7 @@ const initialState = {
         numberOfPlants: 0
     },
     dbToPrint: undefined,
-    vegs: [],
+    vegs: undefined,
     fruit: [],
     herbs: [],
     decs: []
@@ -62,6 +64,12 @@ const rootReducer = (state=initialState, action) => {
             return {
                 ...state,
                 dbToPrint: action.payload.base
+            }
+        }
+        case GETVEGS: {
+            return {
+                ...state,
+                vegs: action.payload.vegs
             }
         }
         default: return state

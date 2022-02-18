@@ -2,7 +2,7 @@ import React from 'react'
 import '../css/App.css';
 import {NavLink} from "react-router-dom";
 
-export default function ShowBase(props) {
+const ShowBase = (props) => {
     return (
         <div className="DBwrapper">
             <h2>
@@ -56,3 +56,5 @@ export default function ShowBase(props) {
 
     )
 }
+
+export default ShowBase
