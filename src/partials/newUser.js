@@ -1,61 +1,52 @@
-import React from 'react'
+import React, {useState} from 'react'
 import '../css/App.css';
 
 import axios from "axios";
 import {API_URL} from "../config";
+import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
+import {connect} from "react-redux";
 
-export default class newUser extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: "",
-            password: "",
-            email: "",
-            apiResponse: '',
-            message: "",
-            ifPwsMatch: false,
-            emailMessage: "",
-            unMessage: '',
-            pwMessage: "",
-            repPwMessage: "",
-            ifValid: false
-        };
+const NewUser = (props) => {
+    const [state, setState] = useState({
+        username: "",
+        password: "",
+        email: "",
+        apiResponse: '',
+        message: "",
+        ifPwsMatch: false,
+        emailMessage: "",
+        unMessage: '',
+        pwMessage: "",
+        repPwMessage: "",
+        ifValid: false
+    })
 
-        this.registerHandler = this.registerHandler.bind(this);
-        this.ifPwsMatch = this.ifPwsMatch.bind(this);
-        this.changeHandler = this.changeHandler.bind(this);
-        this.ifFormvalid = this.ifFormvalid.bind(this);
-        this.checkUsername = this.checkUsername.bind(this);
-        this.checkEmail = this.checkEmail.bind(this);
-        this.checkPw = this.checkPw.bind(this);
-        // this.checkUsername = this.checkUsername.bind(this);
-
-        // this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    ifFormvalid = async () => {
-        // console.log("this.state.username ifFormvalid: ", this.state.username )
-        // console.log ("this.checkUsername(this.state.username) :", (this.state.username, this.checkUsername(this.state.username)== true))
-        // console.log("this.checkEmail(this.state.email) :", (this.checkEmail(this.state.email) == true))
-        // console.log("this.password(this.state.password) :", (this.checkPw(this.state.password) == true))
-        // console.log("this.match(this.state.match) :", (this.state.ifPwsMatch == true))
+    const ifFormvalid = async () => {
+        console.log("state.username ifFormvalid: ", state.username )
+        // console.log ("checkUsername(state.username) :", (state.username, checkUsername(state.username)== true))
+        // console.log("checkEmail(state.email) :", (checkEmail(state.email) == true))
+        // console.log("password(state.password) :", (checkPw(state.password) == true))
+        // console.log("match(state.match) :", (state.ifPwsMatch == true))
         // console.log(
-        //     (this.checkUsername(this.state.username) == true)
-        //     && (this.checkEmail(this.state.email) == true)
-        //     && (this.checkPw(this.state.password) == true)
-        //     && (this.state.ifPwsMatch == true)
+        //     (checkUsername(state.username) == true)
+        //     && (checkEmail(state.email) == true)
+        //     && (checkPw(state.password) == true)
+        //     && (state.ifPwsMatch == true)
         // )
          const ifValid = await (
-            (this.checkUsername(this.state.username) == true)
-            && (this.checkEmail(this.state.email) == true)
-            && (this.checkPw(this.state.password) == true)
-            && (this.state.ifPwsMatch == true)
+            (checkUsername(state.username) == true)
+            && (checkEmail(state.email) == true)
+            && (checkPw(state.password) == true)
+            && (state.ifPwsMatch == true)
         )
-        this.setState({ifValid: ifValid})
+        setState({
+            ...state,
+            ifValid: ifValid
+        })
         // console.log("ifValid: ", ifValid)
     }
 
-    checkEmail(value) {
+    const checkEmail = (value) => {
         try {
             if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
                 throw new Error("Value must be email");
@@ -67,7 +58,7 @@ export default class newUser extends React.Component {
         }
     }
 
-    checkUsername(value) {
+    const checkUsername = (value) => {
         // console.log("Starting...")
         try {
             if (value.match(/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{6,19}$/) == null) {
@@ -80,8 +71,11 @@ export default class newUser extends React.Component {
         }
     }
 
-    checkPw(value) {
-        this.setState({password: value});
+    const checkPw = (value) => {
+        setState({
+            ...state,
+            password: value}
+        );
         try {
             if (value.length < 8) {
                 throw new Error("At least 8 chars");
@@ -98,13 +92,19 @@ export default class newUser extends React.Component {
         }
     }
 
-    ifPwsMatch = async (value)  => {
+    const ifPwsMatch = async value  => {
         try {
-            if (value != this.state.password) {
-                this.setState({ifPwsMatch: false});
+            if (value !== state.password) {
+                setState({
+                    ...state,
+                    ifPwsMatch: false
+                });
                 throw new Error("Pws don't match");
             } else {
-                this.setState({ifPwsMatch: true})
+                setState({
+                    ...state,
+                    ifPwsMatch: true
+                })
                 console.log("Password Rep: ", value)
                 return true
             }
@@ -113,72 +113,97 @@ export default class newUser extends React.Component {
         }
     }
 
-    changeHandler = async (event) => {
+    const changeHandler = async event => {
         let result = true;
-        // console.log("event.target.name", event.target.name)
+        console.log("changeHandler CHANGED event.target.name", event.target.name)
         switch (event.target.name) {
             case "email":
-                // this.setState({email: event.target.value})
-                result = await this.checkEmail(event.target.value);
-                // console.log("result: ", result)
-                if (result == true) {
-                    this.setState({emailMessage: "Email true", email: event.target.value})
+                // setState({email: event.target.value})
+                result = await checkEmail(event.target.value);
+                console.log("result: ", result)
+                if (result === true) {
+                    setState({
+                        ...state,
+                        emailMessage: "Email true",
+                        email: event.target.value
+                    })
                     console.log()
                 } else {
-                    this.setState({emailMessage: result.message.toString(), formValid: false})
+                    setState({
+                        ...state,
+                        emailMessage: result.message.toString(),
+                        formValid: false
+                    })
                     // console.log(result.message.toString())
                 }
-                this.ifFormvalid()
+                await ifFormvalid()
                 break
             case "username":
-                // this.setState({username: event.target.value})
-                // console.log("1. event.target.value", event.target.value)
-                result = await this.checkUsername(event.target.value)
+                // setState({username: event.target.value})
+                console.log("1. event.target.value", event.target.value)
+                result = await checkUsername(event.target.value)
                 // console.log("2.", result)
-                if (result == true) {
-                    // console.log("3. IfRestrue: User name to rem: ", event.target.value)
-                    this.setState({unMessage: "User Name true", username: event.target.value}, () => {
-                        // console.log("4. this.state.username changeHandler: ", this.state.username)
+                if (result === true) {
+                    console.log("3. IfRestrue: User name to rem: ", event.target.value)
+                    setState({
+                        ...state,
+                        unMessage: "User Name true",
+                        username: event.target.value
                     })
                 } else {
-                    this.setState({unMessage: result.message.toString()})
+                    setState({
+                        ...state,
+                        unMessage: result.message.toString()
+                    })
                 }
-                this.ifFormvalid()
+                await ifFormvalid()
                 break
             case "password":
-                result = await this.checkPw(event.target.value);
-                if (result == true) {
-                    this.setState({pwMessage: "Pw true", formValid: true})
+                result = await checkPw(event.target.value);
+                if (result === true) {
+                    setState({
+                        ...state,
+                        pwMessage: "Pw true",
+                        formValid: true
+                    })
                 } else {
-                    this.setState({pwMessage: result.message.toString(), formValid: false})
-                    // console.log(result.message.toString())
+                    setState({
+                        ...state,
+                        pwMessage: result.message.toString(),
+                        formValid: false
+                    })
+                    console.log(result.message.toString())
                 }
-                this.ifFormvalid()
+                await ifFormvalid()
                 break
             case "repPassword":
-                result = await this.ifPwsMatch(event.target.value)
+                await ifPwsMatch(event.target.value)
                     .then(result => {
-                        if (result == true) {
-                            this.setState({repPwMessage: "Pws match"})
+                        if (result === true) {
+                            setState({
+                                ...state,
+                                repPwMessage: "Pws match"
+                            })
                         } else {
-                            this.setState({repPwMessage: result.message.toString()})
+                            setState({
+                                ...state,
+                                repPwMessage: result.message.toString()
+                            })
                         }
                     })
-                    .then(
-                        this.ifFormvalid()
-                    )
+                    .then(result => {
+                        ifFormvalid()
+                    })
                     .catch(error => {
-                        // handle error
                         console.log(error);
                     })
         }
-        // this.ifFormvalid()
     }
 
-    resetForm = async () => {
+    const resetForm = async () => {
         document.getElementById("regForm").reset()
-        this.setState({
-            ...this.state,
+        setState({
+            ...state,
             emailMessage: "",
             unMessage: '',
             pwMessage: "",
@@ -186,38 +211,35 @@ export default class newUser extends React.Component {
         })
     }
 
-    registerHandler = async (event) => {
+    const registerHandler = async event => {
         event.preventDefault();
         const regData = {
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email,
+            username: state.username,
+            password: state.password,
+            email: state.email,
         }
-        const response = await axios.post(API_URL + 'api/register', regData)
+        await axios.post(API_URL + 'api/register', regData)
             .then(response => {
                 console.log("post.response.data: ", response.data);
-                this.setState({apiResponse: response.data.regSuccess, message: response.data.message});
-                console.log("apiResponse: ", this.state.apiResponse)
-                // document.getElementById("apiID").innerText =  "API response:" + this.state.apiResponse
+                setState({
+                    ...state,
+                    apiResponse: response.data.regSuccess,
+                    message: response.data.message
+                });
+                console.log("apiResponse: ", state.apiResponse)
             })
             .then( response => {
                 console.log("Am I here?");
-                this.resetForm()
+                resetForm()
             })
             .catch(error => {
-                // handle error
                 console.log(error);
             })
-
-        // document.getElementsByClassName("errorspan")
     }
-
-    render() {
-        // const {username, email} = this.state
         return (
             <div id="addNewUser">
                 <h2>Регистрация</h2>
-                <form onSubmit={this.registerHandler} autoComplete="on" id="regForm">
+                <form onSubmit={registerHandler} autoComplete="on" id="regForm">
                     <div className="regField">
                         <div className="labelInput">
                             <label className="regLabel">User name:</label>
@@ -230,10 +252,10 @@ export default class newUser extends React.Component {
                                 className="regInput"
                                 // value={username}
                                 // defaultValue={username}
-                                onChange={this.changeHandler}/>
+                                onChange={changeHandler}/>
                         </div>
 
-                        <span id="nameErrorSpan" className="errorspan">{this.state.unMessage}</span>
+                        <span id="nameErrorSpan" className="errorspan">{state.unMessage}</span>
                     </div>
                     <div className="regField">
                         <div className="labelInput">
@@ -245,9 +267,9 @@ export default class newUser extends React.Component {
                                 id="regPw"
                                 className="regInput"
                                 // value={password}
-                                onChange={this.changeHandler}/>
+                                onChange={changeHandler}/>
                         </div>
-                        <span id="pwErrorSpan" className="errorspan"> {this.state.pwMessage}</span>
+                        <span id="pwErrorSpan" className="errorspan"> {state.pwMessage}</span>
                     </div>
                     <div className="regField">
 
@@ -261,10 +283,10 @@ export default class newUser extends React.Component {
                                 id="regRepPw"
                                 className="regInput"
                                 // value = ''
-                                onChange={this.changeHandler}/>
+                                onChange={changeHandler}/>
                         </div>
 
-                        <span id="repPwErrorSpan" className="errorspan">{this.state.repPwMessage}</span>
+                        <span id="repPwErrorSpan" className="errorspan">{state.repPwMessage}</span>
                     </div>
                     <div className="regField">
                         <div className="labelInput">
@@ -277,30 +299,46 @@ export default class newUser extends React.Component {
                                 id="regEmail"
                                 className="regInput"
                                 // defaultValue={email}
-                                onChange={this.changeHandler}/>
+                                onChange={changeHandler}/>
 
                         </div>
-                        <span id="emailErrorSpan" className="errorspan">{this.state.emailMessage}</span>
+                        <span id="emailErrorSpan" className="errorspan">{state.emailMessage}</span>
                     </div>
-                    {/*<NavLink to="/newUser" className="button">Регистрация</NavLink>*/}
                     <div className="labelInput">
                         <button
                             type="submit"
                             className="button"
                             value="AddNewUser"
-                            // className="centerbutton"
-                            // id="submitIt"
-                            // onClick={this.registerHandler}
-                            disabled={!this.state.ifValid}
-
+                            disabled={!state.ifValid}
                         >
                             AddNewUser
                         </button>
                     </div>
 
                 </form>
-                <p className="errorSpan"> {this.state.apiResponse.toString()} {this.state.message}</p>
+                <p className="errorSpan"> {state.apiResponse.toString()} {state.message}</p>
             </div>
         )
+}
+
+const mapStateToProps = (state) => {
+    return {
+        counter: state.counter,
+        isAuthenticated: state.isAuthenticated,
+        message: state.message,
+        currentUser: state.currentUser,
+        apiResponse: state.apiResponse,
+        pageTitle: state.pageTitle
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
+        unauthorize: () => dispatch(unauthorize()),
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
+        setMessage: message => dispatch(setMessage(message))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewUser);
