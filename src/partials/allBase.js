@@ -6,7 +6,7 @@ import {authorize, getBase, setMessage, smthAsync, unauthorize, updateBase} from
 import {connect} from "react-redux";
 const axios = require('axios').default;
 
-export const getMyBase = async() => {
+export const getMyBase = async () => {
     console.log("ALLBASE State empty");
     const response = await axios({
         method: 'get',
@@ -48,7 +48,7 @@ export const columns = [
 const AllBase = (props) => {
     useEffect(() => {
         props.updateBase();
-    })
+    }, [])
     console.log('allbase props:', props)
     return (
         <div>

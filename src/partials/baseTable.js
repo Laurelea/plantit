@@ -25,30 +25,13 @@ const Reacttable = (props) => {
             {
             columns,
             data,
-            initialState: {pageIndex: 1},
+            initialState: {pageIndex: 0},
         },
             useSortBy,
             usePagination
         );
         return (
             <>
-                {/*{        console.log("Started table")*/}
-                {/*}*/}
-            {/*<pre>*/}
-            {/*    <code>*/}
-            {/*      {JSON.stringify(*/}
-            {/*          {*/}
-            {/*              pageIndex,*/}
-            {/*              pageSize,*/}
-            {/*              pageCount,*/}
-            {/*              canNextPage,*/}
-            {/*              canPreviousPage,*/}
-            {/*          },*/}
-            {/*          null,*/}
-            {/*          2*/}
-            {/*      )}*/}
-            {/*    </code>*/}
-            {/*</pre>*/}
             <table {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup) => (
@@ -80,8 +63,6 @@ const Reacttable = (props) => {
                 })}
                 </tbody>
             </table>
-                {/*{        console.log("Finished table")*/}
-                {/*}*/}
                 <div className="pagination">
                     <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                         {'<<'}

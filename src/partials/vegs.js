@@ -1,20 +1,21 @@
-import React  from 'react'
+import React, {useEffect} from 'react'
 import '../css/App.css';
 import Reacttable from "./baseTable";
 import { getBase, updateBase} from "../store/actions";
 import {connect} from "react-redux";
-
-const columns = require('./allBase')
+import {columns} from "./allBase";
 
 const Vegs = (props) => {
     console.log('vegs props:', props)
-    // call getBase for update
+    useEffect(() => {
+        props.updateBase();
+    }, [])
     return (
             <div>
                 <h2>Овощи</h2>
                 { props.dbToPrint
                     ?
-                    <Reacttable dbToPrint={props.dbToPrint.filter(row => row.category === 'Vegs')} columns = {columns}/>
+                    <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Vegs')} columns = {columns}/>
                     : null }
             </div>
         )
