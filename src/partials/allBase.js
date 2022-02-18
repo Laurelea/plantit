@@ -18,7 +18,7 @@ export const getMyBase = async () => {
     return response.data.rows
 }
 
-export const columns = [
+const columns = [
     {
         Header: "ID",
         accessor: "id",
@@ -45,7 +45,7 @@ export const columns = [
         accessor: "user_name",
     }
 ];
-const AllBase = (props) => {
+const AllBaseComponent = (props) => {
     useEffect(() => {
         props.updateBase();
     }, [])
@@ -53,8 +53,71 @@ const AllBase = (props) => {
     return (
         <div>
             {props.dbToPrint
-            ?  <Reacttable dbToPrint={props.dbToPrint} columns = {columns}/>
-            : null}
+                ?  <Reacttable dbToPrint={props.dbToPrint} columns = {columns}/>
+                : null}
+        </div>
+    )
+}
+
+const VegsComponent = (props) => {
+    console.log('vegs props:', props)
+    useEffect(() => {
+        props.updateBase();
+    }, [])
+    return (
+        <div>
+            <h2>Овощи</h2>
+            { props.dbToPrint
+                ?
+                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Vegs')} columns = {columns}/>
+                : null }
+        </div>
+    )
+}
+const FruitComponent = (props) => {
+    console.log('fruit props:', props)
+    useEffect(() => {
+        props.updateBase();
+    }, [])
+    return (
+        <div>
+            <h2>Фрукты</h2>
+            { props.dbToPrint
+                ?
+                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Fruit')} columns = {columns}/>
+                : null }
+        </div>
+    )
+}
+
+const HerbsComponent = (props) => {
+    console.log('herbs props:', props)
+    useEffect(() => {
+        props.updateBase();
+    }, [])
+    return (
+        <div>
+            <h2>Травы</h2>
+            { props.dbToPrint
+                ?
+                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Herbs')} columns = {columns}/>
+                : null }
+        </div>
+    )
+}
+
+const DecsComponent = (props) => {
+    console.log('decs props:', props)
+    useEffect(() => {
+        props.updateBase();
+    }, [])
+    return (
+        <div>
+            <h2>Цветы</h2>
+            { props.dbToPrint
+                ?
+                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Decs')} columns = {columns}/>
+                : null }
         </div>
     )
 }
@@ -76,4 +139,17 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllBase);
+
+
+const AllBase = connect(mapStateToProps, mapDispatchToProps)(AllBaseComponent);
+const Vegs = connect(mapStateToProps, mapDispatchToProps)(VegsComponent);
+const Fruit = connect(mapStateToProps, mapDispatchToProps)(FruitComponent);
+const Herbs = connect(mapStateToProps, mapDispatchToProps)(HerbsComponent);
+const Decs = connect(mapStateToProps, mapDispatchToProps)(DecsComponent);
+
+export default AllBase
+
+export { Vegs }
+export { Fruit }
+export { Herbs }
+export { Decs }

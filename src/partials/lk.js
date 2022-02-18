@@ -1,9 +1,7 @@
 import React from "react";
-import MainStore from "../store/MainStore";
 import {NavLink} from "react-router-dom";
 import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
 import {connect} from "react-redux";
-const axios = require('axios').default;
 
 const Account = (props) => {
     return (

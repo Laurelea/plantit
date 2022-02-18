@@ -6,7 +6,7 @@ import {
     GETBASE
 } from "./types";
 import Logout from '../partials/logout'
-import {getMyBase} from "../partials/allBase";
+import { getMyBase } from "../partials/allBase";
 
 export const authorize = (userID, userName, userEmail, numberOfPlants) => {
     return {

@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-// import {observer} from 'mobx-react';
-import MainStore from '../store/MainStore';
 import '../css/chat.css';
 import io from 'socket.io-client'
+import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
+import {connect} from "react-redux";
 
 
-const Chat =  () => {
+const Chat = (props) => {
 
     useEffect(async () => {
         let socket = await io.connect("https://es-plantit.herokuapp.com/");
@@ -26,7 +26,7 @@ const Chat =  () => {
             document.getElementById("chatroom").hidden = false;
             document.getElementById("enter_button").hidden = true;
             socket.emit('set_username', {
-                username: MainStore.currentUser.userName
+                username: props.currentUser.userName
             })
         })
 
@@ -100,4 +100,24 @@ const Chat =  () => {
     )
 }
 
-export default Chat
+const mapStateToProps = (state) => {
+    return {
+        counter: state.counter,
+        isAuthenticated: state.isAuthenticated,
+        message: state.message,
+        currentUser: state.currentUser,
+        apiResponse: state.apiResponse,
+        pageTitle: state.pageTitle
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
+        unauthorize: () => dispatch(unauthorize()),
+        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
+        setMessage: message => dispatch(setMessage(message))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

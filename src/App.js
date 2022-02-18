@@ -3,10 +3,10 @@ import './css/App.css';
 import Newheader from "./partials/Newheader";
 import ShowBase from "./partials/showBase";
 import AllBase from "./partials/allBase";
-import Vegs from "./partials/vegs"
-import Fruit from "./partials/fruit"
-import Herbs from "./partials/herbs"
-import Decs from "./partials/decs"
+import { Vegs } from "./partials/allBase"
+import { Fruit } from "./partials/allBase"
+import { Herbs } from "./partials/allBase"
+import { Decs } from "./partials/allBase"
 import Auth from "./partials/auth";
 import Footer from "./partials/footer";
 import { Switch, Route } from "react-router-dom";
