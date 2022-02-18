@@ -1,50 +1,43 @@
-import React from 'react'
+import React, {useState} from 'react'
 import '../css/App.css';
-import {NavLink, Link} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
 import {API_URL} from "../config";
 import {connect} from "react-redux";
 import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
 
-// const cookies = new Cookies();
 
-class Auth extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loginValue: '',
-            pwValue: '',
-            loginValid: false,
-            pwValid: false,
-            loginErrorMessage: '',
-            pwErrorMessage: ''
-        };
+const Auth = (props) => {
+    const [state, setState] = useState({
+        loginValue: '',
+        pwValue: '',
+        loginValid: false,
+        pwValid: false,
+        loginErrorMessage: '',
+        pwErrorMessage: ''
+    });
 
-        this.handleChange = this.handleChange.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    resetForm = async () => {
+    const resetForm = () => {
         document.getElementById("authForm").reset()
-        this.setState({
-            ...this.state,
+        setState({
+            ...state,
             loginErrorMessage: "",
             pwErrorMessage: ""
         })
     }
-    loginHandler = async (event) => {
+    const loginHandler = async (event) => {
         event.preventDefault()
         // console.log(event.target)
         const authData = {
-            password: this.state.pwValue,
-            email: this.state.loginValue,
+            password: state.pwValue,
+            email: state.loginValue,
         }
         const response = await axios.post(API_URL + 'api/auth', authData)
             .then(response => {
                 console.log("post.response.data: ", response.data);
 
                 //При любом результате авторизации:
-                this.props.setMessage(response.data.message);
+                props.setMessage(response.data.message);
 
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
@@ -52,9 +45,9 @@ class Auth extends React.Component {
                         console.log("response.data.userID: ", response.data.userID)
                         console.log("response.data.numberOfPlants: ", response.data.numberOfPlants)
 
-                        this.props.authorize(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
-                        console.log("Mainstore current user numberOfPlants: ", this.props.currentUser.numberOfPlants)
-                        console.log("Mainstore current user userID: ",  this.props.currentUser.userID)
+                        props.authorize(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
+                        console.log("Mainstore current user numberOfPlants: ", props.currentUser.numberOfPlants)
+                        console.log("Mainstore current user userID: ",  props.currentUser.userID)
                     } catch (e) {
                         throw e
                     }
@@ -66,7 +59,7 @@ class Auth extends React.Component {
             })
     }
 
-    checkLogin(value) {
+    const checkLogin = (value) => {
         try {
             if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
                 throw new Error("Value must be email");
@@ -79,7 +72,7 @@ class Auth extends React.Component {
         }
     }
 
-    checkPassword(value) {
+    const checkPassword = (value) => {
         try {
             if (value.length < 8) {
                 throw new Error("Value is less than 8");
@@ -97,22 +90,22 @@ class Auth extends React.Component {
             return myError
         }
     }
-    handleChange(event) {
-        // this.setState({
-        //     field: event.target.name,
-        // });
+    const handleChange = (event) => {
         if (event.target.name === 'login') {
-            this.setState({
+            setState({
+                ...state,
                 loginValue: event.target.value,
             }, () => {
-                const result = this.checkLogin(event.target.value);
+                const result = checkLogin(event.target.value);
                 if (result == true) {
-                    this.setState({
+                    setState({
+                        ...state,
                         loginErrorMessage: "Email true",
                         loginValid: true
                     })
                 } else {
-                    this.setState({
+                    setState({
+                        ...state,
                         loginErrorMessage: result.message.toString(),
                         loginValid: false
                     })
@@ -120,25 +113,34 @@ class Auth extends React.Component {
             });
         }
         if (event.target.name === 'password') {
-            this.setState({
+            setState({
+                    ...state,
                     pwValue: event.target.value,
                 }, () => {
-                    const result = this.checkPassword(this.state.pwValue);
-                    if (result == true) {
-                        this.setState({pwErrorMessage: "Pw true", pwValid: true})
+                    const result = checkPassword(state.pwValue);
+                    if (result === true) {
+                        setState({
+                            ...state,
+                            pwErrorMessage: "Pw true",
+                            pwValid: true
+                        })
                     } else {
-                        this.setState({pwErrorMessage: result.message.toString(), pwValid: false})
+                        setState({
+                            ...state,
+                            pwErrorMessage: result.message.toString(),
+                            pwValid: false
+                        })
                     }
                 }
             );
         }
     }
 
-    render() {
+
         return (
             <div>
                 <h3>Авторизуйтесь для полного доступа</h3>
-            <form className="authForm" onSubmit={this.loginHandler} id="authForm">
+            <form className="authForm" onSubmit={loginHandler} id="authForm">
                 {/*action="login" method="post"*/}
                 <h2>Авторизация</h2>
                 <fieldset className="authField">
@@ -150,14 +152,14 @@ class Auth extends React.Component {
                             // pattern="[a-zA-Z]+"
                             // defaultValue= "laurelea@mail.ru"
                             required
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                         />
                     </label>
 
                     {
-                        this.state.loginErrorMessage
+                        state.loginErrorMessage
                             ?
-                            <span className="errorspan" id="loginErrorSpan">{this.state.loginErrorMessage}</span>
+                            <span className="errorspan" id="loginErrorSpan">{state.loginErrorMessage}</span>
                             : null
                     }
                     <label> Пароль
@@ -169,13 +171,13 @@ class Auth extends React.Component {
                             // defaultValue = "qwerty12"
                             // value = "qwerty12"
 
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                         />
                     </label>
                     {
-                        this.state.pwErrorMessage
+                        state.pwErrorMessage
                             ? <span className="errorspan"
-                                    id="passwordErrorSpan">{this.state.pwErrorMessage}</span>
+                                    id="passwordErrorSpan">{state.pwErrorMessage}</span>
                             : null
                     }
                 </fieldset>
@@ -184,21 +186,17 @@ class Auth extends React.Component {
                     <button
                         type="submit"
                         className="button"
-
-                        // value="login"
-                        // onClick={this.loginHandler}
-                        // disabled={!(this.state.loginValid && this.state.pwValid)}
                     >
                         Войти
                     </button>
                     {
-                        this.props.isAuthenticated
+                        props.isAuthenticated
                             ? <span className="errorspan"
-                                    id="authSuccessSpan">{this.props.message} {"\n"} You're logged in as {this.props.userName}</span>
+                                    id="authSuccessSpan">{props.message} {"\n"} You're logged in as {props.userName}</span>
                             : <span className="errorspan"
                                     id="authErrorSpan">{
-                                this.props.message
-                                    ? this.props.message
+                                props.message
+                                    ? props.message
                                     : null
                             }</span>
                     }
@@ -207,7 +205,7 @@ class Auth extends React.Component {
                 <NavLink to="/newUser" className="button">Регистрация</NavLink>
             </div>
         )
-    }
+
 }
 
 const mapStateToProps = (state) => {
