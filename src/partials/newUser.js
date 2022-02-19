@@ -1,49 +1,49 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import '../css/App.css';
-
 import axios from "axios";
-import {API_URL} from "../config";
-import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
-import {connect} from "react-redux";
+import { API_URL } from "../config";
+import { authorize, setMessage, smthAsync, unauthorize } from "../store/actions";
+import { connect } from "react-redux";
+import {reject} from "bcrypt/promises";
 
 const NewUser = (props) => {
+    const [c, setc] = useState({
+        cval: 0,
+        someval: ""
+    })
     const [state, setState] = useState({
+        counter: 0,
         username: "",
         password: "",
         email: "",
-        apiResponse: '',
+        apiResponse: "",
         message: "",
         ifPwsMatch: false,
         emailMessage: "",
-        unMessage: '',
+        unMessage: "",
         pwMessage: "",
-        repPwMessage: "",
-        ifValid: false
-    })
+        repPwMessage: ""
+    });
+    const[ifValid, setValid] = useState(false)
+
+    // useEffect(() => {
+    //     ifFormvalid()
+    // });
+
+    const add = event => {
+        console.log('await works!!')
+    }
 
     const ifFormvalid = async () => {
-        console.log("state.username ifFormvalid: ", state.username )
-        // console.log ("checkUsername(state.username) :", (state.username, checkUsername(state.username)== true))
-        // console.log("checkEmail(state.email) :", (checkEmail(state.email) == true))
-        // console.log("password(state.password) :", (checkPw(state.password) == true))
-        // console.log("match(state.match) :", (state.ifPwsMatch == true))
-        // console.log(
-        //     (checkUsername(state.username) == true)
-        //     && (checkEmail(state.email) == true)
-        //     && (checkPw(state.password) == true)
-        //     && (state.ifPwsMatch == true)
-        // )
-         const ifValid = await (
-            (checkUsername(state.username) == true)
-            && (checkEmail(state.email) == true)
-            && (checkPw(state.password) == true)
-            && (state.ifPwsMatch == true)
-        )
-        setState({
-            ...state,
-            ifValid: ifValid
-        })
-        // console.log("ifValid: ", ifValid)
+        console.log("state from ifFormvalid: ", state )
+         const ifCurrValid = await(
+            (checkUsername(state.username) === true)
+            && (checkEmail(state.email) === true)
+            && (checkPw(state.password) === true)
+            && (state.ifPwsMatch === true)
+        );
+        setValid(ifCurrValid);
+        console.log("ifValid: ", ifValid)
     }
 
     const checkEmail = (value) => {
@@ -71,7 +71,7 @@ const NewUser = (props) => {
         }
     }
 
-    const checkPw = (value) => {
+    const checkPw = value => {
         setState({
             ...state,
             password: value}
@@ -92,7 +92,7 @@ const NewUser = (props) => {
         }
     }
 
-    const ifPwsMatch = async value  => {
+    const ifPwsMatch = value  => {
         try {
             if (value !== state.password) {
                 setState({
@@ -113,99 +113,109 @@ const NewUser = (props) => {
         }
     }
 
-    const changeHandler = async event => {
+    const changeHandler = async (event) => {
+        // setState({
+        //     ...state,
+        //     counter: state.counter + 1
+        // });
+        setc({
+            ...c,
+            cval: c.cval + 1
+        })
         let result = true;
-        console.log("changeHandler CHANGED event.target.name", event.target.name)
         switch (event.target.name) {
-            case "email":
-                // setState({email: event.target.value})
-                result = await checkEmail(event.target.value);
-                console.log("result: ", result)
-                if (result === true) {
-                    setState({
-                        ...state,
-                        emailMessage: "Email true",
-                        email: event.target.value
-                    })
-                    console.log()
-                } else {
-                    setState({
-                        ...state,
-                        emailMessage: result.message.toString(),
-                        formValid: false
-                    })
-                    // console.log(result.message.toString())
-                }
-                await ifFormvalid()
-                break
+            // case "email":
+            //     result = await checkEmail(event.target.value);
+            //     console.log("result: ", result)
+            //     if (result === true) {
+            //         setState({
+            //             ...state,
+            //             emailMessage: "Email true",
+            //             email: event.target.value
+            //         })
+            //         console.log()
+            //     } else {
+            //         setState({
+            //             ...state,
+            //             emailMessage: result.message.toString(),
+            //             formValid: false
+            //         })
+            //     }
+            //     await ifFormvalid()
+            //     break
             case "username":
-                // setState({username: event.target.value})
-                console.log("1. event.target.value", event.target.value)
-                result = await checkUsername(event.target.value)
-                // console.log("2.", result)
+                console.log("Username in input", event.target.value)
+
+                result = checkUsername(event.target.value)
+                console.log("CheckUsername result", result);
                 if (result === true) {
-                    console.log("3. IfRestrue: User name to rem: ", event.target.value)
+                    console.log("Username to write to State: ", event.target.value);
                     setState({
                         ...state,
+                        counter: state.counter + 1,
                         unMessage: "User Name true",
-                        username: event.target.value
-                    })
+                        username: event.target.value,
+                    });
+                    console.log('STATE after change:', state);
                 } else {
+                    console.log('result not true')
                     setState({
                         ...state,
-                        unMessage: result.message.toString()
+                        unMessage: result.message.toString(),
                     })
                 }
+                // test(() => ifFormvalid())
+                // runPromise()
                 await ifFormvalid()
-                break
-            case "password":
-                result = await checkPw(event.target.value);
-                if (result === true) {
-                    setState({
-                        ...state,
-                        pwMessage: "Pw true",
-                        formValid: true
-                    })
-                } else {
-                    setState({
-                        ...state,
-                        pwMessage: result.message.toString(),
-                        formValid: false
-                    })
-                    console.log(result.message.toString())
-                }
-                await ifFormvalid()
-                break
-            case "repPassword":
-                await ifPwsMatch(event.target.value)
-                    .then(result => {
-                        if (result === true) {
-                            setState({
-                                ...state,
-                                repPwMessage: "Pws match"
-                            })
-                        } else {
-                            setState({
-                                ...state,
-                                repPwMessage: result.message.toString()
-                            })
-                        }
-                    })
-                    .then(result => {
-                        ifFormvalid()
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
+                // await add()
+            // case "password":
+            //     result = await checkPw(event.target.value);
+            //     if (result === true) {
+            //         setState({
+            //             ...state,
+            //             pwMessage: "Pw true",
+            //             formValid: true
+            //         })
+            //     } else {
+            //         setState({
+            //             ...state,
+            //             pwMessage: result.message.toString(),
+            //             formValid: false
+            //         })
+            //         console.log(result.message.toString())
+            //     }
+            //     await ifFormvalid()
+            //     break
+            // case "repPassword":
+            //     await ifPwsMatch(event.target.value)
+            //         .then(result => {
+            //             if (result === true) {
+            //                 setState({
+            //                     ...state,
+            //                     repPwMessage: "Pws match"
+            //                 })
+            //             } else {
+            //                 setState({
+            //                     ...state,
+            //                     repPwMessage: result.message.toString()
+            //                 })
+            //             }
+            //         })
+            //         .then(result => {
+            //             ifFormvalid()
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         })
         }
     }
 
-    const resetForm = async () => {
+    const resetForm = () => {
         document.getElementById("regForm").reset()
         setState({
             ...state,
             emailMessage: "",
-            unMessage: '',
+            unMessage: "",
             pwMessage: "",
             repPwMessage: "",
         })
@@ -224,7 +234,7 @@ const NewUser = (props) => {
                 setState({
                     ...state,
                     apiResponse: response.data.regSuccess,
-                    message: response.data.message
+                    message: response.data.message,
                 });
                 console.log("apiResponse: ", state.apiResponse)
             })
@@ -238,6 +248,10 @@ const NewUser = (props) => {
     }
         return (
             <div id="addNewUser">
+                <h2>Counter!!: {state.counter}</h2>
+                <h2>Username: {state.username}</h2>
+                <h2>C: {c.cval}</h2>
+                <button onClick={add}>Button</button>
                 <h2>Регистрация</h2>
                 <form onSubmit={registerHandler} autoComplete="on" id="regForm">
                     <div className="regField">
@@ -253,6 +267,8 @@ const NewUser = (props) => {
                                 // value={username}
                                 // defaultValue={username}
                                 onChange={changeHandler}/>
+                                {/*// onChange={e => setState({...state, counter: state.counter + 1})}/>*/}
+                                {/*// onChange={add}/>*/}
                         </div>
 
                         <span id="nameErrorSpan" className="errorspan">{state.unMessage}</span>
@@ -309,12 +325,11 @@ const NewUser = (props) => {
                             type="submit"
                             className="button"
                             value="AddNewUser"
-                            disabled={!state.ifValid}
+                            disabled={!ifValid}
                         >
                             AddNewUser
                         </button>
                     </div>
-
                 </form>
                 <p className="errorSpan"> {state.apiResponse.toString()} {state.message}</p>
             </div>
