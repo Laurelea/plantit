@@ -4,25 +4,24 @@ import axios from "axios";
 import { API_URL } from "../config";
 import { authorize, setMessage, smthAsync, unauthorize } from "../store/actions";
 import { connect } from "react-redux";
-import {reject} from "bcrypt/promises";
 
 const NewUser = (props) => {
-    const [c, setc] = useState({
-        cval: 0,
-        someval: ""
-    })
+    // const [c, setc] = useState({
+    //     cval: 0,
+    //     someval: ""
+    // })
     const [state, setState] = useState({
         counter: 0,
         username: "",
         password: "",
         email: "",
-        apiResponse: "",
-        message: "",
+        apiResponse: undefined,
+        message: undefined,
         ifPwsMatch: false,
-        emailMessage: "",
-        unMessage: "",
-        pwMessage: "",
-        repPwMessage: ""
+        emailMessage: undefined,
+        unMessage: undefined,
+        pwMessage: undefined,
+        repPwMessage: undefined
     });
     const[ifValid, setValid] = useState(false)
 
@@ -30,12 +29,11 @@ const NewUser = (props) => {
         ifFormvalid()
     });
 
-    const add = event => {
-        console.log('await works!!')
-    }
+    // const add = event => {
+    //     console.log('await works!!')
+    // }
 
     const ifFormvalid = async () => {
-        console.log("state from ifFormvalid: ", state )
          const ifCurrValid = await(
             (checkUsername(state.username) === true)
             && (checkEmail(state.email) === true)
@@ -43,7 +41,6 @@ const NewUser = (props) => {
             && (state.ifPwsMatch === true)
         );
         setValid(ifCurrValid);
-        console.log("ifValid: ", ifValid)
     }
 
     const checkEmail = (value) => {
@@ -91,7 +88,6 @@ const NewUser = (props) => {
             if (value !== state.password) {
                 throw new Error("Pws don't match");
             } else {
-                console.log("Password Rep: ", value)
                 return true
             }
         } catch (myError) {
@@ -100,65 +96,31 @@ const NewUser = (props) => {
     }
 
     const changeHandler = async (event) => {
-        console.log('switch:', event.target.name)
-        setc({
-            ...c,
-            cval: c.cval + 1
-        })
-        // const handleSwitch = async (event) => {
         let result = true;
         switch (event.target.name) {
-            case "email":
-                result = await checkEmail(event.target.value);
-                console.log("result: ", result)
-                if (result === true) {
-                    setState({
-                        ...state,
-                        emailMessage: "Email true",
-                        email: event.target.value
-                    })
-                    console.log()
-                } else {
-                    setState({
-                        ...state,
-                        emailMessage: result.message.toString(),
-                        email: event.target.value
-                    })
-                }
-                // await ifFormvalid()
-                break
             case "username":
-                console.log("Username in input", event.target.value)
                 result = checkUsername(event.target.value)
-                console.log("CheckUsername result", result);
                 if (result === true) {
-                    console.log("Username to write to State: ", event.target.value);
                     setState({
                         ...state,
                         counter: state.counter + 1,
-                        unMessage: "User Name true",
+                        unMessage: undefined,
                         username: event.target.value,
                     });
-                    console.log('STATE after change:', state);
                 } else {
-                    console.log('result not true')
                     setState({
                         ...state,
                         unMessage: result.message.toString(),
                         username: event.target.value
                     })
                 }
-                // test(() => ifFormvalid())
-                // runPromise()
-                // await ifFormvalid()
                 break
             case "password":
-                console.log("Password triggered: ", event.target.value)
                 result = checkPw(event.target.value);
                 if (result === true) {
                     setState({
                         ...state,
-                        pwMessage: "Pw true",
+                        pwMessage: undefined,
                         password: event.target.value
                     })
                 } else {
@@ -167,7 +129,6 @@ const NewUser = (props) => {
                         pwMessage: result.message.toString(),
                         password: event.target.value
                     })
-                    console.log(result.message.toString())
                 }
                 // await ifFormvalid()
                 break
@@ -176,7 +137,7 @@ const NewUser = (props) => {
                 if (result === true) {
                     setState({
                         ...state,
-                        repPwMessage: "Pws match",
+                        repPwMessage: undefined,
                         ifPwsMatch: true
                     })
                 } else {
@@ -186,26 +147,29 @@ const NewUser = (props) => {
                         ifPwsMatch: false
                     })
                 }
-                // await ifFormvalid()
+                break
+            case "email":
+                result = await checkEmail(event.target.value);
+                if (result === true) {
+                    setState({
+                        ...state,
+                        emailMessage: undefined,
+                        email: event.target.value
+                    })
+                } else {
+                    setState({
+                        ...state,
+                        emailMessage: result.message.toString(),
+                        email: event.target.value
+                    })
+                }
                 break
         }
-        // }
-        // await handleSwitch(event)
-            // .then(() => ifFormvalid())
-            // .catch(err => console.log('handleSwitch run: ', err))
-        // await ifFormvalid()
     }
 
-    const resetForm = () => {
-        document.getElementById("regForm").reset()
-        setState({
-            ...state,
-            emailMessage: "",
-            unMessage: "",
-            pwMessage: "",
-            repPwMessage: "",
-        })
-    }
+    // const resetForm = () => {
+    //     document.getElementById("regForm").reset()
+    // }
 
     const registerHandler = async event => {
         event.preventDefault();
@@ -216,17 +180,23 @@ const NewUser = (props) => {
         }
         await axios.post(API_URL + 'api/register', regData)
             .then(response => {
-                console.log("post.response.data: ", response.data);
+                // console.log("post.response.data: ", response.data);
                 setState({
                     ...state,
                     apiResponse: response.data.regSuccess,
                     message: response.data.message,
+                    emailMessage: undefined,
+                    unMessage: undefined,
+                    pwMessage: undefined,
+                    repPwMessage: undefined
                 });
-                console.log("apiResponse: ", state.apiResponse)
+                // console.log("apiResponse: ", state.apiResponse)
             })
-            .then( response => {
-                console.log("Am I here?");
-                resetForm()
+            .then( () => {
+                // console.log('state message:', state.message)
+                // console.log("Am I here?");
+                // resetForm()
+                document.getElementById("regForm").reset()
             })
             .catch(error => {
                 console.log(error);
@@ -234,10 +204,10 @@ const NewUser = (props) => {
     }
         return (
             <div id="addNewUser">
-                <h2>Counter!!: {state.counter}</h2>
-                <h2>Username: {state.username}</h2>
-                <h2>C: {c.cval}</h2>
-                <button onClick={add}>Button</button>
+                {/*<h2>Counter!!: {state.counter}</h2>*/}
+                {/*<h2>Username: {state.username}</h2>*/}
+                {/*<h2>C: {c.cval}</h2>*/}
+                {/*<button onClick={add}>Button</button>*/}
                 <h2>Регистрация</h2>
                 <form onSubmit={registerHandler} autoComplete="on" id="regForm">
                     <div className="regField">
@@ -253,11 +223,11 @@ const NewUser = (props) => {
                                 // value={username}
                                 // defaultValue={username}
                                 onChange={changeHandler}/>
-                                {/*// onChange={e => setState({...state, counter: state.counter + 1})}/>*/}
-                                {/*// onChange={add}/>*/}
                         </div>
 
-                        <span id="nameErrorSpan" className="errorspan">{state.unMessage}</span>
+                        <span id="nameErrorSpan" className="errorspan">
+                            {state.unMessage ? state.unMessage : null}
+                        </span>
                     </div>
                     <div className="regField">
                         <div className="labelInput">
@@ -271,7 +241,9 @@ const NewUser = (props) => {
                                 // value={password}
                                 onChange={changeHandler}/>
                         </div>
-                        <span id="pwErrorSpan" className="errorspan"> {state.pwMessage}</span>
+                        <span id="pwErrorSpan" className="errorspan">
+                            {state.pwMessage ? state.pwMessage : null}
+                        </span>
                     </div>
                     <div className="regField">
 
@@ -288,7 +260,9 @@ const NewUser = (props) => {
                                 onChange={changeHandler}/>
                         </div>
 
-                        <span id="repPwErrorSpan" className="errorspan">{state.repPwMessage}</span>
+                        <span id="repPwErrorSpan" className="errorspan">
+                            {state.repPwMessage ? state.repPwMessage : null}
+                        </span>
                     </div>
                     <div className="regField">
                         <div className="labelInput">
@@ -304,7 +278,9 @@ const NewUser = (props) => {
                                 onChange={changeHandler}/>
 
                         </div>
-                        <span id="emailErrorSpan" className="errorspan">{state.emailMessage}</span>
+                        <span id="emailErrorSpan" className="errorspan">
+                            {state.emailMessage ? state.emailMessage : null}
+                        </span>
                     </div>
                     <div className="labelInput">
                         <button
@@ -317,7 +293,10 @@ const NewUser = (props) => {
                         </button>
                     </div>
                 </form>
-                <p className="errorSpan"> {state.apiResponse.toString()} {state.message}</p>
+                <p className="errorspan">
+                    {/*{state.apiResponse ? state.apiResponse.toString() + '\n' : null}*/}
+                    {state.message ? state.message : null}
+                </p>
             </div>
         )
 }
