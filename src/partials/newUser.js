@@ -26,9 +26,9 @@ const NewUser = (props) => {
     });
     const[ifValid, setValid] = useState(false)
 
-    // useEffect(() => {
-    //     ifFormvalid()
-    // });
+    useEffect(() => {
+        ifFormvalid()
+    });
 
     const add = event => {
         console.log('await works!!')
@@ -59,7 +59,6 @@ const NewUser = (props) => {
     }
 
     const checkUsername = (value) => {
-        // console.log("Starting...")
         try {
             if (value.match(/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{6,19}$/) == null) {
                 throw new Error("Latin chars and digits. Starts with a char.");
@@ -72,10 +71,6 @@ const NewUser = (props) => {
     }
 
     const checkPw = value => {
-        setState({
-            ...state,
-            password: value}
-        );
         try {
             if (value.length < 8) {
                 throw new Error("At least 8 chars");
@@ -84,7 +79,6 @@ const NewUser = (props) => {
             } else if (value.match(/^[a-zA-Z]+[a-zA-Z0-9]*$/) == null) {
                 throw new Error("Latin chars and digits. Starts with a char.");
             } else {
-                // console.log("Password: ", value)
                 return true
             }
         } catch (myError) {
@@ -95,16 +89,8 @@ const NewUser = (props) => {
     const ifPwsMatch = value  => {
         try {
             if (value !== state.password) {
-                setState({
-                    ...state,
-                    ifPwsMatch: false
-                });
                 throw new Error("Pws don't match");
             } else {
-                setState({
-                    ...state,
-                    ifPwsMatch: true
-                })
                 console.log("Password Rep: ", value)
                 return true
             }
@@ -114,38 +100,35 @@ const NewUser = (props) => {
     }
 
     const changeHandler = async (event) => {
-        // setState({
-        //     ...state,
-        //     counter: state.counter + 1
-        // });
+        console.log('switch:', event.target.name)
         setc({
             ...c,
             cval: c.cval + 1
         })
+        // const handleSwitch = async (event) => {
         let result = true;
         switch (event.target.name) {
-            // case "email":
-            //     result = await checkEmail(event.target.value);
-            //     console.log("result: ", result)
-            //     if (result === true) {
-            //         setState({
-            //             ...state,
-            //             emailMessage: "Email true",
-            //             email: event.target.value
-            //         })
-            //         console.log()
-            //     } else {
-            //         setState({
-            //             ...state,
-            //             emailMessage: result.message.toString(),
-            //             formValid: false
-            //         })
-            //     }
-            //     await ifFormvalid()
-            //     break
+            case "email":
+                result = await checkEmail(event.target.value);
+                console.log("result: ", result)
+                if (result === true) {
+                    setState({
+                        ...state,
+                        emailMessage: "Email true",
+                        email: event.target.value
+                    })
+                    console.log()
+                } else {
+                    setState({
+                        ...state,
+                        emailMessage: result.message.toString(),
+                        email: event.target.value
+                    })
+                }
+                // await ifFormvalid()
+                break
             case "username":
                 console.log("Username in input", event.target.value)
-
                 result = checkUsername(event.target.value)
                 console.log("CheckUsername result", result);
                 if (result === true) {
@@ -162,52 +145,55 @@ const NewUser = (props) => {
                     setState({
                         ...state,
                         unMessage: result.message.toString(),
+                        username: event.target.value
                     })
                 }
                 // test(() => ifFormvalid())
                 // runPromise()
-                await ifFormvalid()
-                // await add()
-            // case "password":
-            //     result = await checkPw(event.target.value);
-            //     if (result === true) {
-            //         setState({
-            //             ...state,
-            //             pwMessage: "Pw true",
-            //             formValid: true
-            //         })
-            //     } else {
-            //         setState({
-            //             ...state,
-            //             pwMessage: result.message.toString(),
-            //             formValid: false
-            //         })
-            //         console.log(result.message.toString())
-            //     }
-            //     await ifFormvalid()
-            //     break
-            // case "repPassword":
-            //     await ifPwsMatch(event.target.value)
-            //         .then(result => {
-            //             if (result === true) {
-            //                 setState({
-            //                     ...state,
-            //                     repPwMessage: "Pws match"
-            //                 })
-            //             } else {
-            //                 setState({
-            //                     ...state,
-            //                     repPwMessage: result.message.toString()
-            //                 })
-            //             }
-            //         })
-            //         .then(result => {
-            //             ifFormvalid()
-            //         })
-            //         .catch(error => {
-            //             console.log(error);
-            //         })
+                // await ifFormvalid()
+                break
+            case "password":
+                console.log("Password triggered: ", event.target.value)
+                result = checkPw(event.target.value);
+                if (result === true) {
+                    setState({
+                        ...state,
+                        pwMessage: "Pw true",
+                        password: event.target.value
+                    })
+                } else {
+                    setState({
+                        ...state,
+                        pwMessage: result.message.toString(),
+                        password: event.target.value
+                    })
+                    console.log(result.message.toString())
+                }
+                // await ifFormvalid()
+                break
+            case "repPassword":
+                result = ifPwsMatch(event.target.value)
+                if (result === true) {
+                    setState({
+                        ...state,
+                        repPwMessage: "Pws match",
+                        ifPwsMatch: true
+                    })
+                } else {
+                    setState({
+                        ...state,
+                        repPwMessage: result.message.toString(),
+                        ifPwsMatch: false
+                    })
+                }
+                // await ifFormvalid()
+                break
         }
+        // }
+        // await handleSwitch(event)
+            // .then(() => ifFormvalid())
+            // .catch(err => console.log('handleSwitch run: ', err))
+        // await ifFormvalid()
     }
 
     const resetForm = () => {
