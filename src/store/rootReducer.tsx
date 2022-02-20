@@ -1,6 +1,6 @@
-import {AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE} from "./types";
+import { IReduxState, TAction, AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE } from "./types";
 
-const initialState = {
+const initialState: IReduxState = {
     apiResponse: "",
     pageTitle: "React Components",
     counter: 50,
@@ -15,7 +15,7 @@ const initialState = {
     dbToPrint: undefined
 }
 
-const rootReducer = (state=initialState, action) => {
+const rootReducer = (state=initialState, action: TAction) => {
     switch(action.type) {
         case AUTHORIZE:
             console.log('authorized success');
@@ -52,7 +52,7 @@ const rootReducer = (state=initialState, action) => {
                 ...state,
                 currentUser: {
                     ...state.currentUser,
-                    numberOfPlants: action.payload.number
+                    numberOfPlants: action.payload.numberOfPlants
                 }
             }
         }

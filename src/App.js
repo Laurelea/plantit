@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './css/App.css';
-import Newheader from "./partials/Newheader";
+import Newheader from "./partials/header";
 import ShowBase from "./partials/showBase";
 import AllBase from "./partials/allBase";
 import { Vegs } from "./partials/allBase"

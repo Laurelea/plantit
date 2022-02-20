@@ -1,15 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import '../css/App.css';
-import {NavLink}  from "react-router-dom";
-import {connect} from "react-redux";
-import {authorize, setMessage, smthAsync, unauthorize} from "../store/actions";
+import { NavLink }  from "react-router-dom";
+import { connect } from "react-redux";
+import { unauthorize } from "../store/actions";
+import { IReduxState } from "../store/types";
 
-const Newheader = (props) =>  {
-    const LogoutHandler = async(event) => {
+// authorize: (userID: number, userName: string, userEmail: string, numberOfPlants: number) => IAuthorizeAction
+
+interface IHeaderProps {
+    unauthorize: () => void;
+    isAuthenticated: boolean;
+}
+
+const Newheader = (props: IHeaderProps) =>  {
+    const LogoutHandler = async(event: React.MouseEvent<HTMLElement>): Promise<void> => {
         event.preventDefault();
-        console.log("This is logout, babe");
-        await props.unauthorize()
-        await window.location.replace("/")
+        await props.unauthorize();
+        await window.location.replace("/");
     };
     return (
         <header className="Newheader">
@@ -28,7 +35,8 @@ const Newheader = (props) =>  {
                                 <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
                                 <li className="active"><NavLink to="/logout" exact onClick = {LogoutHandler}>ВЫЙТИ</NavLink></li>
                             </React.Fragment>
-                            : <li className="active"><NavLink to="/" exact>ТЕСТ</NavLink></li>}
+                            : <li className="active"><NavLink to="/" exact>ВОЙТИ</NavLink></li>
+                        }
                     </ul>
                 </div>
             </nav>
@@ -36,17 +44,7 @@ const Newheader = (props) =>  {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.isAuthenticated
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        unauthorize: () => dispatch(unauthorize())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Newheader);
+export default connect((state: IReduxState) => ({
+    isAuthenticated: state.isAuthenticated,
+}), { unauthorize })(Newheader);
 

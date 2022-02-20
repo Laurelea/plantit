@@ -1,19 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect, ChangeEvent} from 'react'
 import '../css/App.css';
 import axios from "axios";
 import { API_URL } from "../config";
-import { authorize, setMessage, smthAsync, unauthorize } from "../store/actions";
-import { connect } from "react-redux";
+// import { authorize, setMessage, smthAsync, unauthorize } from "../store/actions";
+// import { connect } from "react-redux";
+// import {IReduxState} from "../store/types";
 
-const NewUser = (props) => {
+interface INewUserState {
+    counter: number,
+    username: string,
+    password: string,
+    repPw: string,
+    email: string,
+    apiResponse: undefined | string,
+    message: undefined | string,
+    ifPwsMatch: boolean,
+    emailMessage: undefined | string,
+    unMessage: undefined | string,
+    pwMessage: undefined | string | boolean,
+    repPwMessage: undefined | string,
+}
+
+// interface INewUserProps {
+//
+// }
+
+const NewUser = () => {
     // const [c, setc] = useState({
     //     cval: 0,
     //     someval: ""
     // })
-    const [state, setState] = useState({
+    const [state, setState] = useState<INewUserState>({
         counter: 0,
         username: "",
         password: "",
+        repPw: '',
         email: "",
         apiResponse: undefined,
         message: undefined,
@@ -43,60 +64,44 @@ const NewUser = (props) => {
         setValid(ifCurrValid);
     }
 
-    const checkEmail = (value) => {
-        try {
-            if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
-                throw new Error("Value must be email");
-            } else {
-                return true
-            }
-        } catch (myError) {
-            return myError
+    const checkEmail = (value: string) : boolean=> {
+        if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
+            return false
+        } else {
+            return true
         }
     }
 
-    const checkUsername = (value) => {
-        try {
-            if (value.match(/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{6,19}$/) == null) {
-                throw new Error("Latin chars and digits. Starts with a char.");
-            } else {
-                return true
-            }
-        } catch (myError) {
-            return myError
+    const checkUsername = (value: string) : boolean=> {
+        if (value.match(/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{6,19}$/) == null) {
+            return false
+        } else {
+            return true
         }
     }
 
-    const checkPw = value => {
-        try {
-            if (value.length < 8) {
-                throw new Error("At least 8 chars");
-            } else if (value.length > 20) {
-                throw new Error("No more than 20 chars");
-            } else if (value.match(/^[a-zA-Z]+[a-zA-Z0-9]*$/) == null) {
-                throw new Error("Latin chars and digits. Starts with a char.");
-            } else {
-                return true
-            }
-        } catch (myError) {
-            return myError
+    const checkPw = (value: string) : boolean | string => {
+        if (value.length < 8) {
+            return "At least 8 chars";
+        } else if (value.length > 20) {
+            return "No more than 20 chars";
+        } else if (value.match(/^[a-zA-Z]+[a-zA-Z0-9]*$/) == null) {
+            return "Latin chars and digits. Starts with a char.";
+        } else {
+            return true
         }
     }
 
-    const ifPwsMatch = value  => {
-        try {
-            if (value !== state.password) {
-                throw new Error("Pws don't match");
-            } else {
-                return true
-            }
-        } catch (myError) {
-            return myError
+    const ifPwsMatch = (value: string) : boolean => {
+        if (value !== state.password) {
+            return false
+        } else {
+            return true
         }
     }
 
-    const changeHandler = async (event) => {
-        let result = true;
+    const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        let result;
         switch (event.target.name) {
             case "username":
                 result = checkUsername(event.target.value)
@@ -110,7 +115,7 @@ const NewUser = (props) => {
                 } else {
                     setState({
                         ...state,
-                        unMessage: result.message.toString(),
+                        unMessage: "Latin chars and digits. Starts with a char",
                         username: event.target.value
                     })
                 }
@@ -126,30 +131,31 @@ const NewUser = (props) => {
                 } else {
                     setState({
                         ...state,
-                        pwMessage: result.message.toString(),
+                        pwMessage: result,
                         password: event.target.value
                     })
                 }
-                // await ifFormvalid()
                 break
             case "repPassword":
                 result = ifPwsMatch(event.target.value)
                 if (result === true) {
                     setState({
                         ...state,
+                        repPw: event.target.value,
                         repPwMessage: undefined,
                         ifPwsMatch: true
                     })
                 } else {
                     setState({
                         ...state,
-                        repPwMessage: result.message.toString(),
+                        repPw: event.target.value,
+                        repPwMessage: "Pws don't match",
                         ifPwsMatch: false
                     })
                 }
                 break
             case "email":
-                result = await checkEmail(event.target.value);
+                result = checkEmail(event.target.value);
                 if (result === true) {
                     setState({
                         ...state,
@@ -159,7 +165,7 @@ const NewUser = (props) => {
                 } else {
                     setState({
                         ...state,
-                        emailMessage: result.message.toString(),
+                        emailMessage: "Value must be email",
                         email: event.target.value
                     })
                 }
@@ -167,11 +173,7 @@ const NewUser = (props) => {
         }
     }
 
-    // const resetForm = () => {
-    //     document.getElementById("regForm").reset()
-    // }
-
-    const registerHandler = async event => {
+    const registerHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const regData = {
             username: state.username,
@@ -180,9 +182,12 @@ const NewUser = (props) => {
         }
         await axios.post(API_URL + 'api/register', regData)
             .then(response => {
-                // console.log("post.response.data: ", response.data);
                 setState({
                     ...state,
+                    username: '',
+                    password: '',
+                    email: '',
+                    repPw: '',
                     apiResponse: response.data.regSuccess,
                     message: response.data.message,
                     emailMessage: undefined,
@@ -190,13 +195,6 @@ const NewUser = (props) => {
                     pwMessage: undefined,
                     repPwMessage: undefined
                 });
-                // console.log("apiResponse: ", state.apiResponse)
-            })
-            .then( () => {
-                // console.log('state message:', state.message)
-                // console.log("Am I here?");
-                // resetForm()
-                document.getElementById("regForm").reset()
             })
             .catch(error => {
                 console.log(error);
@@ -220,7 +218,7 @@ const NewUser = (props) => {
                                 id="regName"
                                 autoFocus
                                 className="regInput"
-                                // value={username}
+                                value={state.username}
                                 // defaultValue={username}
                                 onChange={changeHandler}/>
                         </div>
@@ -238,7 +236,7 @@ const NewUser = (props) => {
                                 required
                                 id="regPw"
                                 className="regInput"
-                                // value={password}
+                                value={state.password}
                                 onChange={changeHandler}/>
                         </div>
                         <span id="pwErrorSpan" className="errorspan">
@@ -246,9 +244,7 @@ const NewUser = (props) => {
                         </span>
                     </div>
                     <div className="regField">
-
                         <div className="labelInput">
-
                             <label className="regLabel">Repeat password:</label>
                             <input
                                 type="password"
@@ -256,7 +252,7 @@ const NewUser = (props) => {
                                 required
                                 id="regRepPw"
                                 className="regInput"
-                                // value = ''
+                                value = {state.repPw}
                                 onChange={changeHandler}/>
                         </div>
 
@@ -274,6 +270,7 @@ const NewUser = (props) => {
                                 required
                                 id="regEmail"
                                 className="regInput"
+                                value={state.email}
                                 // defaultValue={email}
                                 onChange={changeHandler}/>
 
@@ -301,24 +298,4 @@ const NewUser = (props) => {
         )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        counter: state.counter,
-        isAuthenticated: state.isAuthenticated,
-        message: state.message,
-        currentUser: state.currentUser,
-        apiResponse: state.apiResponse,
-        pageTitle: state.pageTitle
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
-        unauthorize: () => dispatch(unauthorize()),
-        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
-        setMessage: message => dispatch(setMessage(message))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewUser);
+export default NewUser

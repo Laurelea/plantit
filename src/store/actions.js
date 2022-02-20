@@ -24,11 +24,11 @@ export const unauthorize = () => {
     }
 };
 
-export const updateUserInfo = (number) => {
+export const updateUserInfo = (numberOfPlants) => {
     return {
         type: UPDATEUSERINFO,
         payload: {
-            number
+            numberOfPlants
         }
     }
 }

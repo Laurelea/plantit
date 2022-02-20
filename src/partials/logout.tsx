@@ -1,9 +1,8 @@
-import React from 'react'
-import {API_URL} from "../config";
+import { API_URL } from "../config";
 
 const axios = require('axios').default;
 
-function CookiesDelete() {
+const CookiesDelete = () => {
     const cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
@@ -14,18 +13,22 @@ function CookiesDelete() {
     }
 }
 
+interface ILogoutResponse {
+    data: {
+        isAuthenticated: boolean;
+    }
+}
+
 const Logout = async() => {
     await axios({
         method: 'post',
         url: API_URL + 'api/logout'
     })
-        .then( (response) => {
+        .then( (response: ILogoutResponse) => {
             CookiesDelete()
             console.log("Logout get.response.data: ", response.data);
-            // props.unauthorize();
-            console.log("document.cookie: ", document.cookie);
         })
-        .catch(function (error) {
+        .catch((error: any) => {
             console.log("No_auth error:", error);
         })
 }
