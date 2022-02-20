@@ -1,10 +1,19 @@
 import React from 'react'
 import '../css/App.css';
 import axios from "axios";
-import {authorize, getBase, setMessage, smthAsync, unauthorize, updateUserInfo} from "../store/actions";
 import {connect} from "react-redux";
+import { getBase, updateUserInfo } from "../store/actions";
+import {IReduxState, IUser} from "../store/types";
 
-const addPlant = (props) => {
+// authorize: (userID: number, userName: string, userEmail: string, numberOfPlants: number) => IAuthorizeAction
+
+interface IAddPlantProps {
+    currentUser: IUser,
+    updateUserInfo: (numberOfPlants: number) => void,
+    getBase: () => void
+}
+
+const addPlant = (props: IAddPlantProps) => {
     const updateNumberOfPlants = async() => {
         const data = {id: props.currentUser.userID}
         await axios.post('/api/getNumberOfPlants', data)
@@ -17,17 +26,18 @@ const addPlant = (props) => {
                 console.log("updateNumberOfPlants error: ", error);
             })
     }
-    const addPlantHandler = async (event) => {
+    const addPlantHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.currentTarget.reset();
         event.preventDefault();
         const plantData = {
-            category: event.target.elements.category.value,
-            plantSort: event.target.elements.plantSort.value,
-            product : event.target.elements.product.value,
-            producer : event.target.elements.producer.value,
-            yeartype : (event.target.elements.yeartype.value == "a1") ? "однолетник" : "многолетник",
-            rootstock : !!event.target.elements.rootstock.value,
-            watering : event.target.elements.watering.value,
-            soil: event.target.elements.soil.value,
+            category: event.currentTarget.category.value,
+            plantSort: event.currentTarget.plantSort.value,
+            product : event.currentTarget.product.value,
+            producer : event.currentTarget.producer.value,
+            yeartype : (event.currentTarget.yeartype.value == "a1") ? "однолетник" : "многолетник",
+            rootstock : !!event.currentTarget.rootstock.value,
+            watering : event.currentTarget.watering.value,
+            soil: event.currentTarget.soil.value,
             user_id: props.currentUser.userID
         }
         console.log("plantData to send to server:", plantData)
@@ -46,9 +56,6 @@ const addPlant = (props) => {
                     // result = response.data.error
                 }
             })
-            .then( response => {
-                document.getElementById("MyAddForm").reset()
-            })
             .catch(error => {
                 // handle error
                 console.log(error);
@@ -62,7 +69,7 @@ const addPlant = (props) => {
                 Добавить новое растение
             </h2>
             <label><p>Выберите категорию:</p></label>
-            <select name="category" required defaultValue>
+            <select name="category" required>
                 <option value="Herbs">Травы</option>
                 {/*<option value="Herbs" selected={false}></option>*/}
                 <option value="Fruit">Фрукты</option>
@@ -113,24 +120,6 @@ const addPlant = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        counter: state.counter,
-        isAuthenticated: state.isAuthenticated,
-        message: state.message,
-        currentUser: state.currentUser
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
-        unauthorize: () => dispatch(unauthorize()),
-        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
-        setMessage: message => dispatch(setMessage(message)),
-        updateUserInfo: number => dispatch(updateUserInfo(number)),
-        getBase: () => dispatch(getBase())
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(addPlant);
+export default connect((state: IReduxState) => ({
+    currentUser: state.currentUser,
+}), { getBase, updateUserInfo })(addPlant);

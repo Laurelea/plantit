@@ -1,8 +1,6 @@
-import React from 'react'
-import '../css/App.css';
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const ShowBase = (props) => {
+const ShowBase = () => {
     return (
         <div className="DBwrapper">
             <h2>
@@ -53,7 +51,6 @@ const ShowBase = (props) => {
                 </dl>
             </div>
         </div>
-
     )
 }
 

@@ -11,6 +11,15 @@ export interface IUser {
         numberOfPlants: number
 }
 
+export interface Irow {
+    id: number,
+    category: string,
+    product_name: string,
+    name: string,
+    producer_name: string,
+    user_name: string,
+}
+
 export interface IReduxState {
     apiResponse: string,
     pageTitle: string,
@@ -18,7 +27,7 @@ export interface IReduxState {
     isAuthenticated: boolean,
     message: string | undefined,
     currentUser: IUser,
-    dbToPrint: undefined | object
+    dbToPrint: undefined | Array<Irow>
 }
 
 interface IMessage {
@@ -26,9 +35,12 @@ interface IMessage {
 }
 
 interface Ibase {
-    base: undefined | object
+    base: undefined | Promise<any>
 }
 
+interface IUserInfo {
+    numberOfPlants: number;
+}
 export type TAction =
     IAuthorizeAction | IUnauthorizeAction | ISetmessageAction | IUpdateUserInfoAction | IGetBaseAction;
 
@@ -48,7 +60,7 @@ export interface ISetmessageAction {
 
 export interface IUpdateUserInfoAction {
     type: typeof UPDATEUSERINFO;
-    payload: IUser;
+    payload: IUserInfo;
 }
 
 export interface IGetBaseAction {

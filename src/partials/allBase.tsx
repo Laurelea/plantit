@@ -1,18 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import { useEffect } from 'react';
 import '../css/App.css';
 import Reacttable from "./baseTable";
-import {API_URL} from "../config";
-import {authorize, getBase, setMessage, smthAsync, unauthorize, updateBase} from "../store/actions";
-import {connect} from "react-redux";
+import { API_URL } from "../config";
+import { getBase, updateBase } from "../store/actions";
+import { connect } from "react-redux";
+import { IReduxState, Irow } from "../store/types";
 const axios = require('axios').default;
 
 export const getMyBase = async () => {
     console.log("ALLBASE State empty");
     const response = await axios({
         method: 'get',
-        url:    API_URL + 'api/getbase'
+        url: API_URL + 'api/getbase'
     })
-        .catch(error => {
+        .catch((error: any) => {
             console.log(error);
         })
     return response.data.rows
@@ -45,7 +46,14 @@ const columns = [
         accessor: "user_name",
     }
 ];
-const AllBaseComponent = (props) => {
+
+interface IBaseProps {
+    dbToPrint: undefined | Array<Irow>,
+    updateBase: () => void
+}
+
+
+const AllBaseComponent = (props: IBaseProps) => {
     useEffect(() => {
         props.updateBase();
     }, [])
@@ -59,7 +67,7 @@ const AllBaseComponent = (props) => {
     )
 }
 
-const VegsComponent = (props) => {
+const VegsComponent = (props: IBaseProps) => {
     console.log('vegs props:', props)
     useEffect(() => {
         props.updateBase();
@@ -74,7 +82,7 @@ const VegsComponent = (props) => {
         </div>
     )
 }
-const FruitComponent = (props) => {
+const FruitComponent = (props: IBaseProps) => {
     console.log('fruit props:', props)
     useEffect(() => {
         props.updateBase();
@@ -90,7 +98,7 @@ const FruitComponent = (props) => {
     )
 }
 
-const HerbsComponent = (props) => {
+const HerbsComponent = (props: IBaseProps) => {
     console.log('herbs props:', props)
     useEffect(() => {
         props.updateBase();
@@ -106,7 +114,7 @@ const HerbsComponent = (props) => {
     )
 }
 
-const DecsComponent = (props) => {
+const DecsComponent = (props: IBaseProps) => {
     console.log('decs props:', props)
     useEffect(() => {
         props.updateBase();
@@ -122,24 +130,14 @@ const DecsComponent = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
+const mapStateToProps = ((state: IReduxState) => ({
         dbToPrint: state.dbToPrint
-    }
-}
+    }))
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
-        unauthorize: () => dispatch(unauthorize()),
-        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
-        setMessage: message => dispatch(setMessage(message)),
-        getBase: () => dispatch(getBase()),
-        updateBase: () => dispatch(updateBase())
-    }
-}
-
-
+const mapDispatchToProps = ({
+        getBase,
+        updateBase,
+    })
 
 const AllBase = connect(mapStateToProps, mapDispatchToProps)(AllBaseComponent);
 const Vegs = connect(mapStateToProps, mapDispatchToProps)(VegsComponent);
