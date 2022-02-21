@@ -24,6 +24,25 @@ interface INewUserState {
 // interface INewUserProps {
 //
 // }
+export const checkEmail = (value: string) : boolean=> {
+    if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
+        return false
+    } else {
+        return true
+    }
+}
+
+export const checkPw = (value: string) : boolean | string => {
+    if (value.length < 8) {
+        return "At least 8 chars";
+    } else if (value.length > 20) {
+        return "No more than 20 chars";
+    } else if (value.match(/^[a-zA-Z]+[a-zA-Z0-9]*$/) == null) {
+        return "Latin chars and digits. Starts with a char.";
+    } else {
+        return true
+    }
+}
 
 const NewUser = () => {
     // const [c, setc] = useState({
@@ -64,29 +83,9 @@ const NewUser = () => {
         setValid(ifCurrValid);
     }
 
-    const checkEmail = (value: string) : boolean=> {
-        if (value.match(/^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/) == null) {
-            return false
-        } else {
-            return true
-        }
-    }
-
     const checkUsername = (value: string) : boolean=> {
         if (value.match(/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{6,19}$/) == null) {
             return false
-        } else {
-            return true
-        }
-    }
-
-    const checkPw = (value: string) : boolean | string => {
-        if (value.length < 8) {
-            return "At least 8 chars";
-        } else if (value.length > 20) {
-            return "No more than 20 chars";
-        } else if (value.match(/^[a-zA-Z]+[a-zA-Z0-9]*$/) == null) {
-            return "Latin chars and digits. Starts with a char.";
         } else {
             return true
         }

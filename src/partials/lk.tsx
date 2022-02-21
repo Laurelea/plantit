@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { setMessage, unauthorize } from "../store/actions";
 import { connect} from "react-redux";
-import Main from './useContext_example' // useContext example
-import { Alert } from "./useContext_example";  // useContext example
+// import Main from './useContext_example' // useContext example
+// import { Alert } from "./useContext_example";  // useContext example
 import { ContextProvider } from "../context";
 import {IReduxState, IUser} from "../store/types"; // useContext example
 
@@ -18,8 +18,8 @@ const Account = (props: IAccountProps) => {
                 <div> Вы вошли как: {props.currentUser.userName}</div>
                 <div>Всего растений добавлено: {props.currentUser.numberOfPlants}</div>
                 <NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink>
-                    <Alert /> {/*useContext example*/}
-                    <Main /> {/*useContext example*/}
+                    {/*<Alert /> /!*useContext example*!/*/}
+                    {/*<Main /> /!*useContext example*!/*/}
             </div>
         </ContextProvider> // useContext example
     )
