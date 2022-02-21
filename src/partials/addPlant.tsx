@@ -1,16 +1,16 @@
 import React from 'react'
 import '../css/App.css';
 import axios from "axios";
-import {connect} from "react-redux";
-import { getBase, updateUserInfo } from "../store/actions";
-import {IReduxState, IUser} from "../store/types";
+import { connect } from "react-redux";
+import { updateBase, updateUserInfo } from "../store/actions";
+import { IReduxState, IUser } from "../store/types";
 
 // authorize: (userID: number, userName: string, userEmail: string, numberOfPlants: number) => IAuthorizeAction
 
 interface IAddPlantProps {
     currentUser: IUser,
     updateUserInfo: (numberOfPlants: number) => void,
-    getBase: () => void
+    updateBase: () => void
 }
 
 const addPlant = (props: IAddPlantProps) => {
@@ -43,7 +43,7 @@ const addPlant = (props: IAddPlantProps) => {
         console.log("plantData to send to server:", plantData)
         await axios.post('/api/addplant', plantData)
             .then(response => {
-                props.getBase();
+                props.updateBase();
                 updateNumberOfPlants();
                 console.log("post.response.data: ", response.data);
                 if (response.data.command == "INSERT") {
@@ -122,4 +122,4 @@ const addPlant = (props: IAddPlantProps) => {
 
 export default connect((state: IReduxState) => ({
     currentUser: state.currentUser,
-}), { getBase, updateUserInfo })(addPlant);
+}), { updateBase, updateUserInfo })(addPlant);

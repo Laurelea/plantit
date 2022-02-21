@@ -45,7 +45,7 @@ export function smthAsync(userID: number, userName: string, userEmail: string, n
 
 export const updateBase = () => async(dispatch: Dispatch) => {
     const base = await getMyBase();
-    console.log('updateBase: ', base)
+    console.log('updateBase: ', base);
     dispatch(({
         type: GETBASE,
         payload: {
@@ -63,13 +63,13 @@ export const setMessage = (message: string) => {
     }
 }
 
-export const getBase = () => {
-    let base = getMyBase()
-    console.log('base from actions: ', base)
-    return {
-        type: GETBASE,
-        payload: {
-            base
-        }
-    }
-}
+// export const getBase = () => {
+//     let base = getMyBase()
+//     console.log('base from actions: ', base)
+//     return {
+//         type: GETBASE,
+//         payload: {
+//             base
+//         }
+//     }
+// }
