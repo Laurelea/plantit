@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './css/App.css';
 import Newheader from "./partials/header";
 import ShowBase from "./partials/showBase";
@@ -16,11 +16,29 @@ import Account from "./partials/lk";
 import Chat from "./partials/chat"
 import { API_URL } from "./config";
 import { connect } from 'react-redux';
-import {authorize, setMessage, smthAsync, unauthorize} from "./store/actions";
+import { authorize, unauthorize } from "./store/actions";
+import { IReduxState, IUser } from "./store/types";
 
 const axios = require('axios').default;
 
-const App = (props) => {
+interface IAppProps {
+    authorize: (userID: number, userName: string, userEmail: string, numberOfPlants: number) => void,
+    unauthorize: () => void,
+    isAuthenticated: boolean,
+    currentUser: IUser,
+}
+
+interface ICheckAuth {
+    data: {
+        isAuthenticated: boolean,
+        userID: number,
+        userName: string,
+        userEmail: string,
+        numberOfPlants: number,
+    }
+}
+
+const App = (props: IAppProps) => {
     {console.log('APP:', props)}
     // const [state, setState] = useState({
     //     apiResponse: 'initital empty response',
@@ -32,7 +50,7 @@ const App = (props) => {
             url: API_URL +'api',
             // responseType: 'json'
         })
-            .then( async response => {
+            .then( (response: ICheckAuth) => {
                 console.log("get.response.data: ", response.data);
                 // setState({
                 //     apiResponse: response.data.message,
@@ -42,14 +60,14 @@ const App = (props) => {
                     //     ...state,
                     //     pageTitle: response.data.title
                     // });
-                    await props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
+                    props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
                     // document.title = state.pageTitle;
                 } else {
-                    await props.unauthorize();
+                    props.unauthorize();
                     throw new Error("API response: unauthorized")
                 }
             })
-            .catch(error => {
+            .catch((error: any) => {
                 console.log(error);
             })
     }, [])
@@ -117,43 +135,16 @@ const App = (props) => {
                 </div>
             </div>
         );
-
 }
 
-// App.getInitialProps = async (context) => {
-//     const isLoggedIn = context.store.getState().auth.isLoggedIn;
-//     if (context.req && !isLoggedIn) {
-//         await needLogin(context.res);
-//     }
-//     return {
-//         path: context.asPath,
-//     };
-// };
-
-
-// опеределяем props, которые будут переданы в App на основе общего стейта из сторы
-const mapStateToProps = (state) => {
-    return {
-        counter: state.counter,
-        isAuthenticated: state.isAuthenticated,
-        message: state.message,
-        currentUser: state.currentUser,
-        apiResponse: state.apiResponse,
-        pageTitle: state.pageTitle
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        authorize: (userID, userName, userEmail, numberOfPlants) => dispatch(authorize(userID, userName, userEmail, numberOfPlants)),
-        unauthorize: () => dispatch(unauthorize()),
-        smthAsync: (userID, userName, userEmail, numberOfPlants) => dispatch(smthAsync(userID, userName, userEmail, numberOfPlants)),
-        setMessage: message => dispatch(setMessage(message))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-
+export default connect((state: IReduxState) => ({
+    counter: state.counter,
+    isAuthenticated: state.isAuthenticated,
+    message: state.message,
+    currentUser: state.currentUser,
+    apiResponse: state.apiResponse,
+    pageTitle: state.pageTitle
+}), {authorize, unauthorize})(App);
 // Другая запись:
 
 // export default connect(

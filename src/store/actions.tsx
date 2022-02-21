@@ -7,8 +7,9 @@ import {
 } from "./types";
 import Logout from '../partials/logout'
 import { getMyBase } from "../partials/allBase";
+import { Dispatch } from 'redux'
 
-export const authorize = (userID, userName, userEmail, numberOfPlants) => {
+export const authorize = (userID: number, userName: string, userEmail: string, numberOfPlants: number) => {
     return {
         type: AUTHORIZE,
         payload: {
@@ -24,7 +25,7 @@ export const unauthorize = () => {
     }
 };
 
-export const updateUserInfo = (numberOfPlants) => {
+export const updateUserInfo = (numberOfPlants: number) => {
     return {
         type: UPDATEUSERINFO,
         payload: {
@@ -34,15 +35,15 @@ export const updateUserInfo = (numberOfPlants) => {
 }
 
 // Асинхронное действие - может вызывать другое действие. Зачем??
-export function smthAsync(userID, userName, userEmail, numberOfPlants) {
-    return (dispatch) => {
+export function smthAsync(userID: number, userName: string, userEmail: string, numberOfPlants: number) {
+    return (dispatch: Dispatch) => {
         setTimeout(() => {
             dispatch(authorize(userID, userName, userEmail, numberOfPlants))
         }, 3000)
     }
 }
 
-export const updateBase = () => async(dispatch) => {
+export const updateBase = () => async(dispatch: Dispatch) => {
     const base = await getMyBase();
     console.log('updateBase: ', base)
     dispatch(({
@@ -53,7 +54,7 @@ export const updateBase = () => async(dispatch) => {
     }));
 }
 
-export const setMessage = (message) => {
+export const setMessage = (message: string) => {
     return {
         type: SETMESSAGE,
         payload: {

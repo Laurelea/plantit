@@ -1,12 +1,17 @@
 import React, { useContext, useState } from 'react'
 
-const PlantContext = React.createContext()
+interface IPlantContext {
+    visible: boolean,
+    changeShow: (show: boolean) => void
+}
+
+const PlantContext = React.createContext<IPlantContext | null>(null)
 
 export const usePlantContext = () => {
     return useContext(PlantContext)
 }
 
-export const ContextProvider = ({ children }) => {
+export const ContextProvider = ({ children }: any) => {
     const [show, setShow] = useState(false)
 
     const changeShow = () => {
@@ -20,6 +25,5 @@ export const ContextProvider = ({ children }) => {
         }}>
             { children }
         </PlantContext.Provider>
-
     )
 }
