@@ -1,56 +1,51 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 const ShowBase = () => {
     return (
-        <div className="DBwrapper">
-            <h2>
-                База растений:
-            </h2>
-            <div className="DBItemWrapper">
+        <React.Fragment>
+            <div className="showBaseHeader">
+                <h2>
+                    База растений
+                </h2>
+            </div>
+            <div className="Vegs DBItemWrapper">
                 <img src='../pics/vegs.jpg' alt="Vegs"/>
-                <dl className="def-list-1">
-                    <dt>
-                        <NavLink to="/vegs"> Овощи </NavLink>
-                    </dt>
-                    <dd>
+                <div className="def-list-1">
+                    <NavLink to="/vegs"> Овощи </NavLink>
+                    <p>
                         Различные овощи - бахчевые, бобовые и тп.
-                    </dd>
-                </dl>
+                    </p>
+                </div>
             </div>
-            <div className="DBItemWrapper">
+            <div className="Fruit DBItemWrapper">
                 <img src="../pics/fruits.jpg"/>
-                <dl className="def-list-1">
-                    <dt>
-                        <NavLink to="/fruit"> Фрукты </NavLink>
-                    </dt>
-                    <dd>
+                <div className="def-list-1">
+                    <NavLink to="/fruit"> Фрукты </NavLink>
+                    <p>
                         Различные фрукты и ягоды
-                    </dd>
-                </dl>
+                    </p>
+                </div>
             </div>
-            <div className="DBItemWrapper">
+            <div className="Herbs DBItemWrapper">
                 <img src="../pics/herbs.jpg"/>
-                <dl className="def-list-1">
-                    <dt>
-                        <NavLink to="/herbs"> Травы </NavLink>
-                    </dt>
-                    <dd>
+                <div className="def-list-1">
+                    <NavLink to="/herbs"> Травы </NavLink>
+                    <p>
                         Травы - пряные, лечебные и в чай
-                    </dd>
-                </dl>
+                    </p>
+                </div>
             </div>
-            <div className="DBItemWrapper">
+            <div className="Decs DBItemWrapper">
                 <img src="../pics/decs.jpg"/>
-                <dl className="def-list-1">
-                    <dt>
-                        <NavLink to="/decs"> Декоративные </NavLink>
-                    </dt>
-                    <dd>
+                <div className="def-list-1">
+                    <NavLink to="/decs"> Декоративные </NavLink>
+                    <p>
                         Цветы
-                    </dd>
-                </dl>
+                    </p>
+                </div>
             </div>
-        </div>
+        </React.Fragment>
     )
 }
 

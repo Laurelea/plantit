@@ -1,5 +1,6 @@
 import React from 'react';
-import '../css/App.css';
+// import '../css/App.css';
+import '../css/grid.css';
 import { NavLink }  from "react-router-dom";
 import { connect } from "react-redux";
 import { unauthorize } from "../store/actions";
@@ -19,7 +20,7 @@ const Newheader = (props: IHeaderProps) =>  {
         await window.location.replace("/");
     };
     return (
-        <header className="Newheader">
+        <React.Fragment>
             <h1 id="mainheader" className="logo">
                 <NavLink to="/"> Моя Дача. Проект по посадке растений.</NavLink>
             </h1>
@@ -40,7 +41,7 @@ const Newheader = (props: IHeaderProps) =>  {
                     </ul>
                 </div>
             </nav>
-        </header>
+        </React.Fragment>
     )
 }
 

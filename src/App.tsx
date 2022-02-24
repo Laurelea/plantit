@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './css/App.css';
+// import './css/App.css';
 import Newheader from "./partials/header";
 import ShowBase from "./partials/showBase";
 import AllBase from "./partials/allBase";
@@ -90,7 +90,6 @@ const App = (props: IAppProps) => {
                             }
                         </div>
                         <div id="centralContainer" className="center">
-
                             <Switch>
                                 <Route path="/" exact render={() =>
                                     <React.Fragment>

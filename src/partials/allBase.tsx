@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import '../css/App.css';
+// import '../css/App.css';
 import Reacttable from "./baseTable";
 import { API_URL } from "../config";
 import { updateBase } from "../store/actions";
 import { connect } from "react-redux";
 import { IReduxState, Irow } from "../store/types";
 const axios = require('axios').default;
-import { Connect } from 'react-redux'
+// import { Connect } from 'react-redux'
 
 export const getMyBase = async () => {
     console.log("ALLBASE State empty");
@@ -139,15 +139,15 @@ const mapDispatchToProps = ({
         updateBase,
     })
 
-interface MapStateToPropsTypes {
-    dbToPrint: undefined | Array<Irow>
-}
+// interface MapStateToPropsTypes {
+//     dbToPrint: undefined | Array<Irow>
+// }
+//
+// interface MapDispatchToPropsTypes {
+//     updateBase: () => void
+// }
 
-interface MapDispatchToPropsTypes {
-    updateBase: () => void
-}
-
-const connector = connect<MapStateToPropsTypes,MapDispatchToPropsTypes>(mapStateToProps, mapDispatchToProps)(AllBaseComponent);
+// const connector = connect<MapStateToPropsTypes,MapDispatchToPropsTypes>(mapStateToProps, mapDispatchToProps)(AllBaseComponent);
 
 const AllBase = connect(mapStateToProps, mapDispatchToProps)(AllBaseComponent);
 const Vegs = connect(mapStateToProps, mapDispatchToProps)(VegsComponent);

@@ -1,5 +1,5 @@
 import React from 'react'
-import '../css/App.css';
+// import '../css/App.css';
 import axios from "axios";
 import { connect } from "react-redux";
 import { updateBase, updateUserInfo } from "../store/actions";
