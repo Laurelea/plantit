@@ -1,11 +1,8 @@
 import React from 'react'
-// import '../css/App.css';
 import axios from "axios";
 import { connect } from "react-redux";
 import { updateBase, updateUserInfo } from "../store/actions";
 import { IReduxState, IUser } from "../store/types";
-
-// authorize: (userID: number, userName: string, userEmail: string, numberOfPlants: number) => IAuthorizeAction
 
 interface IAddPlantProps {
     currentUser: IUser,
@@ -69,9 +66,8 @@ const addPlant = (props: IAddPlantProps) => {
                 Добавить новое растение
             </h2>
             <label><p>Выберите категорию:</p></label>
-            <select name="category" required>
+            <select name="category" required className='selectCat'>
                 <option value="Herbs">Травы</option>
-                {/*<option value="Herbs" selected={false}></option>*/}
                 <option value="Fruit">Фрукты</option>
                 <option value="Vegs">Овощи</option>
                 <option value="Decs">Декоративное</option>
@@ -85,25 +81,27 @@ const addPlant = (props: IAddPlantProps) => {
                        defaultValue={""}/>
             </fieldset>
             <fieldset>
-                <div>
+                <p>
                     Срок жизни растения:
+                </p>
+                <div className='radioField'>
+                    <input className='radio' type='radio' name='yeartype' value="a1" id='yearOne'/>
+                    <label htmlFor="yearOne">Однолетник</label>
                 </div>
-                <div>
-                    <label>
-                        <input className='radio' type='radio' name='yeartype' value="a1"/> Однолетник</label>
-                    <label>
-                        <input className='radio' type='radio' name='yeartype' value="a2"
-                               defaultChecked={false}/> Многолетник</label>
+                <div className='radioField'>
+                    <input className='radio' type='radio' name='yeartype' value="a2" defaultChecked={false} id={'yearMany'}/>
+                    <label htmlFor="yearMany"> Многолетник</label>
                 </div>
             </fieldset>
             <fieldset>
-                <div>
+                <p>
                     Выращивание рассадой:
+                </p>
+                <div className='radioField'>
+                    <label><input className='radio' type='radio' name='rootstock' value="a1"/> Обязательно</label>
                 </div>
-                <div>
-                    <input className='radio' type='radio' name='rootstock' value="a1"/> Обязательно
-                    <input className='radio' type='radio' name='rootstock' value="a2"
-                           defaultChecked={false}/> Необязательно
+                <div className='radioField'>
+                    <input className='radio' type='radio' name='rootstock' value="a2" defaultChecked={false}/> Необязательно
                 </div>
             </fieldset>
             <fieldset>

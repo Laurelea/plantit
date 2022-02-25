@@ -6,6 +6,7 @@
 a {
     text-decoration: none; /*убираем подчеркивание текста ссылок*/
     font-family: "Roboto Thin", monospace;
+    color: #b09609;
 }
 
 body {
@@ -37,7 +38,7 @@ body {
 
 .gridMainContainer {
     display: grid;
-    grid-template-columns: 25% 50% 25%;
+    grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 150px 1fr 150px;
     align-items: center;
     justify-items: center;
@@ -112,11 +113,6 @@ body {
 .showbase {
     grid-area: showbase;
     border: solid white 3px;
-    /*text-align: left;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*align-items: flex-start;*/
-    /*justify-content: flex-start;*/
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 10% 1fr 1fr 1fr 1fr;
@@ -128,6 +124,7 @@ body {
     "Herbs"
     "Decs";
     grid-auto-flow: row;
+    padding-top: 10px;
 }
 
 .showBaseHeader {
@@ -166,17 +163,22 @@ body {
 .auth {
     grid-area: auth;
     border: solid blue 3px;
-    text-align: center;
+    /*text-align: center;*/
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    /*justify-content: center;*/
+    /*padding: 10px;*/
 }
-
 
 
 .footer {
     grid-area: footer;
     border: 3px solid yellow;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #foot {
@@ -189,7 +191,7 @@ button {
     font-family: "Roboto Thin", monospace;
     font-variant: small-caps;
     font-size: 110%;
-    margin: 15px;
+    margin: 10px;
     border-radius: 15px;
     min-width: 100px;
     /*width: 60%;*/
@@ -208,5 +210,160 @@ h2, h1, h3 {
     color: red;
     font-family: monospace, "Roboto Thin";
     border: 2px lightblue solid;
+    align-self: center;
 }
 
+.account-main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    font-family: "Roboto Thin", monospace;
+}
+
+.account-main-container * {
+    padding: 5px;
+}
+
+.authForm{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    /*margin-top: 0em;*/
+    align-items: center;
+    /*justify-content: flex-end;*/
+    border: 2px dotted red;
+}
+
+.authForm input {
+    padding: 5px;
+    /*margin: 15px 0 15px 0;*/
+    margin-left: 15px;
+    border-radius: 5px;
+}
+
+.authField {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 5px;
+}
+
+.authField label {
+    margin: 5px;
+}
+
+a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    /*appearance: button;*/
+
+    padding: 8px;
+    background-color: #99a591;
+    font-family: "Roboto Thin", monospace;
+    /*font-variant: small-caps;*/
+    font-size: 110%;
+    color: black;
+    margin: 10px;
+    border-radius: 15px;
+    width: 60%;
+}
+
+a.button:hover {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    /*appearance: button;*/
+    font-size: 120%;
+    background-color: #99a580;
+}
+
+.regField {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*padding: 10px;*/
+}
+
+.labelInput {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px;
+    /*margin: 10px;*/
+}
+
+.regLabel {
+    border: dashed white 1px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 10px;
+    width: 40%;
+    font-family: "Roboto Thin", monospace;
+}
+
+.regInput {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 40%;
+    padding-left: 10px;
+}
+
+#MyAddForm {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    border: 2px dotted purple;
+}
+
+#MyAddForm fieldset {
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dotted red;
+}
+
+#MyAddForm fieldset input[type="text"], textarea {
+    padding: 5px;
+    margin: 10px;
+    width: 50%;
+}
+
+#welcomep {
+    color:whitesmoke;
+    font-family: 'Roboto thin', monospace;
+    line-height: 1.5;
+}
+
+.selectCat {
+    width: 50%;
+    margin: 10px;
+    padding: 5px;
+    font-size: 1rem;
+    align-self: center;
+}
+
+.radioField {
+    border: 2px solid yellow;
+    display: inline;
+    align-items: center;
+    /*flex-direction: row;*/
+    /*align-items: flex-start;*/
+    /*position: relative;*/
+    /*padding-left: 25px;*/
+    /*margin-right: 0;*/
+    width: 50%;
+    margin: 5px;
+}
+
+.radioField label{
+    margin-left: 10px;
+}

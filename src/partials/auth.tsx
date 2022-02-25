@@ -108,12 +108,9 @@ const Auth = (props: IAuthProps) => {
             }
         }
     }
-
         return (
             <div>
-                <h3>Авторизуйтесь для полного доступа</h3>
             <form className="authForm" onSubmit={loginHandler} id="authForm">
-                {/*action="login" method="post"*/}
                 <h2>Авторизация</h2>
                 <fieldset className="authField">
                     <label> Email
@@ -149,11 +146,11 @@ const Auth = (props: IAuthProps) => {
                             : null
                     }
                 </fieldset>
-
                 <fieldset className="authField">
                     <button
                         type="submit"
                         className="button"
+                        disabled={!(state.loginValid && state.pwValid)}
                     >
                         Войти
                     </button>
