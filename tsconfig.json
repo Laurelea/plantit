@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "outDir": "./dist/",
+    "module": "es6",
+    "target": "es5",
     "sourceMap": true,
     "jsx": "react-jsx",
     "noImplicitAny": true,
@@ -9,7 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -23,7 +24,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": false
   },
   "exclude": [
     "node_modules"

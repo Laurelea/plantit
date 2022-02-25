@@ -35,7 +35,7 @@ interface IMessage {
 }
 
 interface Ibase {
-    base: undefined | Promise<any>
+    base: undefined | Array<Irow>
 }
 
 interface IUserInfo {

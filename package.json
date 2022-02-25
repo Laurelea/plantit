@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "PlantIt! Esoftchat project PERN",
   "private": true,
-  "main": "build/server.js",
+  "main": "index.tsx",
   "scripts": {
     "tsc:w": "tsc -w",
     "start": "node server/server.js",
@@ -40,13 +40,15 @@
     "react-scripts": "4.0.3",
     "react-table": "^7.7.0",
     "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "socket.io": "^4.1.2",
     "socket.io-client": "^4.1.2",
     "ts-node": "^10.5.0",
-    "typescript": "^4.5.5",
     "uuidv4": "^6.2.10",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.2"
   },
   "eslintConfig": {
     "extends": [
@@ -75,14 +77,21 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "@types/lodash": "^4.14.178",
     "@types/node": "^17.0.18",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.22",
     "@types/react-router-dom": "^5.3.3",
+    "css-loader": "^6.6.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "install": "^0.13.0",
     "nodemon": "^2.0.15",
-    "pino-pretty": "^5.0.2"
+    "pino-pretty": "^5.0.2",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.5",
+    "val-loader": "^4.0.0"
   },
   "babel": {
     "presets": [
