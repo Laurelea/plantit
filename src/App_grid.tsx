@@ -20,15 +20,18 @@ import { authorize, unauthorize } from "./store/actions";
 import { IReduxState, IUser } from "./store/types";
 import Newheader from "./partials/header";
 import Footer from "./partials/footer";
-import {Route, Switch} from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
-import AllBase, {Decs, Fruit, Herbs, Vegs} from "./partials/allBase";
+// import { Decs, Fruit, Herbs, Vegs } from "./partials/allBase";
+// import AllBase, { Decs, Fruit, Herbs, Vegs } from "./partials/allBase";
 import Account from "./partials/lk";
 import Chat from "./partials/chat";
 import ShowBase from "./partials/showBase";
 import Auth from "./partials/auth";
 // import {NavLink} from "react-router-dom";
+// import TestTable from "./partials/testtabel";
+import BaseTable from "./partials/baseTable";
 
 const axios = require('axios').default;
 
@@ -112,12 +115,13 @@ const App = (props: IAppProps) => {
                             }/>
                             <Route path="/addPlant" exact component={Addplant}/>
                             <Route path="/newUser" exact component={Newuser}/>
-                            <Route path="/showBase" exact component={AllBase}/>
+                            {/*<Route path="/showBase" exact component={AllBase}/>*/}
+                            <Route path="/showBase" exact><BaseTable sortkey = {'all'}/> </Route>
                             <Route path="/lk" exact component={Account}/>
-                            <Route path="/vegs" exact component={Vegs}/>
-                            <Route path="/fruit" exact component={Fruit}/>
-                            <Route path="/herbs" exact component={Herbs}/>
-                            <Route path="/decs" exact component={Decs}/>
+                            <Route path="/vegs" exact><BaseTable sortkey = {'vegs'}/> </Route>
+                            {/*<Route path="/fruit" exact component={Fruit}/>*/}
+                            {/*<Route path="/herbs" exact component={Herbs}/>*/}
+                            {/*<Route path="/decs" exact component={Decs}/>*/}
                             <Route path="/chat" exact component={Chat}/>
                             <Route render={() => <h2>404 not found</h2>}/>
                         </Switch>

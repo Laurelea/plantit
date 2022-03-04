@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 // import './css/App.css';
 import Newheader from "./partials/header";
 import ShowBase from "./partials/showBase";
-import AllBase from "./partials/allBase";
-import { Vegs } from "./partials/allBase"
-import { Fruit } from "./partials/allBase"
-import { Herbs } from "./partials/allBase"
-import { Decs } from "./partials/allBase"
+// import AllBase from "./partials/allBase";
+// import { Vegs } from "./partials/allBase"
+// import { Fruit } from "./partials/allBase"
+// import { Herbs } from "./partials/allBase"
+// import { Decs } from "./partials/allBase"
 import Auth from "./partials/auth";
 import Footer from "./partials/footer";
 import { Switch, Route } from "react-router-dom";
@@ -105,12 +105,12 @@ const App = (props: IAppProps) => {
                                 }/>
                                 <Route path="/addPlant" exact component={Addplant}/>
                                 <Route path="/newUser" exact component={Newuser}/>
-                                <Route path="/showBase" exact component={AllBase}/>
+                                {/*<Route path="/showBase" exact component={AllBase}/>*/}
                                 <Route path="/lk" exact component={Account}/>
-                                <Route path="/vegs" exact component={Vegs}/>
-                                <Route path="/fruit" exact component={Fruit}/>
-                                <Route path="/herbs" exact component={Herbs}/>
-                                <Route path="/decs" exact component={Decs}/>
+                                {/*<Route path="/vegs" exact component={Vegs}/>*/}
+                                {/*<Route path="/fruit" exact component={Fruit}/>*/}
+                                {/*<Route path="/herbs" exact component={Herbs}/>*/}
+                                {/*<Route path="/decs" exact component={Decs}/>*/}
                                 <Route path="/chat" exact component={Chat}/>
                                 <Route render={() => <h2>404 not found</h2>}/>
 

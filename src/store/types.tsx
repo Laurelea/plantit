@@ -11,7 +11,7 @@ export interface IUser {
         numberOfPlants: number
 }
 
-export interface Irow {
+export interface Irow extends Record<string, any> {
     id: number,
     category: string,
     product_name: string,

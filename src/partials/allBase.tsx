@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 // import '../css/App.css';
-import Reacttable from "./baseTable";
+// import Reacttable from "./baseTable";
 import { API_URL } from "../config";
 import { updateBase } from "../store/actions";
 import { connect } from "react-redux";
@@ -20,33 +20,33 @@ export const getMyBase = async () => {
     return response.data.rows
 }
 
-const columns = [
-    {
-        Header: "ID",
-        accessor: "id",
-    },
-    {
-        Header: "Категория",
-        accessor: "category",
-    },
-    {
-        Header: "Растение",
-        accessor: "product_name",
-    },
-    {
-        Header: "Сорт",
-        accessor: "name",
-    },
-    {
-        Header: "Производитель",
-        accessor: "producer_name",
-    }
-    ,
-    {
-        Header: "Добавил",
-        accessor: "user_name",
-    }
-];
+// const columns = [
+//     {
+//         Header: "ID",
+//         accessor: "id",
+//     },
+//     {
+//         Header: "Категория",
+//         accessor: "category",
+//     },
+//     {
+//         Header: "Растение",
+//         accessor: "product_name",
+//     },
+//     {
+//         Header: "Сорт",
+//         accessor: "name",
+//     },
+//     {
+//         Header: "Производитель",
+//         accessor: "producer_name",
+//     }
+//     ,
+//     {
+//         Header: "Добавил",
+//         accessor: "user_name",
+//     }
+// ];
 
 interface IBaseProps {
     dbToPrint: undefined | Array<Irow>,
@@ -62,7 +62,8 @@ const AllBaseComponent = (props: IBaseProps) => {
     return (
         <div>
             {props.dbToPrint
-                ?  <Reacttable dbToPrint={props.dbToPrint} columns = {columns}/>
+                // ?  <Reacttable dbToPrint={props.dbToPrint} columns = {columns}/>
+                ?  <></>
                 : null}
         </div>
     )
@@ -77,8 +78,8 @@ const VegsComponent = (props: IBaseProps) => {
         <div>
             <h2>Овощи</h2>
             { props.dbToPrint
-                ?
-                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Vegs')} columns = {columns}/>
+                // ? <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Vegs')} columns = {columns}/>
+                ?  <></>
                 : null }
         </div>
     )
@@ -92,8 +93,8 @@ const FruitComponent = (props: IBaseProps) => {
         <div>
             <h2>Фрукты</h2>
             { props.dbToPrint
-                ?
-                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Fruit')} columns = {columns}/>
+                // ?<Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Fruit')} columns = {columns}/>
+                ?  <></>
                 : null }
         </div>
     )
@@ -108,8 +109,8 @@ const HerbsComponent = (props: IBaseProps) => {
         <div>
             <h2>Травы</h2>
             { props.dbToPrint
-                ?
-                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Herbs')} columns = {columns}/>
+                // ?<Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Herbs')} columns = {columns}/>
+                ?  <></>
                 : null }
         </div>
     )
@@ -124,8 +125,8 @@ const DecsComponent = (props: IBaseProps) => {
         <div>
             <h2>Цветы</h2>
             { props.dbToPrint
-                ?
-                <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Decs')} columns = {columns}/>
+                // ? <Reacttable dbToPrint={ props.dbToPrint.filter(row => row.category === 'Decs')} columns = {columns}/>
+                ?  <></>
                 : null }
         </div>
     )
