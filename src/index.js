@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import App from './App';
-import App from './App_grid';
+import App from './App.';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { applyMiddleware, createStore, compose } from "redux";
