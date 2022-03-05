@@ -1,0 +1,75 @@
+.plantcard-main {  display: grid;
+    width: 400px;
+    height: 400px;
+    border: solid blue 2px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 0.5fr 0.5fr 1fr 2fr 0.5fr;
+    gap: 2px 2px;
+    grid-auto-flow: row;
+    grid-template-areas:
+    "category category category"
+    "product pic pic"
+    "name pic pic"
+    "opts pic pic"
+    "descr pic pic"
+    "producer pic pic";
+    justify-content: stretch;
+    justify-items: stretch;
+    padding: 2px;
+}
+
+.category {
+    grid-area: category;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid red 2px;
+}
+
+.pic {
+    grid-area: pic;
+    display: flex;
+    border: solid green 2px;
+    justify-content: space-around;
+    align-content: space-evenly;
+}
+
+.product { grid-area: product; }
+
+.descr {
+    grid-area: descr;
+    font-size: 3vmin;
+}
+
+.producer { grid-area: producer; }
+
+.name { grid-area: name; }
+
+.img {
+    max-width: 250px;
+    margin: auto;
+}
+
+.left {
+    border: solid pink 2px;
+    display: flex;
+    justify-content: center;
+    /*   align-content: center; */
+    align-items: center;
+    text-align: center;
+    padding: 2px;
+    /*   font-size: 12px; */
+}
+
+.buttons {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    border: solid violet 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.opts {
+    grid-ares: opts;
+}
