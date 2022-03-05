@@ -367,3 +367,20 @@ a.button:hover {
 .radioField label{
     margin-left: 10px;
 }
+
+.plantcard-main{
+    border: solid white 3px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 10% 1fr 1fr 1fr 1fr;
+    gap: 10px 5px;
+    grid-template-areas:
+    "showBaseHeader"
+    "Vegs"
+    "Fruit"
+    "Herbs"
+    "Decs";
+    grid-auto-flow: row;
+    padding-top: 10px;
+
+}

@@ -1,19 +1,5 @@
 import React, { useEffect } from 'react';
 import './css/grid.css';
-// import Newheader from "./partials/header";
-// import ShowBase from "./partials/showBase";
-// import AllBase from "./partials/allBase";
-// import { Vegs } from "./partials/allBase"
-// import { Fruit } from "./partials/allBase"
-// import { Herbs } from "./partials/allBase"
-// import { Decs } from "./partials/allBase"
-// import Auth from "./partials/auth";
-// import Footer from "./partials/footer";
-// import { Switch, Route } from "react-router-dom";
-// import Addplant from "./partials/addPlant";
-// import Newuser from "./partials/newUser";
-// import Account from "./partials/lk";
-// import Chat from "./partials/chat"
 import { API_URL } from "./config";
 import { connect } from 'react-redux';
 import { authorize, unauthorize } from "./store/actions";
@@ -23,14 +9,10 @@ import Footer from "./partials/footer";
 import { Route, Switch } from "react-router-dom";
 import Addplant from "./partials/addPlant";
 import Newuser from "./partials/newUser";
-// import { Decs, Fruit, Herbs, Vegs } from "./partials/allBase";
-// import AllBase, { Decs, Fruit, Herbs, Vegs } from "./partials/allBase";
 import Account from "./partials/lk";
 import Chat from "./partials/chat";
 import ShowBase from "./partials/showBase";
 import Auth from "./partials/auth";
-// import {NavLink} from "react-router-dom";
-// import TestTable from "./partials/testtabel";
 import BaseTable from "./partials/baseTable";
 
 const axios = require('axios').default;
