@@ -39,7 +39,8 @@ const compareNullable = (a: Irow, b: Irow, sortkey: keyof Irow): number => {
 interface ITableState {
     sortKey: string,
     sortOrder: boolean,
-    filter: string,
+    filterType: string | undefined,
+    filterValue: string,
 }
 // interface ISortButton {
 //     // onClick: MouseEventHandler<HTMLButtonElement>,
@@ -53,10 +54,20 @@ const Table = (props: IBaseProps) => {
     }, [])
     console.log('allbase props:', props);
 
+    //Это переделать на забор из БД
+    const Categories: {[index: string]: string} = {
+        All: "Все растения",
+        Vegs: "Овощи",
+        Fruit: "Фрукты",
+        Decs: "Декоративные",
+        Herbs: "Травы",
+    }
+
     const [state, setState] = useState<ITableState>({
-        sortKey: 'category',
+        sortKey: 'id',
         sortOrder: false,
-        filter: 'Все растения',
+        filterType: undefined,
+        filterValue: 'none',
     })
 
     const Sort = (sortKey: string) => {
@@ -80,6 +91,15 @@ const Table = (props: IBaseProps) => {
     //     )
     // }
 
+    const filterOn = ({type, value}: {type : string | undefined, value: string}) => {
+
+        console.log('96 state', type, value)
+        setState({
+            ...state,
+            filterType: type,
+            filterValue: value,
+        })
+    }
     const headers = [
         {
             label: "ID",
@@ -111,7 +131,12 @@ const Table = (props: IBaseProps) => {
         return (
             <React.Fragment>
                 <table id="baseTable">
-                    <caption>{state.filter}</caption>
+                    <caption>{
+                        state.filterValue === 'none'
+                            ? Categories['All']
+                            : state.filterType === 'category'
+                                ? Categories[state.filterValue]
+                                : state.filterValue}</caption>
                     <thead>
                         <tr>
                             {headers.map((row) => {
@@ -135,17 +160,27 @@ const Table = (props: IBaseProps) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {props.dbToPrint.sort((a, b) => (
+                        {props.dbToPrint
+                            .sort((a, b) => (
                             compareNullable(a, b, state.sortKey) * (state.sortOrder ? -1 : 1)
-                        )).map((item: any, key: number) => {
+                        ))
+                            .filter((item: Irow) => {
+                                console.log('164 state', state)
+                                if (state.filterType === undefined) {
+                                    return true
+                                } else {
+                                    return item[state.filterType] === state.filterValue
+                                }
+                            })
+                            .map((item: any, key: number) => {
                             return (
                                 <tr key={key}>
-                                    <td>{item.id}</td>
-                                    <td>{item.category}</td>
-                                    <td>{item.product_name}</td>
-                                    <td>{item.name}</td>
-                                    <td>{item.producer_name}</td>
-                                    <td>{item.user_name}</td>
+                                    <td onClick={() => filterOn({type: undefined, value: 'none'})}>{item.id}</td>
+                                    <td onClick={() => filterOn({type: 'category', value: item.category})}>{item.category}</td>
+                                    <td onClick={() => filterOn({type: 'product_name', value: item.product_name})}>{item.product_name}</td>
+                                    <td onClick={() => filterOn({type: 'name', value: item.name})}>{item.name}</td>
+                                    <td onClick={() => filterOn({type: 'producer_name', value: item.producer_name})}>{item.producer_name}</td>
+                                    <td onClick={() => filterOn({type: 'user_name', value: item.user_name})}>{item.user_name}</td>
                                 </tr>
                             )
                         })}
