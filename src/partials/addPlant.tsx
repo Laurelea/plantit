@@ -31,7 +31,7 @@ const addPlant = (props: IAddPlantProps) => {
             plantSort: event.currentTarget.plantSort.value,
             product : event.currentTarget.product.value,
             producer : event.currentTarget.producer.value,
-            yeartype : (event.currentTarget.yeartype.value == "a1") ? "однолетник" : "многолетник",
+            yeartype : (event.currentTarget.yeartype.value === "a1") ? "однолетник" : "многолетник",
             rootstock : !!event.currentTarget.rootstock.value,
             watering : event.currentTarget.watering.value,
             soil: event.currentTarget.soil.value,
@@ -42,8 +42,8 @@ const addPlant = (props: IAddPlantProps) => {
             .then(response => {
                 props.updateBase();
                 updateNumberOfPlants();
-                console.log("post.response.data: ", response.data);
-                if (response.data.command == "INSERT") {
+                console.log("45 addplant  post.response.data: ", response.data);
+                if (response.data.command === "INSERT") {
                     console.log("added ok")
                     window.alert("added ok")
                     // result = "Plant added successfully"

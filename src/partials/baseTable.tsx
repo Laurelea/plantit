@@ -53,6 +53,7 @@ interface ISortButton {
 const Table = (props: IBaseProps) => {
     useEffect(() => {
         props.updateBase();
+        // eslint-disable-next-line
     }, [])
     console.log('allbase props:', props);
 
@@ -72,7 +73,7 @@ const Table = (props: IBaseProps) => {
     const SortButton = ({onClick, sortKey}: ISortButton) => {
         return (
             <button onClick={onClick}>
-                {state.sortKey == sortKey
+                {state.sortKey === sortKey
                     ? state.sortOrder
                         ? ' 🔽'
                         : ' 🔼'

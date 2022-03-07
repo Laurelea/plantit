@@ -16,6 +16,8 @@ import Auth from "./partials/auth";
 import BaseTable from "./partials/baseTable";
 
 const axios = require('axios').default;
+axios.defaults.withCredentials = true
+axios.defaults.headers.common['Authorization'] = document.cookie
 
 interface IAppProps {
     authorize: (userID: number, userName: string, userEmail: string, numberOfPlants: number) => void,
@@ -35,29 +37,18 @@ interface ICheckAuth {
 }
 
 const App = (props: IAppProps) => {
-    {console.log('APP:', props)}
-    // const [state, setState] = useState({
-    //     apiResponse: 'initital empty response',
-    //     pageTitle: 'Initial App page title'
-    // });
+    console.log('APP:', props)
+    console.log('41 cookies from browser:', document.cookie)
     useEffect(() => {
         axios({
             method: 'get',
             url: API_URL +'api',
-            // responseType: 'json'
         })
             .then( (response: ICheckAuth) => {
-                console.log("get.response.data: ", response.data);
-                // setState({
-                //     apiResponse: response.data.message,
-                // });
+                console.log("48 App get.response.data: ", response.data);
                 if (response.data.isAuthenticated) {
-                    // setState({
-                    //     ...state,
-                    //     pageTitle: response.data.title
-                    // });
+                    console.log('50 App authorized!')
                     props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
-                    // document.title = state.pageTitle;
                 } else {
                     props.unauthorize();
                     throw new Error("API response: unauthorized")
@@ -66,7 +57,7 @@ const App = (props: IAppProps) => {
             .catch((error: any) => {
                 console.log(error);
             })
-    }, [])
+    }, [])  //props
 
     return (
         <div className="App">

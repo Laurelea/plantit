@@ -62,14 +62,3 @@ export const setMessage = (message: string) => {
         }
     }
 }
-
-// export const getBase = () => {
-//     let base = getMyBase()
-//     console.log('base from actions: ', base)
-//     return {
-//         type: GETBASE,
-//         payload: {
-//             base
-//         }
-//     }
-// }

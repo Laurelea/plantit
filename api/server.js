@@ -1,31 +1,20 @@
 const express = require("express");
 const PORT = process.env.PORT || 8080;
 const app = express();
-const db = require('../db/dbConnect');
+const db = require('./dbConnect');
 const routes = require ("./routes");
 const path = require("path");
-//Logs:
-// const pino = require('pino')
-// const expressPino = require('express-pino-logger')
-// const logger = pino({level: process.env.LOG_LEVEL || 'info'})
-// const expressLoger = expressPino({logger})
-//End Logs
-
-// app.use((req, res, next) => {
-//         if (req.header('x-forwarded-proto') !== 'http')
-//             res.redirect(`http://${req.header('host')}${req.url}`)
-//         else
-//             next()
-//     }
-// )
 
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Expose-Headers', '*');
     next();
 });
 
-app.use(express.static(path.join(__dirname)));
-app.use(express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(express.urlencoded({
     extended: true,
@@ -35,7 +24,6 @@ app.use(express.json())
 app.use('/', routes);
 
 const server = require('http').createServer(app);
-
 
 const io = require("socket.io")(server, {
     cors: {
@@ -116,7 +104,7 @@ const start = async () => {
     } catch (e) {
         console.log("Caught: ", e)
     }
-    // db.end()
+    // api.end()
 }
 start()
 

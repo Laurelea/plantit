@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { applyMiddleware, createStore, compose } from "redux";
@@ -11,7 +11,7 @@ import ThunkMiddleware from 'redux-thunk';
 //промежуточная функция
 const sampleMiddleWare = store => next => action => {
     const result = next(action);
-    console.log('test MW: ', store.getState());
+    // console.log('test MW: ', store.getState());
     return result
 }
 

@@ -1,5 +1,5 @@
 {
-  "watch": ["src"],
+  "watch": ["api"],
   "ext": "ts,tsx,js",
-  "exec": "node server/server.js"
+  "exec": "node api/server.js"
 }

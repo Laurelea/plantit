@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useState } from 'react';
-// import '../css/App.css';
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../config";
@@ -7,6 +6,7 @@ import { connect } from "react-redux";
 import { authorize, setMessage, unauthorize } from "../store/actions";
 import { IReduxState, IUser } from "../store/types";
 import { checkEmail, checkPw } from './newUser';
+import { useCookies } from 'react-cookie';
 
 interface IAuthProps {
     setMessage: (message: string) => void,
@@ -27,13 +27,14 @@ interface IAuthState {
 
 const Auth = (props: IAuthProps) => {
     const [state, setState] = useState<IAuthState>({
-        loginValue: '',
-        pwValue: '',
+        loginValue: 'laurelea@mail.ru',
+        pwValue: 'qwerty12',
         loginValid: false,
-        pwValid: false,
+        pwValid: true,
         loginErrorMessage: undefined,
         pwErrorMessage: undefined,
     });
+    const [cookie, setCookie] = useCookies(['SID'])
 
     const loginHandler = async (event: React.MouseEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -43,9 +44,9 @@ const Auth = (props: IAuthProps) => {
             email: state.loginValue,
         }
         console.log('authData: ', authData)
-        await axios.post(API_URL + 'api/auth', authData)
-            .then(response => {
-                console.log("post.response.data: ", response.data);
+        await axios.post(API_URL + 'api/auth', authData, { withCredentials: true })
+            .then(async (response) => {
+                console.log("49 auth post.response.data: ", response.data);
 
                 //При любом результате авторизации:
                 props.setMessage(response.data.message);
@@ -53,12 +54,16 @@ const Auth = (props: IAuthProps) => {
                 //При успешной авторизации:
                 if (response.data.isAuthenticated) {
                     try {
-                        // console.log("response.data.userID: ", response.data.userID)
-                        // console.log("response.data.numberOfPlants: ", response.data.numberOfPlants)
+                        console.log('59 cookie to set:', response.data.cookie)
+                        console.log('60 session id:', response.data.sessID)
 
-                        props.authorize(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
-                        // console.log("Mainstore current user numberOfPlants: ", props.currentUser.numberOfPlants)
-                        // console.log("Mainstore current user userID: ",  props.currentUser.userID)
+                        // let expires = new Date()
+                        // expires.setTime(expires.getTime() + (response.data.cookie.maxAge))
+                        await setCookie('SID', response.data.sessID, {path: '/', maxAge: response.data.cookie.maxAge})
+                        // Write cookie
+                        console.log('cookie:', cookie)
+
+                        await props.authorize(response.data.userID, response.data.authUN, response.data.authEmail, response.data.numberOfPlants);
                     } catch (e) {
                         throw e
                     }
@@ -118,7 +123,7 @@ const Auth = (props: IAuthProps) => {
                             type='text'
                             placeholder='Email'
                             name='login'
-                            // defaultValue= "laurelea@mail.ru"
+                            defaultValue= "laurelea@mail.ru"
                             required
                             onChange={handleChange}
                         />
@@ -135,7 +140,7 @@ const Auth = (props: IAuthProps) => {
                             placeholder='Пароль'
                             name='password'
                             required
-                            // defaultValue = "qwerty12"
+                            defaultValue = "qwerty12"
                             onChange={handleChange}
                         />
                     </label>
