@@ -1,4 +1,5 @@
-import {MouseEventHandler, useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
+// import {MouseEventHandler, useEffect, useState} from 'react';
 import { API_URL } from "../config";
 import { updateBase } from "../store/actions";
 import { connect } from "react-redux";
@@ -34,21 +35,16 @@ const compareNullable = (a: Irow, b: Irow, sortkey: keyof Irow): number => {
     if (b[sortkey]  === null) return 1;
     return a[sortkey]  < b[sortkey]  ? 1 : -1;
 };
-// const compareNullable = (a: IDictionary<string, number>, b: IDictionary<string, number>, sortkey: string ): number => {
-//     if (a[sortkey] === b[sortkey]) return 0;
-//     if (a[sortkey]  === null) return -1;
-//     if (b[sortkey]  === null) return 1;
-//     return a[sortkey]  < b[sortkey]  ? 1 : -1;
-// };
 
 interface ITableState {
     sortKey: string,
     sortOrder: boolean,
+    filter: string,
 }
-interface ISortButton {
-    onClick: MouseEventHandler<HTMLButtonElement>,
-    sortKey: string | number,
-}
+// interface ISortButton {
+//     // onClick: MouseEventHandler<HTMLButtonElement>,
+//     sortKey: string | number,
+// }
 
 const Table = (props: IBaseProps) => {
     useEffect(() => {
@@ -60,6 +56,7 @@ const Table = (props: IBaseProps) => {
     const [state, setState] = useState<ITableState>({
         sortKey: 'category',
         sortOrder: false,
+        filter: 'Все растения',
     })
 
     const Sort = (sortKey: string) => {
@@ -70,18 +67,18 @@ const Table = (props: IBaseProps) => {
         })
     }
     // onClick: MouseEventHandler<HTMLButtonElement>, sortKey: string | number
-    const SortButton = ({onClick, sortKey}: ISortButton) => {
-        return (
-            <button onClick={onClick}>
-                {state.sortKey === sortKey
-                    ? state.sortOrder
-                        ? ' 🔽'
-                        : ' 🔼'
-                    : ''
-                }
-            </button>
-        )
-    }
+    // const SortButton = ({ sortKey }: ISortButton) => {
+    //     return (
+    //         <button>
+    //             {state.sortKey === sortKey
+    //                 ? state.sortOrder
+    //                     ? ' 🔽'
+    //                     : ' 🔼'
+    //                 : ''
+    //             }
+    //         </button>
+    //     )
+    // }
 
     const headers = [
         {
@@ -113,19 +110,28 @@ const Table = (props: IBaseProps) => {
     if (props.dbToPrint) {
         return (
             <React.Fragment>
-                <table>
+                <table id="baseTable">
+                    <caption>{state.filter}</caption>
                     <thead>
                         <tr>
                             {headers.map((row) => {
-                                            return (
-                                                <th key={row.id}>
-                                                    {row.label}
-                                                    <span>
-                                                        <SortButton sortKey={row.id} onClick={() => Sort(row.id)}/>
-                                                    </span>
-                                                </th>
-                                            )
-                                        })}
+                                return (
+                                    <th key={row.id}>
+                                        <p onClick={() => Sort(row.id)}>
+                                            {row.label}
+                                            <span>
+                                                {state.sortKey === row.id
+                                                    ? state.sortOrder
+                                                        ? <img src="https://img.icons8.com/ios-filled/20/26e07f/sort-down.png"/>
+                                                        : <img src="https://img.icons8.com/ios-filled/20/26e07f/sort-up.png"/>
+                                                    : <img src="https://img.icons8.com/ios-filled/20/26e07f/sort.png"/>
+                                                }
+                                            </span>
+                                        </p>
+
+                                    </th>
+                                )
+                            })}
                         </tr>
                     </thead>
                     <tbody>

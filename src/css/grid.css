@@ -193,7 +193,7 @@ button {
     font-size: 110%;
     margin: 10px;
     border-radius: 15px;
-    min-width: 100px;
+    /*min-width: 100px;*/
     /*width: 60%;*/
 }
 button:hover {
@@ -383,4 +383,34 @@ a.button:hover {
     grid-auto-flow: row;
     padding-top: 10px;
 
+}
+
+#baseTable {
+    border: 3px solid yellow;
+    border-collapse: collapse; /* collapse */
+    /*border-collapse: separate;*/
+    /*border-spacing: 5px;*/
+    background-color:  rgba(47,79,79, 0.5);
+    width: 100%;
+}
+
+#baseTable td {
+    /*border: 1px double orange;*/
+    /*border-left: 2px solid lightgray;*/
+    border-bottom: 1px solid orange;
+    padding: 5px;
+    padding-right: 10px;
+    text-align: left;
+
+}
+
+#baseTable th {
+    border-right: 2px double orange;
+    padding: 10px;
+    text-align: left;
+}
+
+#baseTable caption {
+    font-size: 26px;
+    padding: 10px;
 }
