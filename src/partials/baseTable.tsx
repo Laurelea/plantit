@@ -44,11 +44,35 @@ interface ITableState {
     page: number,
     elemPerPage: number,
     loading: boolean,
+    baseToShow: Array<Irow> | undefined,
+    curNumOfPages: number,
+}
+
+interface IPagination{
+    elemPerPage: number,
+    totalElems: number,
+    paginate: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
 }
 
 const Table = (props: IBaseProps) => {
     useEffect(() => {
         props.updateBase();
+        // setState({
+        //     ...state,
+        //     baseToShow: props.dbToPrint
+        //         ? props.dbToPrint
+        //             .sort((a, b) => (
+        //                 compareNullable(a, b, state.sortKey) * (state.sortOrder ? -1 : 1)
+        //             ))
+        //             .filter((item: Irow) => {
+        //                 if (state.filterType === undefined) {
+        //                     return true
+        //                 } else {
+        //                     return item[state.filterType] === state.filterValue
+        //                 }
+        //             })
+        //         : undefined
+        // })
         // eslint-disable-next-line
     }, [])
     // console.log('allbase props:', props);
@@ -70,11 +94,32 @@ const Table = (props: IBaseProps) => {
         page: 1,
         elemPerPage: 10,
         loading: false,
+        baseToShow: props.dbToPrint,
+        curNumOfPages: 1
     })
+
+    useEffect(() => {
+        setState({
+            ...state,
+            baseToShow: props.dbToPrint
+                ? props.dbToPrint
+                    .sort((a, b) => (
+                        compareNullable(a, b, state.sortKey) * (state.sortOrder ? -1 : 1)
+                    ))
+                    .filter((item: Irow) => {
+                        if (state.filterType === undefined) {
+                            return true
+                        } else {
+                            return item[state.filterType] === state.filterValue
+                        }
+                    })
+                : undefined
+        })
+    }, [state.sortKey, state.sortOrder, state.filterType, state.page])
 
     const lastIndex = state.page * state.elemPerPage;
     const firstIndex = lastIndex - state.elemPerPage;
-    const currentElem = props.dbToPrint ? props.dbToPrint.slice(firstIndex, lastIndex) : undefined
+    const currentElem = state.baseToShow ? state.baseToShow.slice(firstIndex, lastIndex) : undefined
     const paginate = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
         setState({
@@ -82,22 +127,20 @@ const Table = (props: IBaseProps) => {
             page: Number(event.currentTarget.innerHTML)
         })
     }
-    const nextPage = (value: number) => setState({
+    const changePage = (value: number) => setState({
         ...state,
-        page: state.page + value
+        page: Math.max(state.page + value, 1)
     })
-
-    interface IPagination{
-        elemPerPage: number,
-        totalElems: number,
-        paginate: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
-    }
 
     const Pagination = ({ elemPerPage, totalElems, paginate} : IPagination) => {
         const pageNumbers = [];
         for (let elem = 1; elem <= Math.ceil(totalElems / elemPerPage); elem++) {
             pageNumbers.push(elem)
         }
+        setState({
+            ...state,
+            curNumOfPages: pageNumbers.length
+        });
         return (
             <div>
                 <ul className="pagination">
@@ -205,16 +248,7 @@ const Table = (props: IBaseProps) => {
                     </thead>
                     <tbody>
                         {currentElem
-                            .sort((a, b) => (
-                            compareNullable(a, b, state.sortKey) * (state.sortOrder ? -1 : 1)
-                        ))
-                            .filter((item: Irow) => {
-                                if (state.filterType === undefined) {
-                                    return true
-                                } else {
-                                    return item[state.filterType] === state.filterValue
-                                }
-                            })
+                            ? currentElem
                             .map((item: any, key: number) => {
                             return (
                                 <tr key={key}>
@@ -225,13 +259,13 @@ const Table = (props: IBaseProps) => {
                                     <td onClick={() => filterOn({type: 'producer_name', value: item.producer_name})}>{item.producer_name}</td>
                                     <td onClick={() => filterOn({type: 'user_name', value: item.user_name})}>{item.user_name}</td>
                                 </tr>
-                            )
-                        })}
+                            )})
+                            : null}
                     </tbody>
                 </table>
-                <Pagination elemPerPage={state.elemPerPage} totalElems={props.dbToPrint ? props.dbToPrint.length : 0} paginate={paginate}/>
-                <button className="btn-primary" onClick={() => nextPage(-1)}>Prev Page</button>
-                <button className="btn-primary" onClick={() => nextPage(1)}>Next Page</button>
+                <Pagination elemPerPage={state.elemPerPage} totalElems={state.baseToShow ? state.baseToShow.length : 0} paginate={paginate}/>
+                <button className="btn-primary" onClick={() => changePage(-1)}>Prev Page</button>
+                <button className="btn-primary" onClick={() => changePage(1)}>Next Page</button>
             </React.Fragment>
         )
     } else {
