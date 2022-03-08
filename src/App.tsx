@@ -50,6 +50,7 @@ const App = (props: IAppProps) => {
                     console.log('50 App authorized!')
                     props.authorize(response.data.userID, response.data.userName, response.data.userEmail, response.data.numberOfPlants);
                 } else {
+                    console.log('53 got fail in auth')
                     props.unauthorize();
                     throw new Error("API response: unauthorized")
                 }

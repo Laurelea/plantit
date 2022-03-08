@@ -51,6 +51,7 @@ router.get("/", async (req, res) => {
 })
 
 const parseCookie = async (cookie) => {
+    console.log('54 parseCookie cookie:', cookie)
     if (!cookie) {
         console.log('55 no cookie')
         return { sessID: undefined, error: "No SID cookie found in the browser" }
@@ -58,7 +59,8 @@ const parseCookie = async (cookie) => {
         const myStr = await cookie
             .split('=')
             .pop()
-        return [myStr, undefined]
+        console.log('62 myStr', myStr)
+        return { sessID: myStr, error: undefined }
     }
 }
 
@@ -75,37 +77,44 @@ router.get("/api", async (req, res) => {
     }
     const checkAuthorization = async (sid) => {
         console.log('95 checkAuth value to check in DB:', sid)
-        try {
-            const foundSession = await controller.lookForSameSID(sid)
-            // console.log("Number of cookies found:", foundSession.rows.length)
-            // console.log("Found cookie:", foundSession)
-            if (foundSession.rows.length == 0) {
-                state.isAuthenticated = false;
-                console.log("Printing state if no cookie in DB:", state)
-                throw new Error("Browser cookie ID doesn't match anything in the DB")
-            } else {
-                console.log("Changing state...", foundSession.rows[0].sess.userID)
-                state.isAuthenticated = true;
-                state.userName = foundSession.rows[0].sess.userName
-                state.userEmail = foundSession.rows[0].sess.userEmail
-                state.userID = foundSession.rows[0].sess.userID
-                state.numberOfPlants = foundSession.rows[0].sess.numberOfPlants
-                // console.log("State changed:", state)
-                return true
-            }
-        } catch (err) {
-            state.message = err.message.toString()
-            console.log("Grand mistake:", state)
-            console.log("Error while checking authorization: ", err)
-            return false
-        }
+        // try {
+            await controller.lookForSameSID(sid)
+                .then(response => {
+                    if (response.rows.length == 0) {
+                        state.isAuthenticated = false;
+                        console.log("Printing state if no cookie in DB:", state)
+                        throw new Error("Browser cookie ID doesn't match anything in the DB")
+                    } else {
+                        console.log("Changing state...", response.rows[0].sess.userID)
+                        state.isAuthenticated = true;
+                        state.userName = response.rows[0].sess.userName
+                        state.userEmail = response.rows[0].sess.userEmail
+                        state.userID = response.rows[0].sess.userID
+                        state.numberOfPlants = response.rows[0].sess.numberOfPlants
+                        return true
+                    }
+                })
+                .catch((err) => {
+                    state.message = err.message.toString()
+                    console.log("Grand mistake:", state)
+                    console.log("Error while checking authorization: ", err)
+                    return false
+                })
+        // } catch (err) {
+        //     state.message = err.message.toString()
+        //     console.log("Grand mistake:", state)
+        //     console.log("Error while checking authorization: ", err)
+        //     return false
+        // }
     }
 
     const callRoute = async () => {
         try {
             await parseCookie(req.headers.authorization)
                 .then(({ sessID, error }) => {
+                    console.log('109 callRoute sessID, error', sessID, error)
                     if (error) {
+                        console.log('111 got error')
                         state.message = error.toString()
                     } else {
                         checkAuthorization(sessID)
@@ -138,17 +147,21 @@ router.get("/api", async (req, res) => {
 //Выход
 router.post("/api/logout", async (req, res) => {
     console.log('143 logout triggered!!')
-   await parseCookie(req.headers.authorization)
+    await parseCookie(req.headers.authorization)
         .then(({ sessID, error }) => {
-            controller.delSession(sessID)
+            if (error) {
+                throw new Error('153 Error parsing cookie in logout')
+            } else {
+                controller.delSession(sessID)
+            }
         })
-       .then(() => {
+        .then(() => {
            req.session.destroy()
-       })
-       .then(() => {
+        })
+        .then(() => {
            res.json({ isAuthenticated: false});
-       })
-        .catch(err => {
+        })
+         .catch(err => {
             console.log('147 logout err', err)
         })
 });
@@ -158,9 +171,6 @@ router.post("/api/auth", async (req, res) => {
     // console.log('153 req.headers', Object.keys(req))
     const { email, password } = req.body
         console.log("req.body: ", req.body)
-        // console.log('Inside GET /login callback function', "\n")
-        // console.log("156 /api/auth req.sessionID", req.sessionID, "\n")
-        // console.log("req.session: ", req.session, "\n")
         try {
             const ifUser = await controller.getUser(email)
             // console.log("ifUser.rows:", ifUser.rows)

@@ -29,7 +29,7 @@ const Logout = async() => {
             console.log("Logout get.response.data: ", response.data);
         })
         .catch((error: any) => {
-            console.log("No_auth error:", error);
+            console.log("32 Logout error:", error);
         })
 }
 
