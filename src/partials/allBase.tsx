@@ -17,3 +17,18 @@ export const getMyBase = async () => {
     // console.log('17', result)
     return result
 }
+
+export const getCats = async () => {
+    const result = await axios({
+        method: 'get',
+        url: API_URL + 'api/getCats'
+    })
+        .then((response: { data: any }) => {
+            console.log('27 getCats', response.data, typeof (response.data))
+            return response.data
+        })
+        .catch((error: any) => {
+            console.log(error);
+        })
+    return result
+}

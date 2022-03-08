@@ -245,9 +245,6 @@ router.get("/api/getbase", async (req, res) => {
 })
 
 router.post("/api/addplant", async (req, res) => {
-    // console.log("Req data to add:", req.data)
-    // console.log("Req body to add:", req.body)
-    // console.log("Req body to add:", req.body.userID)
     const plantAdded = await controller.addPlant(req.body)
     // console.log("Plant added: ", plantAdded)
     res.send(plantAdded)
@@ -257,6 +254,12 @@ router.post("/api/getNumberOfPlants", async(req, res) => {
     console.log("routes getNumberOfPlants req.body.id", req.body.id)
     const result = await controller.getNumberOfPlants(req.body.id)
     console.log("routes getNumberOfPlants result: ", result)
+    res.json(result)
+})
+
+router.get("/api/getCats", async(req, res) => {
+    const result = await controller.getCats()
+    // console.log('262 inside router getCats', result)
     res.json(result)
 })
 

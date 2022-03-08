@@ -100,15 +100,6 @@ module.exports.lookForSameSID = async (browserCookie) => {
     // console.log("cookiesFound.rows.length: ", cookiesFound.rows.length)
     return cookiesFound
 }
-
-// module.exports.showDB = async () => {
-//     const plantDB = await db.query('SELECT sort.id, categories.cat_name, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
-//         'JOIN producer ON sort.producer_id=producer.id' +
-//         'JOIN product ON sort.product_id=product.id' +
-//         'JOIN users ON sort.user_id=users.user_id' +
-//         'JOIN categories ON product.category=categories.cat_id ORDER BY sort.id')
-//     return plantDB
-// }
 module.exports.showDB = async () => {
     return await dbKnex
         .select(['sort.id', 'categories.cat_name', 'product.product_name', 'sort.name', 'producer.producer_name', 'users.user_name'])
@@ -118,14 +109,15 @@ module.exports.showDB = async () => {
         .leftJoin('users', 'sort.user_id', 'users.user_id')
         .leftJoin('categories', 'product.category', 'categories.cat_id')
         .orderBy('sort.id')
-        // .then(result => {
-        //     console.log('122', result)
-        //     return result
-        // })
         .catch(err => {console.log('125 err', err)});
-    // return plantDB
 };
 
+module.exports.getCats = async () => {
+   return await dbKnex
+        .select()
+        .from('categories')
+       .catch(err => {console.log('119 err', err)});
+}
 
 
 module.exports.addPlant = async (data) => {

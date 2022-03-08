@@ -11,7 +11,7 @@ const dbKnex = knex(
             port: 5432,
             ssl: { rejectUnauthorized: false }
         },
-        // debug: true,
+        debug: true,
     }
 );
 
