@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import {ChangeEvent, useEffect, useState} from 'react';
 // import {MouseEventHandler, useEffect, useState} from 'react';
 import { API_URL } from "../config";
 import { updateBase } from "../store/actions";
@@ -45,7 +45,7 @@ interface ITableState {
     elemPerPage: number,
     loading: boolean,
     baseToShow: Array<Irow> | undefined,
-    curNumOfPages: number,
+    // curNumOfPages: number,
 }
 
 interface IPagination{
@@ -92,10 +92,9 @@ const Table = (props: IBaseProps) => {
         filterType: undefined,
         filterValue: 'none',
         page: 1,
-        elemPerPage: 10,
+        elemPerPage: 15,
         loading: false,
         baseToShow: props.dbToPrint,
-        curNumOfPages: 1
     })
 
     useEffect(() => {
@@ -115,7 +114,7 @@ const Table = (props: IBaseProps) => {
                     })
                 : undefined
         })
-    }, [state.sortKey, state.sortOrder, state.filterType, state.page])
+    }, [state.sortKey, state.sortOrder, state.filterType, state.page, state.elemPerPage])
 
     const lastIndex = state.page * state.elemPerPage;
     const firstIndex = lastIndex - state.elemPerPage;
@@ -127,33 +126,55 @@ const Table = (props: IBaseProps) => {
             page: Number(event.currentTarget.innerHTML)
         })
     }
-    const changePage = (value: number) => setState({
-        ...state,
-        page: Math.max(state.page + value, 1)
-    })
+
+    const changeMaxElems = (event: ChangeEvent<HTMLSelectElement>) => {
+        console.log('131', event.target.value)
+        setState({
+            ...state,
+            elemPerPage: Number(event.target.value)
+        })
+    }
 
     const Pagination = ({ elemPerPage, totalElems, paginate} : IPagination) => {
         const pageNumbers = [];
         for (let elem = 1; elem <= Math.ceil(totalElems / elemPerPage); elem++) {
             pageNumbers.push(elem)
         }
-        setState({
-            ...state,
-            curNumOfPages: pageNumbers.length
-        });
+        const changePage = (value: number) => {
+            const calcValue = state.page + value
+            setState({
+                ...state,
+                page: calcValue == 0
+                ? 1
+                : Math.min(calcValue, pageNumbers.length)
+            })
+        }
+
         return (
             <div>
                 <ul className="pagination">
                     {
                         pageNumbers.map(number => (
                             <li className='page-item' key={number}>
-                                <a href="!#" className="page-link" onClick={paginate}>
-                                    {number}
-                                </a>
+                                {state.page === number
+                                ? <a href="!#" className="active-page" onClick={paginate}>{number}</a>
+                                : <a href="!#" className="page-link" onClick={paginate}>{number}</a>
+                                }
+                                {/*<a href="!#" className="page-link" onClick={paginate}>*/}
+                                {/*    {number}*/}
+                                {/*</a>*/}
                             </li>
                         ))
                     }
                 </ul>
+                    <select id="elems" name="elems" onChange={changeMaxElems}>
+                        <option value=""></option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                <button className="btn-primary" onClick={() => changePage(-1)} disabled={state.page == 1}>Prev Page</button>
+                <button className="btn-primary" onClick={() => changePage(1)} disabled={state.page == pageNumbers.length}>Next Page</button>
             </div>
         )
     }
@@ -163,6 +184,7 @@ const Table = (props: IBaseProps) => {
             ...state,
             sortKey: sortKey,
             sortOrder: !state.sortOrder,
+            page: 1,
         })
     }
     // onClick: MouseEventHandler<HTMLButtonElement>, sortKey: string | number
@@ -186,6 +208,7 @@ const Table = (props: IBaseProps) => {
             ...state,
             filterType: type,
             filterValue: value,
+            page: 1,
         })
     }
     const headers = [
@@ -195,7 +218,7 @@ const Table = (props: IBaseProps) => {
         },
         {
             label: "Категория",
-            id: "category",
+            id: "cat_name",
         },
         {
             label: "Растение",
@@ -222,7 +245,7 @@ const Table = (props: IBaseProps) => {
                     <caption>{
                         state.filterValue === 'none'
                             ? Categories['All']
-                            : state.filterType === 'category'
+                            : state.filterType === 'cat_name'
                                 ? Categories[state.filterValue]
                                 : state.filterValue}</caption>
                     <thead>
@@ -253,7 +276,7 @@ const Table = (props: IBaseProps) => {
                             return (
                                 <tr key={key}>
                                     <td onClick={() => filterOn({type: undefined, value: 'none'})}>{item.id}</td>
-                                    <td onClick={() => filterOn({type: 'category', value: item.category})}>{item.category}</td>
+                                    <td onClick={() => filterOn({type: 'cat_name', value: item.cat_name})}>{item.cat_name}</td>
                                     <td onClick={() => filterOn({type: 'product_name', value: item.product_name})}>{item.product_name}</td>
                                     <td onClick={() => filterOn({type: 'name', value: item.name})}>{item.name}</td>
                                     <td onClick={() => filterOn({type: 'producer_name', value: item.producer_name})}>{item.producer_name}</td>
@@ -264,8 +287,6 @@ const Table = (props: IBaseProps) => {
                     </tbody>
                 </table>
                 <Pagination elemPerPage={state.elemPerPage} totalElems={state.baseToShow ? state.baseToShow.length : 0} paginate={paginate}/>
-                <button className="btn-primary" onClick={() => changePage(-1)}>Prev Page</button>
-                <button className="btn-primary" onClick={() => changePage(1)}>Next Page</button>
             </React.Fragment>
         )
     } else {

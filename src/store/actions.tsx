@@ -44,14 +44,16 @@ export function smthAsync(userID: number, userName: string, userEmail: string, n
 }
 
 export const updateBase = () => async(dispatch: Dispatch) => {
-    const base = await getMyBase();
-    console.log('updateBase: ', base);
-    dispatch(({
-        type: GETBASE,
-        payload: {
-            base
-        }
-    }));
+    await getMyBase()
+        .then(response => {
+            console.log('updateBase: ', response);
+            dispatch(({
+                type: GETBASE,
+                payload: {
+                    base: response
+                }
+            }));
+        })
 }
 
 export const setMessage = (message: string) => {

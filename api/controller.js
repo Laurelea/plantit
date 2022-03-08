@@ -1,5 +1,7 @@
-const db = require('./dbConnect')
+// const db = require('./dbConnect').db
 const bcrypt = require('bcrypt')
+const dbKnex = require('./dbKnex')
+const db = require("./dbConnect");
 
 const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.substring(1);
@@ -99,18 +101,32 @@ module.exports.lookForSameSID = async (browserCookie) => {
     return cookiesFound
 }
 
+// module.exports.showDB = async () => {
+//     const plantDB = await db.query('SELECT sort.id, categories.cat_name, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
+//         'JOIN producer ON sort.producer_id=producer.id' +
+//         'JOIN product ON sort.product_id=product.id' +
+//         'JOIN users ON sort.user_id=users.user_id' +
+//         'JOIN categories ON product.category=categories.cat_id ORDER BY sort.id')
+//     return plantDB
+// }
 module.exports.showDB = async () => {
-    // try {
-        const plantDB = await db.query('SELECT sort.id, product.category, product.product_name, sort.name, producer.producer_name, users.user_name FROM sort ' +
-            'JOIN producer ON sort.producer_id=producer.id JOIN product ON sort.product_id=product.id JOIN users ON sort.user_id=users.user_id ORDER BY sort.id')
-        // console.log("Controller plantDB: ", plantDB)
-        return plantDB
-    // }
-    // catch (err) {
-    //     console.log("showDB error:", err)
-    // }
+    return await dbKnex
+        .select(['sort.id', 'categories.cat_name', 'product.product_name', 'sort.name', 'producer.producer_name', 'users.user_name'])
+        .from('sort')
+        .leftJoin('producer', 'sort.producer_id', 'producer.id')
+        .leftJoin('product', 'sort.product_id', 'product.id')
+        .leftJoin('users', 'sort.user_id', 'users.user_id')
+        .leftJoin('categories', 'product.category', 'categories.cat_id')
+        .orderBy('sort.id')
+        // .then(result => {
+        //     console.log('122', result)
+        //     return result
+        // })
+        .catch(err => {console.log('125 err', err)});
+    // return plantDB
+};
 
-}
+
 
 module.exports.addPlant = async (data) => {
     try {

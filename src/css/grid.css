@@ -428,3 +428,9 @@ a.button:hover {
     margin: 10px;
     border: 1px solid lightblue;
 }
+
+.active-page {
+    color: whitesmoke;
+    font-weight: bold;
+    text-decoration: underline;
+}

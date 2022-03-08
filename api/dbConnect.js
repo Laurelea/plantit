@@ -1,4 +1,5 @@
 const Pool = require('pg').Pool
+
 const db = new Pool({
     user: 'gsoxtcmgsqbxbi',
     host: 'ec2-99-80-200-225.eu-west-1.compute.amazonaws.com',
@@ -9,5 +10,7 @@ const db = new Pool({
         rejectUnauthorized: false
     }
 })
+
+
 
 module.exports = db

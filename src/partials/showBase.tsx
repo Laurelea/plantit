@@ -10,7 +10,7 @@ const ShowBase = () => {
                 </h2>
             </div>
             <div className="Vegs DBItemWrapper">
-                <img src="../pics/vegs.jpg" alt="Vegs"/>
+                <img src="../cat_pics/vegs.jpg" alt="Vegs"/>
                 <div className="def-list-1">
                     <NavLink to="/vegs"> Овощи </NavLink>
                     <p>
@@ -19,7 +19,7 @@ const ShowBase = () => {
                 </div>
             </div>
             <div className="Fruit DBItemWrapper">
-                <img alt="fruit" src="../pics/fruits.jpg"/>
+                <img alt="fruit" src="../cat_pics/fruits.jpg"/>
                 <div className="def-list-1">
                     <NavLink to="/fruit"> Фрукты </NavLink>
                     <p>
@@ -28,7 +28,7 @@ const ShowBase = () => {
                 </div>
             </div>
             <div className="Herbs DBItemWrapper">
-                <img alt="herbs" src="../pics/herbs.jpg"/>
+                <img alt="herbs" src="../cat_pics/herbs.jpg"/>
                 <div className="def-list-1">
                     <NavLink to="/herbs"> Травы </NavLink>
                     <p>
@@ -37,7 +37,7 @@ const ShowBase = () => {
                 </div>
             </div>
             <div className="Decs DBItemWrapper">
-                <img alt="decs" src="../pics/decs.jpg"/>
+                <img alt="decs" src="../cat_pics/decs.jpg"/>
                 <div className="def-list-1">
                     <NavLink to="/decs"> Декоративные </NavLink>
                     <p>
