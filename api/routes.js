@@ -68,7 +68,6 @@ router.get("/api", async (req, res) => {
     console.log('44 req.sessionID:', req.sessionID) // Откуда это берется?????
     // console.log('45 req.session:', req.session)
     console.log('46 req.headers.authorization:', req.headers.authorization) //Это правильный айди сессии из куки браузера
-    // console.log('keys:', Object.keys(req))
     let state = {
         isAuthenticated: false,
         message: "Hello from server!",
@@ -76,70 +75,58 @@ router.get("/api", async (req, res) => {
         userEmail: "default",
     }
     const checkAuthorization = async (sid) => {
-        console.log('95 checkAuth value to check in DB:', sid)
-        // try {
-            await controller.lookForSameSID(sid)
-                .then(response => {
-                    if (response.rows.length == 0) {
-                        state.isAuthenticated = false;
-                        console.log("Printing state if no cookie in DB:", state)
-                        throw new Error("Browser cookie ID doesn't match anything in the DB")
-                    } else {
-                        console.log("Changing state...", response.rows[0].sess.userID)
-                        state.isAuthenticated = true;
-                        state.userName = response.rows[0].sess.userName
-                        state.userEmail = response.rows[0].sess.userEmail
-                        state.userID = response.rows[0].sess.userID
-                        state.numberOfPlants = response.rows[0].sess.numberOfPlants
-                        return true
-                    }
-                })
-                .catch((err) => {
-                    state.message = err.message.toString()
-                    console.log("Grand mistake:", state)
-                    console.log("Error while checking authorization: ", err)
-                    return false
-                })
-        // } catch (err) {
-        //     state.message = err.message.toString()
-        //     console.log("Grand mistake:", state)
-        //     console.log("Error while checking authorization: ", err)
-        //     return false
-        // }
+        // console.log('95 checkAuth value to check in DB:', sid)
+        await controller.lookForSameSID(sid)
+            .then(response => {
+                if (response.rows.length == 0) {
+                    state.isAuthenticated = false;
+                    console.log("Printing state if no cookie in DB:", state)
+                    throw new Error("Browser cookie ID doesn't match anything in the DB")
+                } else {
+                    console.log("Changing state...", response.rows[0].sess.userID)
+                    state.isAuthenticated = true;
+                    state.userName = response.rows[0].sess.userName
+                    state.userEmail = response.rows[0].sess.userEmail
+                    state.userID = response.rows[0].sess.userID
+                    state.numberOfPlants = response.rows[0].sess.numberOfPlants
+                    return true
+                }
+            })
+            .catch((err) => {
+                state.message = err.message.toString()
+                console.log("Error while checking authorization: ", err)
+                return false
+            })
     }
 
     const callRoute = async () => {
-        try {
-            await parseCookie(req.headers.authorization)
-                .then(({ sessID, error }) => {
-                    console.log('109 callRoute sessID, error', sessID, error)
-                    if (error) {
-                        console.log('111 got error')
-                        state.message = error.toString()
-                    } else {
-                        checkAuthorization(sessID)
-                            .then((result) => {
-                                // console.log("Printing state before res", state)
-                                console.log("114 checkAuthorization result", result)
-                            })
-                            .catch(err => {
-                                console.log("117 err in checkAuthorization", err)
-                            })
-                    }
-            })
-        } catch (err) {
-            console.log(err)
-        } finally {
-            res.json({
-                isAuthenticated: state.isAuthenticated,
-                message: state.message,
-                userName: state.userName,
-                userEmail: state.userEmail,
-                title: "From Server With Love",
-                userID: state.userID,
-                numberOfPlants: state.numberOfPlants
-            });
-        }
+        await parseCookie(req.headers.authorization)
+            .then(({ sessID, error }) => {
+                console.log('109 callRoute sessID, error', sessID, error)
+                if (error) {
+                    console.log('111 got error')
+                    state.message = error.toString()
+                } else {
+                    checkAuthorization(sessID)
+                        .then((result) => {
+                            console.log("114 checkAuthorization result", result)
+                        })
+                        .then(() => {
+                            res.json({
+                                isAuthenticated: state.isAuthenticated,
+                                message: state.message,
+                                userName: state.userName,
+                                userEmail: state.userEmail,
+                                title: "From Server With Love",
+                                userID: state.userID,
+                                numberOfPlants: state.numberOfPlants
+                            });
+                        })
+                        .catch(err => {
+                            console.log("117 err in checkAuthorization", err)
+                        })
+                }
+        })
     }
     await callRoute()
 });
