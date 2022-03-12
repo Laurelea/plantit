@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import {applyMiddleware, createStore, compose } from "redux";
+import { applyMiddleware, createStore, compose } from "redux";
 import rootReducer from "./store/rootReducer";
 import { Provider } from 'react-redux';
 import ThunkMiddleware from 'redux-thunk';
@@ -11,8 +11,8 @@ import { getMyBase, getCats } from "./partials/allBase";
 
 //промежуточная функция
 const sampleMiddleWare = store => next => action => {
-    const result = next(action);
-    return result
+    return next(action);
+    // return result
 }
 
 const composeEnhancers =

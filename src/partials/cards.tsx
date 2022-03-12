@@ -1,5 +1,4 @@
 import { Irow } from "../store/types";
-// import React from 'react';
 import '../css/plantCard.css';
 import { IReduxState } from "../store/types";
 import { updateBase } from "../store/actions";
@@ -41,13 +40,16 @@ interface ICardsProps {
 // const PlantCard = (plant: Irow) => {
 //     console.log('plant in card:', plant)
 const PlantCardMin = (item: Irow) => {
-    // console.log('PlantCardMin', item)
+    const openBigCard = (itemId: number) => {
+        console.log('tik:', itemId)
+
+    };
     return (
-        <div className="plantcard-main">
+        <div className="plantcard-min" onClick={() => openBigCard(item.id)}>
             <div className="category">{item.cat_name}</div>
             <div className="pic"><img
                 src='https://semenagavrish.ru/wa-data/public/shop/products/06/47/4706/images/8684/8684.290.jpg'
-                className="img"/></div>
+                className="img" alt=''/></div>
             <div className="left product">{item.product_name}</div>
             <div className="left producer">{item.producer_name}</div>
             <div className="left name">{item.name}</div>
@@ -61,7 +63,7 @@ const plantCards = (props: ICardsProps) => {
         return (
             <div className='cards'>
             {props.dbToPrint.filter(item => (item.cat_id === props.cat)).map((item: Irow) => {
-                console.log('60 item:', item)
+                // console.log('60 item:', item)
                 return (
                     // <div>
                         <PlantCardMin {...item} key={item.id}/>
