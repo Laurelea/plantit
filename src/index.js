@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { applyMiddleware, createStore, compose } from "redux";
+import {applyMiddleware, createStore, compose, Dispatch} from "redux";
 import rootReducer from "./store/rootReducer";
 import { Provider } from 'react-redux';
 import ThunkMiddleware from 'redux-thunk';
-
+import {
+    GETBASE
+} from "./store/types";
+import { getMyBase } from "./partials/allBase";
 
 //промежуточная функция
 const sampleMiddleWare = store => next => action => {
     const result = next(action);
-    // console.log('test MW: ', store.getState());
     return result
 }
 
@@ -24,17 +26,48 @@ const composeEnhancers =
         : compose;
 
 // applyMiddleware - применение некой промежуточной функции/ Функция будет вызываться каждый раз, когда срабатывает триггер из rootReducer
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sampleMiddleWare, ThunkMiddleware)));
 
-ReactDOM.render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <Provider store={store}>
-                <App />
-            </Provider>
-        </BrowserRouter>
-    </React.StrictMode>,
-    document.getElementById('root')
-);
+const initialBase = async () => {
+    await getMyBase()
+        .then(response => {
+            console.log('7: ', response);
+            const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sampleMiddleWare, ThunkMiddleware)));
+            store.dispatch({
+                type: 'GETBASE',
+                payload: {
+                    base: response
+                }
+            });
+            return store
+        })
+        .then(store => {
+            ReactDOM.render(
+                <React.StrictMode>
+                    <BrowserRouter>
+                        <Provider store={store}>
+                            <App />
+                        </Provider>
+                    </BrowserRouter>
+                </React.StrictMode>,
+                document.getElementById('root')
+            );
+        })
+}
+
+initialBase()
+
+// export const updateBase = () => async(dispatch: Dispatch) => {
+//     await getMyBase()
+//         .then(response => {
+//             console.log('updateBase: ', response);
+//             dispatch(({
+//                 type: GETBASE,
+//                 payload: {
+//                     base: response
+//                 }
+//             }));
+//         })
+// }
+
 
 reportWebVitals();

@@ -45,9 +45,9 @@ const Categories: {[index: string]: string} = {
 }
 
 const Table = (props: IBaseProps) => {
-    useEffect(() => {
-        props.updateBase();
-    }, [])
+    // useEffect(() => {
+    //     props.updateBase();
+    // }, [])
     // console.log('allbase props:', props);
 
     const [state, setState] = useState<ITableState>({
@@ -78,7 +78,7 @@ const Table = (props: IBaseProps) => {
                     })
                 : undefined
         })
-    }, [state.sortKey, state.sortOrder, state.filterType, state.page, state.elemPerPage])
+    }, [props.dbToPrint, state.sortKey, state.sortOrder, state.filterType, state.page, state.elemPerPage])
 
     const lastIndex = state.page * state.elemPerPage;
     const firstIndex = lastIndex - state.elemPerPage;
@@ -124,9 +124,6 @@ const Table = (props: IBaseProps) => {
                                 ? <a href="!#" className="active-page" onClick={paginate}>{number}</a>
                                 : <a href="!#" className="page-link" onClick={paginate}>{number}</a>
                                 }
-                                {/*<a href="!#" className="page-link" onClick={paginate}>*/}
-                                {/*    {number}*/}
-                                {/*</a>*/}
                             </li>
                         ))
                     }
@@ -222,10 +219,9 @@ const Table = (props: IBaseProps) => {
                     </thead>
                     <tbody>
                         {currentElem
-                            ? currentElem
                             .map((item: any, key: number) => {
                             return (
-                                <tr key={key}>
+                                <tr key={key} className='table-row'>
                                     <td onClick={() => filterOn({type: undefined, value: 'none'})}>{item.id}</td>
                                     <td onClick={() => filterOn({type: 'cat_name', value: item.cat_name})}>{item.cat_name}</td>
                                     <td onClick={() => filterOn({type: 'product_name', value: item.product_name})}>{item.product_name}</td>
@@ -234,16 +230,15 @@ const Table = (props: IBaseProps) => {
                                     <td onClick={() => filterOn({type: 'user_name', value: item.user_name})}>{item.user_name}</td>
                                 </tr>
                             )})
-                            : null}
+                        }
                     </tbody>
                 </table>
                 <Pagination elemPerPage={state.elemPerPage} totalElems={state.baseToShow ? state.baseToShow.length : 0} paginate={paginate}/>
             </React.Fragment>
         )
     } else {
-        return (<p> no props </p>)
+        return (<p> no current elem </p>)
     }
-
 }
 
 const mapStateToProps = (state: IReduxState) => ({

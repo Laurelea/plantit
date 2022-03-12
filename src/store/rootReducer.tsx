@@ -1,4 +1,13 @@
 import { IReduxState, TAction, AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE } from "./types";
+// import { getMyBase } from "../partials/allBase";
+//
+// const initialBase = async () => {
+//     return await getMyBase()
+//         .then(response => {
+//             console.log('7: ', response);
+//
+//         })
+// }
 
 const initialState: IReduxState = {
     apiResponse: "",

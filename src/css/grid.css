@@ -424,3 +424,7 @@ a.button:hover {
     font-weight: bold;
     text-decoration: underline;
 }
+
+.table-row {
+    cursor: pointer;
+}
