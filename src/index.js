@@ -8,6 +8,7 @@ import rootReducer from "./store/rootReducer";
 import { Provider } from 'react-redux';
 import ThunkMiddleware from 'redux-thunk';
 
+
 //промежуточная функция
 const sampleMiddleWare = store => next => action => {
     const result = next(action);

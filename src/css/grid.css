@@ -117,25 +117,15 @@ body {
     grid-template-columns: 1fr;
     grid-template-rows: 10% 1fr 1fr 1fr 1fr;
     gap: 10px 5px;
-    grid-template-areas:
-    "showBaseHeader"
-    "Vegs"
-    "Fruit"
-    "Herbs"
-    "Decs";
-    grid-auto-flow: row;
+    grid-auto-flow: column;
     padding-top: 10px;
 }
 
 .showBaseHeader {
-    grid-area: showBaseHeader;
+    /*grid-area: showBaseHeader;*/
     align-content: center;
     justify-content: center;
 }
-.Vegs { grid-area: Vegs; }
-.Fruit { grid-area: Fruit; }
-.Herbs { grid-area: Herbs; }
-.Decs { grid-area: Decs; }
 
 .DBItemWrapper {
     display: flex;

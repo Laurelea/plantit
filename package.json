@@ -21,7 +21,6 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "bcrypt": "^5.0.1",
     "connect-pg-simple": "^6.2.1",
     "express": "^4.17.1",
@@ -42,7 +41,8 @@
     "socket.io-client": "^4.1.2",
     "typescript": "^4.5.5",
     "uuidv4": "^6.2.10",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "workbox-webpack-plugin": "^6.5.1"
   },
   "eslintConfig": {
     "extends": [
@@ -65,12 +65,6 @@
   },
   "homepage": ".",
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-proposal-decorators": "^7.14.5",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.0.0",
     "@types/node": "^17.0.18",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
@@ -78,27 +72,5 @@
     "@types/react-router-dom": "^5.3.3",
     "eslint-plugin-react-hooks": "^4.2.0",
     "nodemon": "^2.0.15"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env",
-      "@babel/preset-react",
-      "other-presets",
-      "react-app"
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          "legacy": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ]
-    ]
   }
 }

@@ -3,7 +3,6 @@ import { updateBase } from "../store/actions";
 import { connect } from "react-redux";
 import { IReduxState, Irow } from "../store/types";
 import React from 'react';
-import { getCats } from "./allBase";
 
 interface IBaseProps {
     dbToPrint: undefined | Array<Irow>,
@@ -44,14 +43,6 @@ const Categories: {[index: string]: string} = {
     Decs: "Декоративные",
     Herbs: "Травы",
 }
-
-const newCats = async () => {
-    await getCats()
-        .then((response: any) => {
-            console.log('51 newCats', response)
-        })
-}
-newCats()
 
 const Table = (props: IBaseProps) => {
     useEffect(() => {
@@ -117,7 +108,7 @@ const Table = (props: IBaseProps) => {
             const calcValue = state.page + value
             setState({
                 ...state,
-                page: calcValue == 0
+                page: calcValue === 0
                 ? 1
                 : Math.min(calcValue, pageNumbers.length)
             })
@@ -146,8 +137,8 @@ const Table = (props: IBaseProps) => {
                         <option value="20">20</option>
                         <option value="30">30</option>
                     </select>
-                <button className="btn-primary" onClick={() => changePage(-1)} disabled={state.page == 1}>Prev Page</button>
-                <button className="btn-primary" onClick={() => changePage(1)} disabled={state.page == pageNumbers.length}>Next Page</button>
+                <button className="btn-primary" onClick={() => changePage(-1)} disabled={state.page === 1}>Prev Page</button>
+                <button className="btn-primary" onClick={() => changePage(1)} disabled={state.page === pageNumbers.length}>Next Page</button>
             </div>
         )
     }
@@ -160,19 +151,6 @@ const Table = (props: IBaseProps) => {
             page: 1,
         })
     }
-    // onClick: MouseEventHandler<HTMLButtonElement>, sortKey: string | number
-    // const SortButton = ({ sortKey }: ISortButton) => {
-    //     return (
-    //         <button>
-    //             {state.sortKey === sortKey
-    //                 ? state.sortOrder
-    //                     ? ' 🔽'
-    //                     : ' 🔼'
-    //                 : ''
-    //             }
-    //         </button>
-    //     )
-    // }
 
     const filterOn = ({type, value}: {type : string | undefined, value: string}) => {
 
