@@ -14,6 +14,7 @@ import Chat from "./partials/chat";
 import ShowBase from "./partials/showBase";
 import Auth from "./partials/auth";
 import BaseTable from "./partials/baseTable";
+import Cards from "./partials/cards";
 
 const axios = require('axios').default;
 axios.defaults.withCredentials = true
@@ -89,13 +90,12 @@ const App = (props: IAppProps) => {
                             }/>
                             <Route path="/addPlant" exact component={Addplant}/>
                             <Route path="/newUser" exact component={Newuser}/>
-                            {/*<Route path="/showBase" exact component={AllBase}/>*/}
                             <Route path="/showBase" exact><BaseTable sortkey = {'all'}/> </Route>
                             <Route path="/lk" exact component={Account}/>
-                            <Route path="/vegs" exact><BaseTable sortkey = {'vegs'}/> </Route>
-                            {/*<Route path="/fruit" exact component={Fruit}/>*/}
-                            {/*<Route path="/herbs" exact component={Herbs}/>*/}
-                            {/*<Route path="/decs" exact component={Decs}/>*/}
+                            <Route path="/cat-1" exact><Cards cat = {1}/> </Route>
+                            <Route path="/cat-2" exact><Cards cat = {2}/> </Route>
+                            <Route path="/cat-3" exact><Cards cat = {3}/> </Route>
+                            <Route path="/cat-4" exact><Cards cat = {4}/> </Route>
                             <Route path="/chat" exact component={Chat}/>
                             <Route render={() => <h2>404 not found</h2>}/>
                         </Switch>

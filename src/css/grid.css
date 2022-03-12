@@ -38,7 +38,7 @@ body {
 
 .gridMainContainer {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
     grid-template-rows: 150px 1fr 150px;
     align-items: center;
     justify-items: center;
@@ -115,10 +115,16 @@ body {
     border: solid white 3px;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 10% 1fr 1fr 1fr 1fr;
+    /*grid-template-rows: 10% 20% 20% 1fr 1fr;*/
+    /*grid-auto-rows: 50px;*/
+    grid-template-rows: repeat(auto-fill, minmax(150px, 150px));
     gap: 10px 5px;
-    grid-auto-flow: column;
-    padding-top: 10px;
+    /*grid-auto-flow: column;*/
+    /*align-content: start;*/
+    /*justify-content: start;*/
+    /*max-width: 320px;*/
+    /*align-items: stretch;*/
+    /*padding-top: 10px;*/
 }
 
 .showBaseHeader {
@@ -128,12 +134,19 @@ body {
 }
 
 .DBItemWrapper {
-    display: flex;
-    /*align-items: flex-start;*/
+    /*display: flex;*/
     border: solid pink 2px;
-    /*align-content: left;*/
-    /*align-self: left;*/
-    padding: 10px;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 400px;
+    max-height: 150px;
+    align-content: center;
+}
+
+.cat-pic {
+    width: 130px;
+    margin-left: 5px;
 }
 
 .def-list-1 {
@@ -142,7 +155,7 @@ body {
     text-align: left;
     flex-direction: column;
     border: dashed turquoise 1px;
-    margin: 5px;
+    margin-left: 5px;
 }
 
 .def-list-1 a {
@@ -364,15 +377,8 @@ a.button:hover {
     grid-template-columns: 1fr;
     grid-template-rows: 10% 1fr 1fr 1fr 1fr;
     gap: 10px 5px;
-    grid-template-areas:
-    "showBaseHeader"
-    "Vegs"
-    "Fruit"
-    "Herbs"
-    "Decs";
     grid-auto-flow: row;
     padding-top: 10px;
-
 }
 
 #baseTable {
@@ -391,6 +397,7 @@ a.button:hover {
     padding: 5px;
     padding-right: 10px;
     text-align: left;
+    font-size: 19px;
 
 }
 
@@ -427,4 +434,17 @@ a.button:hover {
 
 .table-row {
     cursor: pointer;
+}
+
+.cards {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 0.5fr));
+    grid-gap: 10px;
+    align-items: stretch;
+}
+
+#centralContainer {
+    border: 1px solid yellow;
+    /*width: 600px;*/
 }

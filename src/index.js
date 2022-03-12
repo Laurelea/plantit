@@ -3,13 +3,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import {applyMiddleware, createStore, compose, Dispatch} from "redux";
+import {applyMiddleware, createStore, compose } from "redux";
 import rootReducer from "./store/rootReducer";
 import { Provider } from 'react-redux';
 import ThunkMiddleware from 'redux-thunk';
-import {
-    GETBASE
-} from "./store/types";
 import { getMyBase } from "./partials/allBase";
 
 //промежуточная функция

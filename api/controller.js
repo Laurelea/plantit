@@ -102,7 +102,7 @@ module.exports.lookForSameSID = async (browserCookie) => {
 }
 module.exports.showDB = async () => {
     return await dbKnex
-        .select(['sort.id', 'categories.cat_name', 'product.product_name', 'sort.name', 'producer.producer_name', 'users.user_name'])
+        .select(['sort.id', 'categories.cat_name', 'categories.cat_id', 'product.product_name', 'sort.name', 'producer.producer_name', 'users.user_name'])
         .from('sort')
         .leftJoin('producer', 'sort.producer_id', 'producer.id')
         .leftJoin('product', 'sort.product_id', 'product.id')

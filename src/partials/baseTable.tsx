@@ -193,9 +193,8 @@ const Table = (props: IBaseProps) => {
                     <caption>{
                         state.filterValue === 'none'
                             ? Categories['All']
-                            : state.filterType === 'cat_name'
-                                ? Categories[state.filterValue]
-                                : state.filterValue}</caption>
+                            : state.filterValue
+                    }</caption>
                     <thead>
                         <tr>
                             {headers.map((row) => {

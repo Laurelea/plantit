@@ -36,11 +36,12 @@ const ShowBase = () => {
                 </h2>
             </div>
             {state.cats? state.cats.map((cat) => {
+                const catLink = "/cat-" + cat.cat_id
                 return (
                         <div className='cat DBItemWrapper' key={cat.cat_id}>
-                            <img src={cat.cat_pic} alt={cat.cat_name}/>
+                            <img src={cat.cat_pic} alt={cat.cat_name} className='cat-pic'/>
                             <div className='def-list-1'>
-                                <NavLink to="/vegs"> {cat.cat_name} </NavLink>
+                                <NavLink to={catLink}> {cat.cat_name} </NavLink>
                                 <p>
                                     {cat.cat_desc}
                                 </p>
