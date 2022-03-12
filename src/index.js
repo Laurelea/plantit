@@ -7,7 +7,7 @@ import {applyMiddleware, createStore, compose } from "redux";
 import rootReducer from "./store/rootReducer";
 import { Provider } from 'react-redux';
 import ThunkMiddleware from 'redux-thunk';
-import { getMyBase } from "./partials/allBase";
+import { getMyBase, getCats } from "./partials/allBase";
 
 //промежуточная функция
 const sampleMiddleWare = store => next => action => {
@@ -26,15 +26,26 @@ const composeEnhancers =
 
 const initialBase = async () => {
     await getMyBase()
-        .then(response => {
-            console.log('7: ', response);
+        .then(async (baseResponse) => {
+            console.log('30 index: ', baseResponse);
             const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sampleMiddleWare, ThunkMiddleware)));
             store.dispatch({
                 type: 'GETBASE',
                 payload: {
-                    base: response
+                    base: baseResponse
                 }
             });
+            await getCats()
+                .then(catResponse => {
+                    console.log('40 index: ', catResponse);
+                    store.dispatch({
+                        type: 'GETCATS',
+                        payload: {
+                            cats: catResponse
+                        }
+                    });
+                    return store
+                })
             return store
         })
         .then(store => {

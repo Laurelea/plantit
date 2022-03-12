@@ -3,6 +3,7 @@ export const UNAUTHORIZE = 'UNAUTHORIZE'
 export const SETMESSAGE = 'SETMESSAGE'
 export const UPDATEUSERINFO = 'UPDATEUSERINFO'
 export const GETBASE = 'GETBASE'
+export const GETCATS = 'GETCATS'
 
 export interface IUser {
     userName: string,
@@ -20,6 +21,14 @@ export interface Irow extends Record<string, any> {
     user_name: string,
 }
 
+export interface ICat extends Record<string, any> {
+    cat_id: number,
+    cat_name: string,
+    cat_pic: string,
+    cat_desc: string,
+    parent: number,
+}
+
 export interface IReduxState {
     apiResponse: string,
     pageTitle: string,
@@ -27,22 +36,27 @@ export interface IReduxState {
     isAuthenticated: boolean,
     message: string | undefined,
     currentUser: IUser,
-    dbToPrint: undefined | Array<Irow>
+    dbToPrint: undefined | Array<Irow>,
+    cats: undefined | Array<ICat>,
 }
 
 interface IMessage {
     message: string | undefined;
 }
 
-interface Ibase {
-    base: undefined | Promise<any>
+interface IBase {
+    base: undefined | Array<Irow>
+}
+
+interface ICats {
+    cats: undefined | Array<ICat>
 }
 
 interface IUserInfo {
     numberOfPlants: number;
 }
 export type TAction =
-    IAuthorizeAction | IUnauthorizeAction | ISetmessageAction | IUpdateUserInfoAction | IGetBaseAction;
+    IAuthorizeAction | IUnauthorizeAction | ISetmessageAction | IUpdateUserInfoAction | IGetBaseAction | IGetCatsAction;
 
 export interface IAuthorizeAction {
     type: typeof AUTHORIZE;
@@ -65,5 +79,10 @@ export interface IUpdateUserInfoAction {
 
 export interface IGetBaseAction {
     type: typeof GETBASE;
-    payload: Ibase;
+    payload: IBase;
+}
+
+export interface IGetCatsAction {
+    type: typeof GETCATS;
+    payload: ICats;
 }

@@ -3,10 +3,11 @@ import {
     UNAUTHORIZE,
     SETMESSAGE,
     UPDATEUSERINFO,
-    GETBASE
+    GETBASE,
+    GETCATS
 } from "./types";
 import Logout from '../partials/logout'
-import { getMyBase } from "../partials/allBase";
+import { getMyBase, getCats } from "../partials/allBase";
 import { Dispatch } from 'redux'
 
 export const authorize = (userID: number, userName: string, userEmail: string, numberOfPlants: number) => {
@@ -63,4 +64,17 @@ export const setMessage = (message: string) => {
             message
         }
     }
+}
+
+export const updateCats = () => async(dispatch: Dispatch) => {
+    await getCats()
+        .then(response => {
+            console.log('updateBase: ', response);
+            dispatch(({
+                type: GETCATS,
+                payload: {
+                    cats: response
+                }
+            }));
+        })
 }

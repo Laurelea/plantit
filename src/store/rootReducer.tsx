@@ -1,13 +1,4 @@
-import { IReduxState, TAction, AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE } from "./types";
-// import { getMyBase } from "../partials/allBase";
-//
-// const initialBase = async () => {
-//     return await getMyBase()
-//         .then(response => {
-//             console.log('7: ', response);
-//
-//         })
-// }
+import { IReduxState, TAction, AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE, GETCATS } from "./types";
 
 const initialState: IReduxState = {
     apiResponse: "",
@@ -21,7 +12,8 @@ const initialState: IReduxState = {
         userID: 0,
         numberOfPlants: 0
     },
-    dbToPrint: undefined
+    dbToPrint: undefined,
+    cats: undefined,
 }
 
 const rootReducer = (state=initialState, action: TAction) => {
@@ -69,6 +61,12 @@ const rootReducer = (state=initialState, action: TAction) => {
             return {
                 ...state,
                 dbToPrint: action.payload.base
+            }
+        }
+        case GETCATS: {
+            return {
+                ...state,
+                cats: action.payload.cats
             }
         }
         default: return state

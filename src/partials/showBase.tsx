@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from "react";
 import { NavLink } from "react-router-dom";
 import { getCats } from "./allBase";
-
-interface ICats {
-    cat_id: number,
-    cat_name: string,
-    cat_pic: string,
-    cat_desc: string,
-    parent: number,
-}
+import { ICat } from "../store/types";
 
 interface IShowBaseState {
-    cats: undefined | Array<ICats>,
+    cats: undefined | Array<ICat>,
 }
 
 const ShowBase = () => {

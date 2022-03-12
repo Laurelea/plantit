@@ -41,7 +41,7 @@ interface ICardsProps {
 // const PlantCard = (plant: Irow) => {
 //     console.log('plant in card:', plant)
 const PlantCardMin = (item: Irow) => {
-    console.log('PlantCardMin', item)
+    // console.log('PlantCardMin', item)
     return (
         <div className="plantcard-main">
             <div className="category">{item.cat_name}</div>
