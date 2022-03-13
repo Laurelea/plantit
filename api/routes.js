@@ -9,7 +9,6 @@ const app = express();
 const uuidv4 = require("uuidv4")
 const cors = require("cors");
 
-
 app.use(express.json())
 app.use(express.urlencoded({
     extended: true,
@@ -245,9 +244,16 @@ router.get("/api/getbase", async (req, res) => {
 })
 
 router.post("/api/addplant", async (req, res) => {
+    console.log("Plant added: ", req.body)
     const plantAdded = await controller.addPlant(req.body)
-    // console.log("Plant added: ", plantAdded)
     res.send(plantAdded)
+})
+
+router.post("/api/addProducer", async (req, res) => {
+    // console.log("addProducer 254: ", req.body)
+    const producerAdded = await controller.addProducer(req.body)
+    console.log('255 addPlant result', producerAdded)
+    res.send(producerAdded)
 })
 
 router.post("/api/getNumberOfPlants", async(req, res) => {

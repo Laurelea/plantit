@@ -229,8 +229,38 @@ module.exports.delSession = async (sessID) => {
     console.log('177 controller sessID', sessID)
     try {
         return await db.query('DELETE from sessions WHERE sid=$1', [sessID])
-        // return delResult
     } catch (err) {
         console.log('180 controller delSession:', err)
     }
+}
+
+module.exports.addProducer = async (data) => {
+    const { producer } = data;
+    console.log('controller addProducer producer', producer)
+    let producerID;
+    await dbKnex
+        .select()
+        .from('producer')
+        .where({producer_name: capitalizeFirstLetter(producer)})
+        .then(async(result) => {
+            console.log('246 check producer result', result)
+            if (result.length === 0) {
+                await dbKnex
+                    .insert({producer_name: capitalizeFirstLetter(producer)})
+                    .into('producer')
+                    .returning()
+                    .then(result => {
+                        console.log('252 result', result.rows)
+                        producerID =  result[0].id
+                        return producerID
+                    })
+                    .catch(err => {console.log('insert err', err)});
+            } else {
+                console.log("Producer exists :", result[0].id)
+                producerID =  result[0].id
+                return producerID
+            }
+        })
+        .catch(err => {console.log('check err', err)});
+    return producerID
 }

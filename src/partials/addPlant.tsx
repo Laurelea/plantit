@@ -57,10 +57,6 @@ const AddPlant = (props: IAddPlantProps) => {
             plantSort: event.currentTarget.plantSort.value,
             product : event.currentTarget.product.id,
             producer : event.currentTarget.producer.value,
-            yeartype : (event.currentTarget.yeartype.value === "a1") ? "однолетник" : "многолетник",
-            rootstock : !!event.currentTarget.rootstock.value,
-            watering : event.currentTarget.watering.value,
-            soil: event.currentTarget.soil.value,
             user_id: props.currentUser.userID
         }
         console.log("plantData to send to server:", plantData)

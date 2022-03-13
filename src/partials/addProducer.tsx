@@ -2,32 +2,25 @@ import React from 'react'
 import axios from "axios";
 import { connect } from "react-redux";
 import { updateBase, updateUserInfo } from "../store/actions";
-import {ICat, IReduxState, IUser} from "../store/types";
+import { ICat, IReduxState, IUser } from "../store/types";
+import { API_URL } from "../config";
 
-interface IAddPlantProps {
+interface IAddProducerProps {
     currentUser: IUser,
     updateUserInfo: (numberOfPlants: number) => void,
     updateBase: () => void,
     cats: Array<ICat> | undefined,
 }
 
-const AddProducer = (props: IAddPlantProps) => {
-    const addCatHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.currentTarget.reset();
+const AddProducer = (props: IAddProducerProps) => {
+    const addProducerHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const plantData = {
-            category: event.currentTarget.category.cat_id,
-            plantSort: event.currentTarget.plantSort.value,
-            product : event.currentTarget.product.value,
+        const producerData = {
             producer : event.currentTarget.producer.value,
-            yeartype : (event.currentTarget.yeartype.value === "a1") ? "однолетник" : "многолетник",
-            rootstock : !!event.currentTarget.rootstock.value,
-            watering : event.currentTarget.watering.value,
-            soil: event.currentTarget.soil.value,
-            user_id: props.currentUser.userID
         }
-        console.log("ProducerData to send to server:", plantData)
-        await axios.post('/api/addProducer', plantData)
+        event.currentTarget.reset();
+        console.log("ProducerData to send to server:", producerData)
+        await axios.post(API_URL + 'api/addProducer', producerData)
             .then(response => {
                 props.updateBase();
                 console.log("33 addProducer  post.response.data: ", response.data);
@@ -40,17 +33,16 @@ const AddProducer = (props: IAddPlantProps) => {
                 }
             })
             .catch(error => {
-                // handle error
                 console.log(error);
             })
     }
     return (
-        <form name='Форма для добавления нового производителя' id='ProducerAddForm' className='addForm'  onSubmit={addCatHandler}
+        <form name='Форма для добавления нового производителя' id='ProducerAddForm' className='addForm'  onSubmit={addProducerHandler}
               autoComplete="on">
             <h2 className='whole-line'>
                 Добавить нового производителя
             </h2>
-            <input type='text' placeholder='Новый производитель' name='category' required autoComplete="on" className='whole-line add-input'/>
+            <input type='text' placeholder='Новый производитель' name='producer' required autoComplete="on" className='whole-line add-input'/>
             <div className='whole-line'>
                 <button type='submit' className='add-button'>Добавить</button>
             </div>
