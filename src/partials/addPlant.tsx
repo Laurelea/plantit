@@ -87,14 +87,14 @@ const AddPlant = (props: IAddPlantProps) => {
     return (
         <form name='Форма для добавления нового растения' id='PlantAddForm' className='addForm' onSubmit={addPlantHandler}
               autoComplete="on">
-            <h2>
+            <h2 className='whole-line'>
                 Добавить новое растение
             </h2>
-            <label>
-                <p>Выберите категорию:</p>
+            <label className='add-elem'>
+                Выберите категорию:
             </label>
             <select name="category" required className='select-add' onChange={selectCat}>
-                <option></option>
+                <option> </option>
                 {state.cats
                     ? state.cats.map(item => (
                         <option key={item.cat_id} value={item.cat_id}>{item.cat_name}</option>
@@ -102,8 +102,8 @@ const AddPlant = (props: IAddPlantProps) => {
                     : null
                 }
             </select>
-            <label>
-                <p>Выберите вид растения:</p>
+            <label className='add-elem'>
+                Выберите вид растения:
             </label>
             <select name="product" required className='select-add'>
                 {state.products
@@ -113,8 +113,8 @@ const AddPlant = (props: IAddPlantProps) => {
                     : <option>no products(</option>
                 }
             </select>
-            <label>
-                <p>Выберите производителя семян:</p>
+            <label className='add-elem'>
+                Выберите производителя семян:
             </label>
             <select name="producer" required className='select-add'>
                 {state.producers
@@ -124,54 +124,49 @@ const AddPlant = (props: IAddPlantProps) => {
                     : <option>no producers(</option>
                 }
             </select>
-            <label>
-                <p>Введите название сорта:</p>
+            <label className='add-elem'>
+                Введите название сорта:
             </label>
-            <fieldset>
                 <input type='text' placeholder='Сорт растения: Машенька, Гигант, Роузи и тп.' autoFocus name='plantSort' required
-                       autoComplete="off" defaultValue={""}/>
-            </fieldset>
-            <fieldset>
-                <label>
-                    <p>Дней до всходов:</p>
-                </label>
-                <div className="diaps">
-                    <textarea name="days_to_seedlings_min" placeholder="Мин" autoComplete="off" className="diap"></textarea>
-                    <textarea name="days_to_seedlings_max" placeholder="Макс" autoComplete="off" className="diap"></textarea>
-                </div>
-            </fieldset>
-            <fieldset>
-                <label>
-                    <p>Высота растения:</p>
-                </label>
+                       autoComplete="off" className='add-input'/>
+            <label className='add-elem'>
+                Дней до всходов:
+            </label>
             <div className="diaps">
-                <textarea name="height_min" placeholder="Мин" autoComplete="off" className="diap"></textarea>
-                <textarea name="height_max" placeholder="Макс" autoComplete="off" className="diap"></textarea>
+                <input name="days_to_seedlings_min" type='text' placeholder="Мин" className="diap"></input>
+                {/*<textarea name="days_to_seedlings_min" placeholder="Мин" autoComplete="off" className="diap"></textarea>*/}
+                <input name="days_to_seedlings_max" type='text' placeholder="Макс" autoComplete="off" className="diap"></input>
             </div>
-            </fieldset>
-            <fieldset>
-                <label>
-                    <p>Посадка растения:</p>
-                </label>
-                <h3>Начало</h3>
-                <div className="diaps">
-                    <textarea name="planting_start_day" placeholder="день" autoComplete="off" className="diap"></textarea>
-                    <textarea name="planting_start_month" placeholder="месяц" autoComplete="off" className="diap"></textarea>
-                </div>
-                <h3>Конец</h3>
-                <div className="diaps">
-                    <textarea name="planting_stop_day" placeholder="день" autoComplete="off" className="diap"></textarea>
-                    <textarea name="planting_stop_month" placeholder="месяц" autoComplete="off" className="diap"></textarea>
-                </div>
-
-            </fieldset>
-                <label>
-                    <p>Приложить фото семян:</p>
-                </label>
-                <div>
-                    <input type="file" name="file" multiple/>
-                </div>
-                <button type='submit'>Добавить</button>
+            <label className='add-elem'>
+                Высота растения:
+            </label>
+            <div className="diaps">
+                <input type='text' name="height_min" placeholder="Мин" autoComplete="off" className="diap"></input>
+                <input type='text' name="height_max" placeholder="Макс" autoComplete="off" className="diap"></input>
+            </div>
+            <label className='add-elem'>
+                Посадка растения. Начало
+            </label>
+            <div className="diaps">
+                <input type='text' name="planting_start_day" placeholder="день" autoComplete="off" className="diap"></input>
+                <input type='text' name="planting_start_month" placeholder="месяц" autoComplete="off" className="diap"></input>
+            </div>
+            <label className='add-elem'>
+                Посадка растения. Конец
+            </label>
+            <div className="diaps">
+                <input type='text' name="planting_stop_day" placeholder="день" autoComplete="off" className="diap"></input>
+                <input type='text' name="planting_stop_month" placeholder="месяц" autoComplete="off" className="diap"></input>
+            </div>
+            <label className='add-elem'>
+                Приложить фото семян:
+            </label>
+            <div className='add-photo'>
+                <input type="file" name="file" className='add-input file' multiple />
+            </div>
+            <div className='whole-line'>
+                <button type='submit' className='add-button'>Добавить</button>
+            </div>
         </form>
     )
 }

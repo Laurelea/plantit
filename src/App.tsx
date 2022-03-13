@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './css/grid.css';
+import './css/general.css';
 import { API_URL } from "./config";
 import { connect } from 'react-redux';
 import { authorize, unauthorize } from "./store/actions";

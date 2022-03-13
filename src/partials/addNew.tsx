@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import AddPlant from "./addPlant";
 import AddProduct from "./addProduct";
 import AddCat from "./addCat";
+import AddProducer from './addProducer'
+import '../css/addForms.css';
 
 interface IAddNewState {
     option: number | undefined,
@@ -11,6 +13,28 @@ export const AddNew = () => {
     const [state, setState] = useState<IAddNewState>({
         option: undefined
     })
+    const adds = [
+        {
+            id: 1,
+            name: 'Растение',
+            elem: <AddPlant/>
+        },
+        {
+            id: 2,
+            name: 'Вид',
+            elem: <AddProduct/>
+        },
+        {
+            id: 3,
+            name: 'Категория',
+            elem: <AddCat/>
+        },
+        {
+            id: 4,
+            name: 'Производитель',
+            elem: <AddProducer/>
+        },
+    ]
     const showAdd = (option: number) => {
         setState({
             ...state,
@@ -19,16 +43,12 @@ export const AddNew = () => {
     }
     return (
         <React.Fragment>
-            <button onClick={() => showAdd(1)}>Растение</button>
-            <button onClick={() => showAdd(2)}>Вид</button>
-            <button onClick={() => showAdd(3)}>Категория </button>
-            {state.option == 1
-                ? <AddPlant/>
-                : state.option == 2
-                    ? <AddProduct/>
-                    : state.option == 3
-                        ? <AddCat/>
-                        : null}
+            {adds.map(but => {
+                return (
+                    <button onClick={() => showAdd(but.id)} key={but.id}>{but.name}</button>
+                )
+            })}
+            {state.option ? adds[state.option-1].elem : null}
         </React.Fragment>
     )
 }

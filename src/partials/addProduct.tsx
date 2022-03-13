@@ -72,16 +72,16 @@ const AddProduct = (props: IAddProductProps) => {
             })
     }
     return (
-            <form name='Форма для добавления нового растения' id='PlantAddForm' className='addForm' onSubmit={addProductHandler}
+            <form name='Форма для добавления нового растения' id='ProductAddForm' className='addForm' onSubmit={addProductHandler}
                   autoComplete="on">
-                <h2>
+                <h2 className='whole-line'>
                     Добавить новый вид
                 </h2>
-                <label>
-                    <p>Выберите категорию:</p>
+                <label className='add-elem'>
+                    Выберите категорию:
                 </label>
                 <select name="category" required className='select-add' onChange={selectCat}>
-                    <option>''</option>
+                    <option> </option>
                     {state.cats
                         ? state.cats.map(item => (
                             <option key={item.cat_id} value={item.cat_id}>{item.cat_name}</option>
@@ -89,54 +89,52 @@ const AddProduct = (props: IAddProductProps) => {
                         : null
                     }
                 </select>
-                <label>
-                    <p>Введите название вида:</p>
+                <label className='add-elem'>
+                    Введите название вида:
                 </label>
-                <fieldset>
                     <input type='text' placeholder='Вид растения: Томат, Огурец и тп и тп.' autoFocus name='plantProduct' required
-                           autoComplete="off" defaultValue={""}/>
-                </fieldset>
-                <fieldset>
-                    <p>
-                        Срок жизни растения:
-                    </p>
-                    {state.yeartypes
+                           autoComplete="off" defaultValue={""} className='add-input'/>
+                <label className='add-elem'>
+                    Срок жизни растения:
+                </label>
+                <div className='radioField'>
+                {state.yeartypes
                     ? state.yeartypes.map(item => {
                             return (
-                                <div className='radioField' key={item.id}>
-                                    <input className='radio' type='radio' name='yeartype' value={item.id} id={item.name}/>
-                                    <label htmlFor={item.name}>{item.name}</label>
-                                </div>
+                                <React.Fragment>
+                                    <label><input className='radio' type='radio' name='yeartype' value={item.id} id={item.name} key={item.id}/>{item.name}</label>
+                                </React.Fragment>
                             )
                         })
+
                     : <p>no yeartypes(</p>}
-                </fieldset>
-                <fieldset>
-                    <p>
-                        Выращивание рассадой:
-                    </p>
-                    <div className='radioField'>
-                        <label><input className='radio' type='radio' name='rootstock' value="a1"/> Обязательно</label>
-                    </div>
-                    <div className='radioField'>
-                        <input className='radio' type='radio' name='rootstock' value="a2" defaultChecked={false}/> Необязательно
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <label>
-                        <p>Глубина посадки:</p>
-                    </label>
-                    <div className="diaps">
-                        <textarea name="depth_min" placeholder="Мин" autoComplete="off" className="diap"></textarea>
-                        <textarea name="depth_max" placeholder="Макс" autoComplete="off" className="diap"></textarea>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <textarea name="watering" placeholder="Режим полива" autoComplete="off"></textarea>
-                    <textarea name="soil" placeholder="Требования к почве" autoComplete="off"></textarea>
-                    <textarea name="sun" placeholder="Требования к солнцу" autoComplete="off"></textarea>
-                </fieldset>
-                <button type='submit'>Добавить</button>
+                </div>
+                <label className='add-elem'>
+                    Выращивание рассадой:
+                </label>
+                <div className='radioField'>
+                    <label><input className='radio' type='radio' name='rootstock' value="a1"/> Обязательно</label>
+                    <label><input className='radio' type='radio' name='rootstock' value="a2" defaultChecked={false}/> Необязательно</label>
+                </div>
+                <label className='add-elem'>
+                    Глубина посадки:
+                </label>
+                <div className="diaps">
+                    <input type='text'  name="depth_min" placeholder="Мин" autoComplete="off" className="diap"></input>
+                    <input type='text'  name="depth_max" placeholder="Макс" autoComplete="off" className="diap"></input>
+                </div>
+                <div className='whole-line'>
+                    <textarea name="watering" placeholder="Режим полива" autoComplete="off" className='add-text'/>
+                </div>
+                <div className='whole-line'>
+                    <textarea name="soil" placeholder="Требования к почве" autoComplete="off" className='add-text'/>
+                </div>
+                <div className='whole-line'>
+                    <textarea name="sun" placeholder="Требования к солнцу" autoComplete="off" className='add-text'/>
+                </div>
+                <div className='whole-line'>
+                    <button type='submit' className='add-button'>Добавить</button>
+                </div>
             </form>
             )
 }

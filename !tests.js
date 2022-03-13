@@ -1,3 +1,4 @@
+
 const testObject = [
     {
         id: '3',
@@ -26,3 +27,28 @@ const cats = [...new Set(testObject.map(item => (item.cat_name)))]
 const cats1 = testObject.map(item => item.cat_name).filter((v, i, a) => a.indexOf(v) === i)
 
 console.log(cats1)
+
+const adds = [
+    {
+        id: 1,
+        name: 'Растение',
+        // elem: <AddPlant/>
+    },
+    {
+        id: 2,
+        name: 'Вид',
+        // elem: <AddProduct/>
+    },
+    {
+        id: 3,
+        name: 'Категория',
+        // elem: <AddCat/>
+    },
+    {
+        id: 4,
+        name: 'Производитель',
+        // elem: <AddProducer/>
+    },
+]
+
+console.log(adds[1].name)

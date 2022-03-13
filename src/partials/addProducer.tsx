@@ -11,7 +11,7 @@ interface IAddPlantProps {
     cats: Array<ICat> | undefined,
 }
 
-const AddCat = (props: IAddPlantProps) => {
+const AddProducer = (props: IAddPlantProps) => {
     const addCatHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.currentTarget.reset();
         event.preventDefault();
@@ -26,19 +26,17 @@ const AddCat = (props: IAddPlantProps) => {
             soil: event.currentTarget.soil.value,
             user_id: props.currentUser.userID
         }
-        console.log("plantData to send to server:", plantData)
-        await axios.post('/api/addplant', plantData)
+        console.log("ProducerData to send to server:", plantData)
+        await axios.post('/api/addProducer', plantData)
             .then(response => {
                 props.updateBase();
-                console.log("45 addplant  post.response.data: ", response.data);
+                console.log("33 addProducer  post.response.data: ", response.data);
                 if (response.data.command === "INSERT") {
                     console.log("added ok")
                     window.alert("added ok")
-                    // result = "Plant added successfully"
                 } else {
-                    console.log("Error addplant: " + response.data)
+                    console.log("Error addProducer: " + response.data)
                     window.alert("error ((")
-                    // result = response.data.error
                 }
             })
             .catch(error => {
@@ -47,12 +45,12 @@ const AddCat = (props: IAddPlantProps) => {
             })
     }
     return (
-        <form name='Форма для добавления новой категории' id='CatAddForm' className='addForm'  onSubmit={addCatHandler}
+        <form name='Форма для добавления нового производителя' id='ProducerAddForm' className='addForm'  onSubmit={addCatHandler}
               autoComplete="on">
             <h2 className='whole-line'>
-                Добавить новую категорию
+                Добавить нового производителя
             </h2>
-            <input type='text' placeholder='Новая категория' name='category' required autoComplete="on" className='whole-line add-input'/>
+            <input type='text' placeholder='Новый производитель' name='category' required autoComplete="on" className='whole-line add-input'/>
             <div className='whole-line'>
                 <button type='submit' className='add-button'>Добавить</button>
             </div>
@@ -63,4 +61,4 @@ const AddCat = (props: IAddPlantProps) => {
 export default connect((state: IReduxState) => ({
     currentUser: state.currentUser,
     cats: state.cats,
-}), { updateBase, updateUserInfo })(AddCat);
+}), { updateBase, updateUserInfo })(AddProducer);

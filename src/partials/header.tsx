@@ -1,6 +1,6 @@
 import React from 'react';
 // import '../css/App.css';
-import '../css/grid.css';
+import '../css/general.css';
 import { NavLink }  from "react-router-dom";
 import { connect } from "react-redux";
 import { unauthorize } from "../store/actions";

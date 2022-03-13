@@ -319,72 +319,6 @@ a.button:hover {
     padding-left: 10px;
 }
 
-.addForm {
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    border: 2px dotted purple;
-}
-
-.addForm fieldset {
-    padding: 5px;
-    margin: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 2px dotted red;
-}
-
-.addForm fieldset input[type="text"], textarea {
-    padding: 5px;
-    margin: 10px;
-    width: 50%;
-}
-
-.addForm {
-    color:whitesmoke;
-    font-family: 'Roboto thin', monospace;
-    line-height: 1.5;
-}
-
-.select-add {
-    width: 50%;
-    margin: 10px;
-    padding: 5px;
-    font-size: 1rem;
-    align-self: center;
-}
-
-.radioField {
-    border: 2px solid yellow;
-    display: inline;
-    align-items: center;
-    /*flex-direction: row;*/
-    /*align-items: flex-start;*/
-    /*position: relative;*/
-    /*padding-left: 25px;*/
-    /*margin-right: 0;*/
-    width: 50%;
-    margin: 5px;
-}
-
-.radioField label{
-    margin-left: 10px;
-}
-
-.plantcard-main{
-    border: solid white 3px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 10% 1fr 1fr 1fr 1fr;
-    gap: 10px 5px;
-    grid-auto-flow: row;
-    padding-top: 10px;
-}
-
 #baseTable {
     border: 3px solid yellow;
     border-collapse: collapse; /* collapse */
@@ -457,16 +391,3 @@ a.button:hover {
     background-color:  rgba(47,79,79, 0.7);
 }
 
-.diaps {
-    border: 1px solid darkorange;
-    width: 30%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-}
-
-.diap {
-    /*align-self: ;*/
-    text-align: center;
-    width: 40px;
-}
