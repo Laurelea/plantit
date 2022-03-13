@@ -1,9 +1,9 @@
 import { API_URL } from "../config";
-import { Irow } from "../store/types";
+import {ICat, IProducer, IProduct, Irow, IYearType} from "../store/types";
 const axios = require('axios').default;
 
 export const getMyBase = async () => {
-    const result = await axios({
+    return await axios({
         method: 'get',
         url: API_URL + 'api/getbase'
     })
@@ -14,21 +14,60 @@ export const getMyBase = async () => {
         .catch((error: any) => {
             console.log(error);
         })
-    // console.log('17', result)
-    return result
 }
 
 export const getCats = async () => {
-    const result = await axios({
+    return await axios({
         method: 'get',
         url: API_URL + 'api/getCats'
     })
-        .then((response: { data: any }) => {
-            console.log('27 getCats', response.data, typeof (response.data))
+        .then((response: { data: Array<ICat> | undefined }) => {
+            // console.log('27 getCats', response.data, typeof (response.data))
             return response.data
         })
         .catch((error: any) => {
             console.log(error);
         })
-    return result
+}
+
+export const getProducts = async () => {
+    return await axios({
+        method: 'get',
+        url: API_URL + 'api/getProducts'
+    })
+        .then((response: { data: Array<IProduct> | undefined }) => {
+            console.log('42 getProducts', response.data, typeof (response.data))
+            return response.data
+        })
+        .catch((error: any) => {
+            console.log(error);
+        })
+}
+
+export const getProducers = async () => {
+    return await axios({
+        method: 'get',
+        url: API_URL + 'api/getProducers'
+    })
+        .then((response: { data: Array<IProducer> | undefined }) => {
+            console.log('57 getProducers', response.data, typeof (response.data))
+            return response.data
+        })
+        .catch((error: any) => {
+            console.log(error);
+        })
+}
+
+export const getYearTypes= async () => {
+    return await axios({
+        method: 'get',
+        url: API_URL + 'api/getYearTypes'
+    })
+        .then((response: { data: Array<IYearType> | undefined }) => {
+            console.log('72 getYearTypes', response.data, typeof (response.data))
+            return response.data
+        })
+        .catch((error: any) => {
+            console.log(error);
+        })
 }

@@ -31,7 +31,7 @@ const Newheader = (props: IHeaderProps) =>  {
                         {props.isAuthenticated
                             ? <React.Fragment>
                                 <li className="active"><NavLink to="/showBase" exact>БАЗА</NavLink></li>
-                                <li className="active"><NavLink to="/addPlant" exact>ДОБАВИТЬ</NavLink></li>
+                                <li className="active"><NavLink to="/addNew" exact>ДОБАВИТЬ</NavLink></li>
                                 <li className="active"><NavLink to="/currentPlants" exact>ЧТО РАСТЁТ</NavLink></li>
                                 <li className="active"><NavLink to="/lk" exact>ЛК</NavLink></li>
                                 <li className="active"><NavLink to="/logout" exact onClick = {LogoutHandler}>ВЫЙТИ</NavLink></li>

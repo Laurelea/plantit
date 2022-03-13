@@ -2,7 +2,7 @@ const express = require("express");
 const session = require('express-session')
 const pgSession = require('connect-pg-simple')(session)
 const db = require('./dbConnect');
-const {Router} = require("express")
+const { Router } = require("express")
 const router = Router()
 const controller = require('./controller')
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.urlencoded({
 }))
 app.use(
     session({
-        genid: (req) => {
+        genid: () => {
             // console.log('21 session', session())
             return uuidv4.uuid() // use UUIDs for session IDs
         },
@@ -78,7 +78,7 @@ router.get("/api", async (req, res) => {
         // console.log('95 checkAuth value to check in DB:', sid)
         await controller.lookForSameSID(sid)
             .then(response => {
-                if (response.rows.length == 0) {
+                if (response.rows.length === 0) {
                     state.isAuthenticated = false;
                     console.log("Printing state if no cookie in DB:", state)
                     throw new Error("Browser cookie ID doesn't match anything in the DB")
@@ -215,7 +215,7 @@ router.post("/api/register", async (req, res) => {
     try {
         // console.log("post.req.body: ", req.body)
         const {username, password, email} = await req.body
-        console.log("username, email:", username, email), "\n"
+        console.log("username, email:", username, email)
         const ifUser = await controller.getUser(email)
         const ifUN = await controller.getUserByUN(username)
         if (ifUser.rowCount !== 0) {
@@ -260,6 +260,24 @@ router.post("/api/getNumberOfPlants", async(req, res) => {
 router.get("/api/getCats", async(req, res) => {
     const result = await controller.getCats()
     // console.log('262 inside router getCats', result)
+    res.json(result)
+})
+
+router.get("/api/getProducts", async(req, res) => {
+    const result = await controller.getProducts()
+    // console.log('262 inside router getCats', result)
+    res.json(result)
+})
+
+router.get("/api/getProducers", async(req, res) => {
+    const result = await controller.getProducers()
+    // console.log('262 inside router getCats', result)
+    res.json(result)
+})
+
+router.get("/api/getYearTypes", async(req, res) => {
+    const result = await controller.getYearTypes()
+    console.log('280 inside router getYearTypes', result)
     res.json(result)
 })
 

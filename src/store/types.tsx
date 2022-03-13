@@ -4,6 +4,9 @@ export const SETMESSAGE = 'SETMESSAGE'
 export const UPDATEUSERINFO = 'UPDATEUSERINFO'
 export const GETBASE = 'GETBASE'
 export const GETCATS = 'GETCATS'
+export const GETPRODUCTS = 'GETPRODUCTS'
+export const GETPRODUCERS = 'GETPRODUCERS'
+export const GETYEARTYPES = 'GETYEARTYPES'
 
 export interface IUser {
     userName: string,
@@ -44,6 +47,28 @@ export interface ICat extends Record<string, any> {
     parent: number,
 }
 
+export interface IProducer {
+    id: number,
+    producer_name: string,
+}
+
+export interface IYearType {
+    id: number,
+    name: string,
+}
+
+export interface IProduct extends Record<string, any> {
+    id: number,
+    product_name: string,
+    yeartype: number,
+    rootstock: boolean,
+    soil: string,
+    watering: string,
+    depth_min: number,
+    depth_max: number,
+    category: number,
+}
+
 export interface IReduxState {
     apiResponse: string,
     pageTitle: string,
@@ -53,6 +78,9 @@ export interface IReduxState {
     currentUser: IUser,
     dbToPrint: undefined | Array<Irow>,
     cats: undefined | Array<ICat>,
+    products: undefined | Array<IProduct>,
+    producers: undefined | Array<IProducer>,
+    yeartypes: undefined | Array<IYearType>
 }
 
 interface IMessage {
@@ -67,11 +95,31 @@ interface ICats {
     cats: undefined | Array<ICat>
 }
 
+interface IProducts {
+    products: undefined | Array<IProduct>
+}
+
+interface IProducers {
+    producers: undefined | Array<IProducer>
+}
+
+interface IYearTypes {
+    yeartypes: undefined | Array<IYearType>
+}
+
 interface IUserInfo {
     numberOfPlants: number;
 }
 export type TAction =
-    IAuthorizeAction | IUnauthorizeAction | ISetmessageAction | IUpdateUserInfoAction | IGetBaseAction | IGetCatsAction;
+    IAuthorizeAction
+    | IUnauthorizeAction
+    | ISetmessageAction
+    | IUpdateUserInfoAction
+    | IGetBaseAction
+    | IGetCatsAction
+    | IGetProductsAction
+    | IGetProducersAction
+    | IGetYearTypesAction;
 
 export interface IAuthorizeAction {
     type: typeof AUTHORIZE;
@@ -100,4 +148,19 @@ export interface IGetBaseAction {
 export interface IGetCatsAction {
     type: typeof GETCATS;
     payload: ICats;
+}
+
+export interface IGetProductsAction {
+    type: typeof GETPRODUCTS;
+    payload: IProducts;
+}
+
+export interface IGetProducersAction {
+    type: typeof GETPRODUCERS;
+    payload: IProducers;
+}
+
+export interface IGetYearTypesAction {
+    type: typeof GETYEARTYPES;
+    payload: IYearTypes;
 }

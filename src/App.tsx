@@ -7,7 +7,7 @@ import { ICat, IReduxState, IUser} from "./store/types";
 import Newheader from "./partials/header";
 import Footer from "./partials/footer";
 import { Route, Switch } from "react-router-dom";
-import Addplant from "./partials/addPlant";
+import { AddNew } from "./partials/addNew";
 import Newuser from "./partials/newUser";
 import Account from "./partials/lk";
 import Chat from "./partials/chat";
@@ -40,7 +40,7 @@ interface ICheckAuth {
 
 const App = (props: IAppProps) => {
     console.log('APP:', props)
-    console.log('41 cookies from browser:', document.cookie)
+    // console.log('41 cookies from browser:', document.cookie)
     useEffect(() => {
         axios({
             method: 'get',
@@ -89,7 +89,7 @@ const App = (props: IAppProps) => {
                                     </p>
                                 </React.Fragment>
                             }/>
-                            <Route path="/addPlant" exact component={Addplant}/>
+                            <Route path="/addNew" exact component={AddNew}/>
                             <Route path="/newUser" exact component={Newuser}/>
                             <Route path="/showBase" exact><BaseTable sortkey = {'all'}/> </Route>
                             <Route path="/lk" exact component={Account}/>
@@ -97,7 +97,7 @@ const App = (props: IAppProps) => {
                                 ? props.cats.map(cat => {
                                 const catLink = "/cat-" + cat.cat_id;
                                 return (
-                                <Route path={catLink} exact><Cards cat = {cat.cat_id}/> </Route>
+                                <Route path={catLink} exact key={cat.cat_id}><Cards cat = {cat.cat_id}/> </Route>
                             )})
                                 : null}
                             {/*<Route path="/cat-1" exact><Cards cat = {1}/> </Route>*/}

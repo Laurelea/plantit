@@ -14,7 +14,7 @@ const ShowBase = () => {
     useEffect(() => {
         getCats()
             .then((response: any) => {
-                console.log('9 newCats', response)
+                // console.log('9 newCats', response)
                 setState({
                     ...state,
                     cats: response,

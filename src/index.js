@@ -7,7 +7,7 @@ import { applyMiddleware, createStore, compose } from "redux";
 import rootReducer from "./store/rootReducer";
 import { Provider } from 'react-redux';
 import ThunkMiddleware from 'redux-thunk';
-import { getMyBase, getCats } from "./partials/allBase";
+import { getMyBase, getCats, getProducts, getProducers, getYearTypes } from "./partials/allBase";
 
 //промежуточная функция
 const sampleMiddleWare = store => next => action => {
@@ -27,7 +27,7 @@ const composeEnhancers =
 const initialBase = async () => {
     await getMyBase()
         .then(async (baseResponse) => {
-            console.log('30 index: ', baseResponse);
+            // console.log('30 index: ', baseResponse);
             const store = createStore(rootReducer, composeEnhancers(applyMiddleware(sampleMiddleWare, ThunkMiddleware)));
             store.dispatch({
                 type: 'GETBASE',
@@ -37,11 +37,44 @@ const initialBase = async () => {
             });
             await getCats()
                 .then(catResponse => {
-                    console.log('40 index: ', catResponse);
+                    // console.log('40 index: ', catResponse);
                     store.dispatch({
                         type: 'GETCATS',
                         payload: {
                             cats: catResponse
+                        }
+                    });
+                    return store
+                })
+            await getProducts()
+                .then(productResponse => {
+                    console.log('51 index: ', productResponse);
+                    store.dispatch({
+                        type: 'GETPRODUCTS',
+                        payload: {
+                            products: productResponse
+                        }
+                    });
+                    return store
+                })
+            await getProducers()
+                .then(producerResponse => {
+                    console.log('62 index: ', producerResponse);
+                    store.dispatch({
+                        type: 'GETPRODUCERS',
+                        payload: {
+                            producers: producerResponse
+                        }
+                    });
+                    return store
+                })
+            await getYearTypes()
+                .then(ytResponse => {
+                    console.log('74 index: ', ytResponse);
+                    store.dispatch({
+                        type: 'GETYEARTYPES',
+                        payload: {
+                            yeartypes: ytResponse
                         }
                     });
                     return store
@@ -63,19 +96,5 @@ const initialBase = async () => {
 }
 
 initialBase()
-
-// export const updateBase = () => async(dispatch: Dispatch) => {
-//     await getMyBase()
-//         .then(response => {
-//             console.log('updateBase: ', response);
-//             dispatch(({
-//                 type: GETBASE,
-//                 payload: {
-//                     base: response
-//                 }
-//             }));
-//         })
-// }
-
 
 reportWebVitals();

@@ -40,9 +40,8 @@ module.exports.addUser = async (username, password, email) => {
     try {
         const hashedPassword = await bcrypt.hashSync(password, bcrypt.genSaltSync(10), null)
         // console.log('hashedPassword:', hashedPassword)
-        const newUser = await db.query('INSERT INTO users(user_name, password, email, true_password) VALUES ($1, $2, $3, $4) RETURNING *', [username, hashedPassword, email, password])
+        return await db.query('INSERT INTO users(user_name, password, email, true_password) VALUES ($1, $2, $3, $4) RETURNING *', [username, hashedPassword, email, password])
         // console.log("New User:", newUser)
-        return newUser
     } catch (e) {
         return e
     }
@@ -109,7 +108,7 @@ module.exports.showDB = async () => {
             'product.product_name',
             'product.soil',
             'product.watering',
-            'sort.name',
+            'sort.name as name',
             'producer.producer_name',
             'users.user_name',
             'product.rootstock',
@@ -124,7 +123,7 @@ module.exports.showDB = async () => {
             'sort.planting_stop_month',
             'sort.planting_start_day',
             'sort.planting_start_month',
-            'sun.name',
+            'product.sun',
         ])
         .from('sort')
         .leftJoin('producer', 'sort.producer_id', 'producer.id')
@@ -132,7 +131,6 @@ module.exports.showDB = async () => {
         .leftJoin('users', 'sort.user_id', 'users.user_id')
         .leftJoin('categories', 'product.category', 'categories.cat_id')
         .leftJoin('yeartypes', 'product.yeartype', 'yeartypes.id')
-        .leftJoin('sun', 'sort.sun', 'sun.id')
         .orderBy('sort.id')
         .catch(err => {console.log('125 err', err)});
 };
@@ -141,7 +139,28 @@ module.exports.getCats = async () => {
    return await dbKnex
         .select()
         .from('categories')
-       .catch(err => {console.log('119 err', err)});
+       .catch(err => {console.log('144 err', err)});
+}
+
+module.exports.getProducts = async () => {
+    return await dbKnex
+        .select()
+        .from('product')
+        .catch(err => {console.log('151 err', err)});
+}
+
+module.exports.getProducers = async () => {
+    return await dbKnex
+        .select()
+        .from('producer')
+        .catch(err => {console.log('158 err', err)});
+}
+
+module.exports.getYearTypes = async () => {
+    return await dbKnex
+        .select()
+        .from('yeartypes')
+        .catch(err => {console.log('165 err', err)});
 }
 
 

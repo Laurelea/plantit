@@ -319,7 +319,7 @@ a.button:hover {
     padding-left: 10px;
 }
 
-#MyAddForm {
+.addForm {
     margin: 10px;
     display: flex;
     flex-direction: column;
@@ -328,7 +328,7 @@ a.button:hover {
     border: 2px dotted purple;
 }
 
-#MyAddForm fieldset {
+.addForm fieldset {
     padding: 5px;
     margin: 5px;
     display: flex;
@@ -338,19 +338,19 @@ a.button:hover {
     border: 2px dotted red;
 }
 
-#MyAddForm fieldset input[type="text"], textarea {
+.addForm fieldset input[type="text"], textarea {
     padding: 5px;
     margin: 10px;
     width: 50%;
 }
 
-#welcomep {
+.addForm {
     color:whitesmoke;
     font-family: 'Roboto thin', monospace;
     line-height: 1.5;
 }
 
-.selectCat {
+.select-add {
     width: 50%;
     margin: 10px;
     padding: 5px;
@@ -455,4 +455,18 @@ a.button:hover {
 
 .active:hover {
     background-color:  rgba(47,79,79, 0.7);
+}
+
+.diaps {
+    border: 1px solid darkorange;
+    width: 30%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+}
+
+.diap {
+    /*align-self: ;*/
+    text-align: center;
+    width: 40px;
 }
