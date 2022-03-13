@@ -19,6 +19,21 @@ export interface Irow extends Record<string, any> {
     name: string,
     producer_name: string,
     user_name: string,
+    soil: string,
+    watering: string,
+    rootstock: boolean,
+    yeartype: string,
+    depth_min: number,
+    depth_max: number,
+    height_min: number,
+    height_max: number,
+    days_to_seedlings_min: number,
+    days_to_seedlings_max: number,
+    planting_start_day: number,
+    planting_stop_day: number,
+    planting_start_month: number,
+    planting_stop_month: number,
+    sun: string,
 }
 
 export interface ICat extends Record<string, any> {

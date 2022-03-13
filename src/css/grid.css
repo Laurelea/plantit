@@ -1,7 +1,7 @@
 
-* {
-    border: 0 none transparent  !important;
-}
+/** {*/
+/*    border: 0 none transparent  !important;*/
+/*}*/
 
 a {
     text-decoration: none; /*убираем подчеркивание текста ссылок*/
@@ -133,7 +133,7 @@ body {
     justify-content: center;
 }
 
-.DBItemWrapper {
+.CatWrapper {
     /*display: flex;*/
     border: solid pink 2px;
     padding: 5px;
@@ -144,7 +144,7 @@ body {
     align-content: center;
 }
 
-.DBItemWrapper:hover {
+.CatWrapper:hover {
     background-color:  rgba(47,79,79, 0.5);
 }
 

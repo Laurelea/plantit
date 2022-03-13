@@ -10,9 +10,9 @@ const capitalizeFirstLetter = (str) => {
 
 module.exports.getUser = async (email) => {
     // console.log('Email to check: ', email)
-    const ifUser = await db.query('SELECT * FROM users WHERE email=$1', [email])
+    return await db.query('SELECT * FROM users WHERE email=$1', [email])
     // console.log(ifUser, ifUser.rows.length)
-    return ifUser
+    // return ifUser
 }
 
 // module.exports.getUserName = async function (username) {
@@ -31,9 +31,9 @@ module.exports.getUser = async (email) => {
 
 module.exports.getUserByUN = async (username) => {
     console.log('UN to check: ', username)
-    const ifUN = await db.query('SELECT * FROM users WHERE user_name=$1', [username])
+    return await db.query('SELECT * FROM users WHERE user_name=$1', [username])
     // console.log("ifUser.rows.length: ", ifUser.rows.length)
-    return ifUN
+    // return ifUN
 }
 
 module.exports.addUser = async (username, password, email) => {
@@ -51,8 +51,8 @@ module.exports.addUser = async (username, password, email) => {
 
 module.exports.showUsersTable = async () => {
     // console.log ("before query")
-    const showUsers = await db.query('SELECT * FROM users')
-    return showUsers
+    return await db.query('SELECT * FROM users')
+    // return showUsers
 }
 
 module.exports.checkPass = async (password, hashedPassword) => {
@@ -89,25 +89,50 @@ module.exports.deleteUser = async () => {
 
 module.exports.getToken = async (token) => {
     console.log('Token to check: ', token)
-    const ifToken = await db.query('SELECT * FROM sessions WHERE token=$1', [token])
+    return await db.query('SELECT * FROM sessions WHERE token=$1', [token])
     // console.log("ifUser.rows.length: ", ifUser.rows.length)
-    return ifToken
+    // return ifToken
 }
 
 module.exports.lookForSameSID = async (browserCookie) => {
     // console.log('Controller. Cookie from the browser to process: ', browserCookie, "\n")
-    const cookiesFound = await db.query('SELECT * FROM sessions WHERE sid=$1', [browserCookie])
+    return await db.query('SELECT * FROM sessions WHERE sid=$1', [browserCookie])
     // console.log("cookiesFound.rows.length: ", cookiesFound.rows.length)
-    return cookiesFound
+    // return cookiesFound
 }
 module.exports.showDB = async () => {
     return await dbKnex
-        .select(['sort.id', 'categories.cat_name', 'categories.cat_id', 'product.product_name', 'sort.name', 'producer.producer_name', 'users.user_name'])
+        .select([
+            'sort.id',
+            'categories.cat_name',
+            'categories.cat_id',
+            'product.product_name',
+            'product.soil',
+            'product.watering',
+            'sort.name',
+            'producer.producer_name',
+            'users.user_name',
+            'product.rootstock',
+            'yeartypes.name as yeartype',
+            'product.depth_min',
+            'product.depth_max',
+            'sort.height_min',
+            'sort.height_max',
+            'sort.days_to_seedlings_max',
+            'sort.days_to_seedlings_min',
+            'sort.planting_stop_day',
+            'sort.planting_stop_month',
+            'sort.planting_start_day',
+            'sort.planting_start_month',
+            'sun.name',
+        ])
         .from('sort')
         .leftJoin('producer', 'sort.producer_id', 'producer.id')
         .leftJoin('product', 'sort.product_id', 'product.id')
         .leftJoin('users', 'sort.user_id', 'users.user_id')
         .leftJoin('categories', 'product.category', 'categories.cat_id')
+        .leftJoin('yeartypes', 'product.yeartype', 'yeartypes.id')
+        .leftJoin('sun', 'sort.sun', 'sun.id')
         .orderBy('sort.id')
         .catch(err => {console.log('125 err', err)});
 };
@@ -129,7 +154,7 @@ module.exports.addPlant = async (data) => {
         const ifProdExists = await db.query('SELECT * FROM product WHERE product_name = $1', [capitalizeFirstLetter(product)])
         // console.log("ifProdExists :", ifProdExists.rows)
         let productID;
-        if (ifProdExists.rows.length == 0) {
+        if (ifProdExists.rows.length === 0) {
             const addProduct = await db.query('INSERT INTO product(product_name, yeartype, rootstock, soil, watering, category) ' +
                 'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [capitalizeFirstLetter(product), yeartype, rootstock, soil, watering, category])
             productID =  addProduct.rows[0].id
@@ -141,7 +166,7 @@ module.exports.addPlant = async (data) => {
         const ifProducerExists = await db.query('SELECT * FROM producer WHERE producer_name = $1', [capitalizeFirstLetter(producer)])
         // console.log("ifProducerExists :", ifProducerExists.rows)
         let producerID;
-        if (ifProducerExists.rows.length == 0) {
+        if (ifProducerExists.rows.length === 0) {
             const addProducer = await db.query('INSERT INTO producer(producer_name) VALUES ($1) RETURNING *', [capitalizeFirstLetter(producer)])
             // console.log("addProducer :", addProducer.rows)
             producerID =  addProducer.rows[0].id
@@ -152,15 +177,15 @@ module.exports.addPlant = async (data) => {
         const ifSortExists = await db.query('SELECT * FROM sort WHERE name = $1 AND product_id = $2 AND producer_id = $3',
             [capitalizeFirstLetter(plantSort), productID, producerID])
         // console.log("ifSortExists :", ifSortExists)
-        if (ifSortExists.rows.length != 0) {
+        if (ifSortExists.rows.length !== 0) {
             throw new Error("Такое растение уже есть")
             // console.log(Error)
         } else {
             // console.log("userID: ", userID)
-            const newPlant = await db.query('INSERT INTO sort(name, product_id, producer_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
+            return await db.query('INSERT INTO sort(name, product_id, producer_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
                 [capitalizeFirstLetter(plantSort), productID, producerID, user_id])
             // console.log("New Sort:", newPlant)
-            return newPlant
+            // return newPlant
         }
         // return newPlant
     } catch (e) {
@@ -184,8 +209,8 @@ module.exports.getNumberOfPlants = async (id) => {
 module.exports.delSession = async (sessID) => {
     console.log('177 controller sessID', sessID)
     try {
-        const delResult = await db.query('DELETE from sessions WHERE sid=$1', [sessID])
-        return delResult
+        return await db.query('DELETE from sessions WHERE sid=$1', [sessID])
+        // return delResult
     } catch (err) {
         console.log('180 controller delSession:', err)
     }
