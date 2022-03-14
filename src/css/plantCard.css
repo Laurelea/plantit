@@ -1,21 +1,25 @@
-.plantcard-main {  display: grid;
-    width: 400px;
-    height: 400px;
+.plantcard-min {
+    display: grid;
+    width: 150px;
+    height: 150px;
     border: solid blue 2px;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 0.5fr 0.5fr 1fr 2fr 0.5fr;
+    grid-template-rows: 1fr 0.5fr 0.5fr 0.5fr;
     gap: 2px 2px;
     grid-auto-flow: row;
     grid-template-areas:
     "category category category"
     "product pic pic"
     "name pic pic"
-    "opts pic pic"
-    "descr pic pic"
     "producer pic pic";
     justify-content: stretch;
     justify-items: stretch;
     padding: 2px;
+    box-shadow: 2px 2px 6px 0 rgba(255, 255, 255, 0.9);
+}
+
+.plantcard-min:hover {
+    background-color:  rgba(47,79,79, 0.7);
 }
 
 .category {
@@ -46,7 +50,9 @@
 .name { grid-area: name; }
 
 .img {
-    max-width: 250px;
+    max-width: 90%;
+    /*width: 70%;*/
+    max-height: 90%;
     margin: auto;
 }
 
@@ -70,6 +76,91 @@
     align-items: center;
 }
 
-.opts {
-    grid-ares: opts;
+.plantcard-big {
+    display: grid;
+    width: 600px;
+    /*height: 300px;*/
+    background: black;
+    border: solid cornflowerblue 3px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 2px 2px;
+    grid-template-areas:
+    "bigcart-desc pic-big"
+    "bigcart-desc pic-big";
+    /*padding: 1rem;*/
+    box-shadow: -2rem 2rem 2rem rgba(255, 255, 255, 0.9);
+    transition: 1.1s ease-out;
+    filter: blur(0);
+    transform: scale(1);
+    opacity: 1;
+}
+.bigcart-desc {
+    grid-area: bigcart-desc;
+    display: grid;
+    justify-items: center;
+    align-items: start;
+    /*text-align: left;*/
+    /*flex-direction: column;*/
+    border: dashed turquoise 1px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.9fr 0.1fr;
+    grid-template-areas:
+    "big-card-titles"
+    "buttons-big";
+    grid-gap: 10px;
+    /*"name pic"*/
+    /*"producer pic";*/
+    /*grid-template-rows: repeat(auto-fill, minmax(50px, 70px));*/
+    /*grid-auto-flow: column;*/
+    /*margin-left: 5px;*/
+
+}
+
+.pic-big {
+    grid-area: pic-big;
+    display: flex;
+    border: dotted orange 2px;
+    justify-content: space-around;
+    align-content: space-evenly;
+}
+
+.button-big {
+    /*grid-column: 3 / 4;*/
+    /*grid-row: 1 / 2;*/
+    border: solid violet 1px;
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons-big {
+    /*justify-self: ;*/
+    grid-area: buttons-big;
+    /*justify-self: flex-end;*/
+    width: 100%;
+    display: grid;
+    /*align-items: space-between;*/
+    grid-template-columns: 1fr 1fr;
+    border: solid navajowhite 1px;
+    /*padding: 5px;*/
+}
+
+
+.big-card-titles {
+    border: 2px solid purple;
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    /*grid-auto-flow: column;*/
+    /*width: 100%;*/
+}
+
+.big-card-titles {
+    grid-area: big-card-titles;
+}
+
+.big-card-line {
+    border: 1px solid red;
+    margin: 2px;
+    min-height: 20px;
 }

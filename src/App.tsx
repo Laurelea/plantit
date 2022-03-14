@@ -1,19 +1,20 @@
 import React, { useEffect } from 'react';
-import './css/grid.css';
+import './css/general.css';
 import { API_URL } from "./config";
 import { connect } from 'react-redux';
 import { authorize, unauthorize } from "./store/actions";
-import { IReduxState, IUser } from "./store/types";
+import { ICat, IReduxState, IUser} from "./store/types";
 import Newheader from "./partials/header";
 import Footer from "./partials/footer";
 import { Route, Switch } from "react-router-dom";
-import Addplant from "./partials/addPlant";
+import { AddNew } from "./partials/addNew";
 import Newuser from "./partials/newUser";
 import Account from "./partials/lk";
 import Chat from "./partials/chat";
 import ShowBase from "./partials/showBase";
 import Auth from "./partials/auth";
 import BaseTable from "./partials/baseTable";
+import Cards from "./partials/cards";
 
 const axios = require('axios').default;
 axios.defaults.withCredentials = true
@@ -24,6 +25,7 @@ interface IAppProps {
     unauthorize: () => void,
     isAuthenticated: boolean,
     currentUser: IUser,
+    cats: undefined | Array<ICat>,
 }
 
 interface ICheckAuth {
@@ -38,7 +40,7 @@ interface ICheckAuth {
 
 const App = (props: IAppProps) => {
     console.log('APP:', props)
-    console.log('41 cookies from browser:', document.cookie)
+    // console.log('41 cookies from browser:', document.cookie)
     useEffect(() => {
         axios({
             method: 'get',
@@ -87,15 +89,18 @@ const App = (props: IAppProps) => {
                                     </p>
                                 </React.Fragment>
                             }/>
-                            <Route path="/addPlant" exact component={Addplant}/>
+                            <Route path="/addNew" exact component={AddNew}/>
                             <Route path="/newUser" exact component={Newuser}/>
-                            {/*<Route path="/showBase" exact component={AllBase}/>*/}
                             <Route path="/showBase" exact><BaseTable sortkey = {'all'}/> </Route>
                             <Route path="/lk" exact component={Account}/>
-                            <Route path="/vegs" exact><BaseTable sortkey = {'vegs'}/> </Route>
-                            {/*<Route path="/fruit" exact component={Fruit}/>*/}
-                            {/*<Route path="/herbs" exact component={Herbs}/>*/}
-                            {/*<Route path="/decs" exact component={Decs}/>*/}
+                            {props.cats
+                                ? props.cats.map(cat => {
+                                const catLink = "/cat-" + cat.cat_id;
+                                return (
+                                <Route path={catLink} exact key={cat.cat_id}><Cards cat = {cat.cat_id}/> </Route>
+                            )})
+                                : null}
+                            {/*<Route path="/cat-1" exact><Cards cat = {1}/> </Route>*/}
                             <Route path="/chat" exact component={Chat}/>
                             <Route render={() => <h2>404 not found</h2>}/>
                         </Switch>
@@ -128,7 +133,8 @@ export default connect((state: IReduxState) => ({
     message: state.message,
     currentUser: state.currentUser,
     apiResponse: state.apiResponse,
-    pageTitle: state.pageTitle
+    pageTitle: state.pageTitle,
+    cats: state.cats,
 }), {authorize, unauthorize})(App);
 // Другая запись:
 

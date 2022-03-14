@@ -1,4 +1,4 @@
-import { IReduxState, TAction, AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE } from "./types";
+import { IReduxState, TAction, AUTHORIZE, SETMESSAGE, UNAUTHORIZE, UPDATEUSERINFO, GETBASE, GETCATS, GETPRODUCTS, GETPRODUCERS, GETYEARTYPES } from "./types";
 
 const initialState: IReduxState = {
     apiResponse: "",
@@ -12,7 +12,11 @@ const initialState: IReduxState = {
         userID: 0,
         numberOfPlants: 0
     },
-    dbToPrint: undefined
+    dbToPrint: undefined,
+    cats: undefined,
+    products: undefined,
+    producers: undefined,
+    yeartypes: undefined,
 }
 
 const rootReducer = (state=initialState, action: TAction) => {
@@ -60,6 +64,30 @@ const rootReducer = (state=initialState, action: TAction) => {
             return {
                 ...state,
                 dbToPrint: action.payload.base
+            }
+        }
+        case GETCATS: {
+            return {
+                ...state,
+                cats: action.payload.cats
+            }
+        }
+        case GETPRODUCTS: {
+            return {
+                ...state,
+                products: action.payload.products
+            }
+        }
+        case GETPRODUCERS: {
+            return {
+                ...state,
+                producers: action.payload.producers
+            }
+        }
+        case GETYEARTYPES: {
+            return {
+                ...state,
+                yeartypes: action.payload.yeartypes
             }
         }
         default: return state
