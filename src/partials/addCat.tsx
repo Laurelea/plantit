@@ -1,48 +1,40 @@
 import React from 'react'
 import axios from "axios";
 import { connect } from "react-redux";
-import { updateBase, updateUserInfo } from "../store/actions";
-import {ICat, IReduxState, IUser} from "../store/types";
+import { updateBase, updateUserInfo, updateCats } from "../store/actions";
+import { ICat, IReduxState, IUser } from "../store/types";
+import { API_URL } from "../config";
 
-interface IAddPlantProps {
+interface IAddCatProps {
     currentUser: IUser,
     updateUserInfo: (numberOfPlants: number) => void,
     updateBase: () => void,
+    updateCats: () => void,
     cats: Array<ICat> | undefined,
 }
 
-const AddCat = (props: IAddPlantProps) => {
+const AddCat = (props: IAddCatProps) => {
     const addCatHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.currentTarget.reset();
         event.preventDefault();
-        const plantData = {
-            category: event.currentTarget.category.cat_id,
-            plantSort: event.currentTarget.plantSort.value,
-            product : event.currentTarget.product.value,
-            producer : event.currentTarget.producer.value,
-            yeartype : (event.currentTarget.yeartype.value === "a1") ? "однолетник" : "многолетник",
-            rootstock : !!event.currentTarget.rootstock.value,
-            watering : event.currentTarget.watering.value,
-            soil: event.currentTarget.soil.value,
-            user_id: props.currentUser.userID
+        const catData = {
+            category: event.currentTarget.category.value,
+            cat_desc: event.currentTarget.desc.value,
+            cat_pic: event.currentTarget.pic.value,
         }
-        console.log("plantData to send to server:", plantData)
-        await axios.post('/api/addplant', plantData)
+        event.currentTarget.reset();
+        console.log("catData to send to server:", catData)
+        await axios.post(API_URL + 'api/addCat', catData)
             .then(response => {
-                props.updateBase();
-                console.log("45 addplant  post.response.data: ", response.data);
-                if (response.data.command === "INSERT") {
-                    console.log("added ok")
-                    window.alert("added ok")
-                    // result = "Plant added successfully"
-                } else {
-                    console.log("Error addplant: " + response.data)
-                    window.alert("error ((")
-                    // result = response.data.error
+                console.log("33 addCat  post.response.data: ", response.data);
+                if (response.data.success) {
+                    props.updateCats();
                 }
+                return response.data.message
+            })
+            .then(message => {
+                window.alert(message)
             })
             .catch(error => {
-                // handle error
                 console.log(error);
             })
     }
@@ -53,6 +45,8 @@ const AddCat = (props: IAddPlantProps) => {
                 Добавить новую категорию
             </h2>
             <input type='text' placeholder='Новая категория' name='category' required autoComplete="on" className='whole-line add-input'/>
+            <input type='text' placeholder='Описание' name='desc' required autoComplete="on" className='whole-line add-input'/>
+            <input type='text' placeholder='Ссылка на картинку' name='pic' required autoComplete="on" className='whole-line add-input'/>
             <div className='whole-line'>
                 <button type='submit' className='add-button'>Добавить</button>
             </div>
@@ -63,4 +57,4 @@ const AddCat = (props: IAddPlantProps) => {
 export default connect((state: IReduxState) => ({
     currentUser: state.currentUser,
     cats: state.cats,
-}), { updateBase, updateUserInfo })(AddCat);
+}), { updateBase, updateUserInfo, updateCats })(AddCat);

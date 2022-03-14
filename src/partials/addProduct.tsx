@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { connect } from "react-redux";
-import { updateBase, updateUserInfo } from "../store/actions";
-import {ICat, IProducer, IProduct, IReduxState, IUser, IYearType} from "../store/types";
+import { updateBase, updateUserInfo, updateProducts } from "../store/actions";
+import { ICat, IProducer, IProduct, IReduxState, IUser, IYearType} from "../store/types";
+import { API_URL } from "../config";
 
 interface IAddProductProps {
     currentUser: IUser,
     updateUserInfo: (numberOfPlants: number) => void,
     updateBase: () => void,
+    updateProducts: () => void,
     products: Array<IProduct> | undefined,
     cats: Array<ICat> | undefined,
     producers: Array<IProducer> | undefined,
@@ -21,6 +23,18 @@ interface IAddProductState {
     producers: Array<IProducer> | undefined,
     yeartypes: Array<IYearType> | undefined,
     // yeartypes: Array<string>,
+}
+
+interface IproductData {
+    category: number,
+    product: string,
+    yeartype: number,
+    rootstock: boolean,
+    depth_min: number,
+    depth_max: number,
+    watering : string,
+    soil: string,
+    sun: string,
 }
 
 const AddProduct = (props: IAddProductProps) => {
@@ -38,41 +52,38 @@ const AddProduct = (props: IAddProductProps) => {
             currentCat: Number(e.target.value)})
     }
     const addProductHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.currentTarget.reset();
         event.preventDefault();
-        const plantData = {
-            category: event.currentTarget.category.cat_id,
-            plantSort: event.currentTarget.plantSort.value,
-            product : event.currentTarget.product.value,
-            producer : event.currentTarget.producer.value,
-            yeartype : (event.currentTarget.yeartype.value === "a1") ? "однолетник" : "многолетник",
-            rootstock : !!event.currentTarget.rootstock.value,
+        console.log('57 CT ', event.currentTarget)
+        const productData: IproductData = {
+            category: event.currentTarget.category.value,
+            product: event.currentTarget.product.value,
+            yeartype: parseInt(event.currentTarget.yeartype.value),
+            rootstock: Boolean(parseInt(event.currentTarget.rootstock.value)),
+            depth_min: parseInt(event.currentTarget.depth_min.value),
+            depth_max: parseInt(event.currentTarget.depth_max.value),
             watering : event.currentTarget.watering.value,
             soil: event.currentTarget.soil.value,
-            user_id: props.currentUser.userID
+            sun: event.currentTarget.sun.value,
         }
-        console.log("plantData to send to server:", plantData)
-        await axios.post('/api/addplant', plantData)
+        event.currentTarget.reset();
+        console.log("productData to send to server:", productData)
+        await axios.post(API_URL + 'api/addProduct', productData)
             .then(response => {
-                props.updateBase();
-                console.log("45 addplant  post.response.data: ", response.data);
-                if (response.data.command === "INSERT") {
-                    console.log("added ok")
-                    window.alert("added ok")
-                    // result = "Plant added successfully"
-                } else {
-                    console.log("Error addplant: " + response.data)
-                    window.alert("error ((")
-                    // result = response.data.error
+                console.log("33 addProduct  post.response.data: ", response.data);
+                if (response.data.success) {
+                    props.updateProducts();
                 }
+                return response.data.message
+            })
+            .then(message => {
+                window.alert(message)
             })
             .catch(error => {
-                // handle error
                 console.log(error);
             })
     }
     return (
-            <form name='Форма для добавления нового растения' id='ProductAddForm' className='addForm' onSubmit={addProductHandler}
+            <form name='Форма для добавления нового вида' id='ProductAddForm' className='addForm' onSubmit={addProductHandler}
                   autoComplete="on">
                 <h2 className='whole-line'>
                     Добавить новый вид
@@ -92,8 +103,8 @@ const AddProduct = (props: IAddProductProps) => {
                 <label className='add-elem'>
                     Введите название вида:
                 </label>
-                    <input type='text' placeholder='Вид растения: Томат, Огурец и тп и тп.' autoFocus name='plantProduct' required
-                           autoComplete="off" defaultValue={""} className='add-input'/>
+                    <input type='text' placeholder='Вид растения: Томат, Огурец и тп и тп.' autoFocus name='product' required
+                           autoComplete="off" className='add-input'/>
                 <label className='add-elem'>
                     Срок жизни растения:
                 </label>
@@ -101,27 +112,24 @@ const AddProduct = (props: IAddProductProps) => {
                 {state.yeartypes
                     ? state.yeartypes.map(item => {
                             return (
-                                <React.Fragment>
-                                    <label><input className='radio' type='radio' name='yeartype' value={item.id} id={item.name} key={item.id}/>{item.name}</label>
-                                </React.Fragment>
+                                <label  key={item.id}><input className='radio' type='radio' name='yeartype' value={item.id} id={item.name}/>{item.name}</label>
                             )
                         })
-
                     : <p>no yeartypes(</p>}
                 </div>
                 <label className='add-elem'>
                     Выращивание рассадой:
                 </label>
                 <div className='radioField'>
-                    <label><input className='radio' type='radio' name='rootstock' value="a1"/> Обязательно</label>
-                    <label><input className='radio' type='radio' name='rootstock' value="a2" defaultChecked={false}/> Необязательно</label>
+                    <label><input className='radio' type='radio' name='rootstock' value='1'/>Обязательно</label>
+                    <label><input className='radio' type='radio' name='rootstock' value="0" defaultChecked={true}/>Необязательно</label>
                 </div>
                 <label className='add-elem'>
-                    Глубина посадки:
+                    Глубина посадки, мм:
                 </label>
                 <div className="diaps">
-                    <input type='text'  name="depth_min" placeholder="Мин" autoComplete="off" className="diap"></input>
-                    <input type='text'  name="depth_max" placeholder="Макс" autoComplete="off" className="diap"></input>
+                    <input type='text'  name="depth_min" placeholder="Мин" autoComplete="off" className="diap" defaultValue='0'></input>
+                    <input type='text'  name="depth_max" placeholder="Макс" autoComplete="off" className="diap" defaultValue='0'></input>
                 </div>
                 <div className='whole-line'>
                     <textarea name="watering" placeholder="Режим полива" autoComplete="off" className='add-text'/>
@@ -145,4 +153,4 @@ export default connect((state: IReduxState) => ({
     cats: state.cats,
     producers: state.producers,
     yeartypes: state.yeartypes
-}), { updateBase, updateUserInfo })(AddProduct);
+}), { updateBase, updateUserInfo, updateProducts })(AddProduct);

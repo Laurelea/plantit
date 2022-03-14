@@ -2,7 +2,8 @@ import React, { useState} from 'react'
 import axios from "axios";
 import { connect } from "react-redux";
 import { updateBase, updateUserInfo } from "../store/actions";
-import {ICat, IProduct, IReduxState, IUser, IProducer, IYearType} from "../store/types";
+import { ICat, IProduct, IReduxState, IUser, IProducer, IYearType } from "../store/types";
+import { API_URL } from "../config";
 
 interface IAddPlantProps {
     currentUser: IUser,
@@ -20,11 +21,9 @@ interface IAddPlantState {
     currentCat: number | undefined,
     producers: Array<IProducer> | undefined,
     yeartypes: Array<IYearType> | undefined,
-    // yeartypes: Array<string>,
 }
 
 const AddPlant = (props: IAddPlantProps) => {
-    // console.log('25 yeartypes', props.yeartypes)
     const [state, setState] =  useState<IAddPlantState>({
         products: props.products,
         cats: props.cats,
@@ -51,32 +50,37 @@ const AddPlant = (props: IAddPlantProps) => {
             currentCat: Number(e.target.value)})
     }
     const addPlantHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.currentTarget.reset();
         event.preventDefault();
         const plantData = {
-            plantSort: event.currentTarget.plantSort.value,
-            product : event.currentTarget.product.id,
-            producer : event.currentTarget.producer.value,
+            product_id: event.currentTarget.product.value,
+            producer_id: event.currentTarget.producer.value,
+            name: event.currentTarget.plantSort.value,
+            days_to_seedlings_min: parseInt(event.currentTarget.days_to_seedlings_min.value),
+            days_to_seedlings_max: parseInt(event.currentTarget.days_to_seedlings_max.value),
+            height_max: parseInt(event.currentTarget.height_max.value),
+            height_min: parseInt(event.currentTarget.height_min.value),
+            planting_start_day: parseInt(event.currentTarget.planting_start_day.value),
+            planting_start_month: parseInt(event.currentTarget.planting_start_month.value),
+            planting_stop_day: parseInt(event.currentTarget.planting_stop_day.value),
+            planting_stop_month: parseInt(event.currentTarget.planting_stop_month.value),
+            plant_pic: event.currentTarget.pic.value,
             user_id: props.currentUser.userID
         }
+        event.currentTarget.reset();
         console.log("plantData to send to server:", plantData)
-        await axios.post('/api/addplant', plantData)
+        await axios.post(API_URL + 'api/addplant', plantData)
             .then(response => {
-                props.updateBase();
-                updateNumberOfPlants();
-                console.log("45 addplant  post.response.data: ", response.data);
-                if (response.data.command === "INSERT") {
-                    console.log("added ok")
-                    window.alert("added ok")
-                    // result = "Plant added successfully"
-                } else {
-                    console.log("Error addplant: " + response.data)
-                    window.alert("error ((")
-                    // result = response.data.error
+                console.log("33 addplant  post.response.data: ", response.data);
+                if (response.data.success) {
+                    props.updateBase();
+                    updateNumberOfPlants();
                 }
+                return response.data.message
+            })
+            .then(message => {
+                window.alert(message)
             })
             .catch(error => {
-                // handle error
                 console.log(error);
             })
     }
@@ -129,36 +133,36 @@ const AddPlant = (props: IAddPlantProps) => {
                 Дней до всходов:
             </label>
             <div className="diaps">
-                <input name="days_to_seedlings_min" type='text' placeholder="Мин" className="diap"></input>
+                <input name="days_to_seedlings_min" type='text' placeholder="Мин" className="diap" defaultValue='0'></input>
                 {/*<textarea name="days_to_seedlings_min" placeholder="Мин" autoComplete="off" className="diap"></textarea>*/}
-                <input name="days_to_seedlings_max" type='text' placeholder="Макс" autoComplete="off" className="diap"></input>
+                <input name="days_to_seedlings_max" type='text' placeholder="Макс" autoComplete="off" className="diap" defaultValue='0'></input>
             </div>
             <label className='add-elem'>
                 Высота растения:
             </label>
             <div className="diaps">
-                <input type='text' name="height_min" placeholder="Мин" autoComplete="off" className="diap"></input>
-                <input type='text' name="height_max" placeholder="Макс" autoComplete="off" className="diap"></input>
+                <input type='text' name="height_min" placeholder="Мин" autoComplete="off" className="diap" defaultValue='0'></input>
+                <input type='text' name="height_max" placeholder="Макс" autoComplete="off" className="diap" defaultValue='0'></input>
             </div>
             <label className='add-elem'>
                 Посадка растения. Начало
             </label>
             <div className="diaps">
-                <input type='text' name="planting_start_day" placeholder="день" autoComplete="off" className="diap"></input>
-                <input type='text' name="planting_start_month" placeholder="месяц" autoComplete="off" className="diap"></input>
+                <input type='text' name="planting_start_day" placeholder="день" autoComplete="off" className="diap" defaultValue='0'></input>
+                <input type='text' name="planting_start_month" placeholder="месяц" autoComplete="off" className="diap" defaultValue='0'></input>
             </div>
             <label className='add-elem'>
                 Посадка растения. Конец
             </label>
             <div className="diaps">
-                <input type='text' name="planting_stop_day" placeholder="день" autoComplete="off" className="diap"></input>
-                <input type='text' name="planting_stop_month" placeholder="месяц" autoComplete="off" className="diap"></input>
+                <input type='text' name="planting_stop_day" placeholder="день" autoComplete="off" className="diap" defaultValue='0'></input>
+                <input type='text' name="planting_stop_month" placeholder="месяц" autoComplete="off" className="diap" defaultValue='0'></input>
             </div>
             <label className='add-elem'>
                 Приложить фото семян:
             </label>
             <div className='add-photo'>
-                <input type="file" name="file" className='add-input file' multiple />
+                <input type="file" name="pic" className='add-input file' multiple />
             </div>
             <div className='whole-line'>
                 <button type='submit' className='add-button'>Добавить</button>

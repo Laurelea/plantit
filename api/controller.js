@@ -164,56 +164,6 @@ module.exports.getYearTypes = async () => {
 }
 
 
-module.exports.addPlant = async (data) => {
-    try {
-        let {category, plantSort, product, producer, yeartype, rootstock, watering, soil, user_id} = await data
-        // console.log ("category:", category)
-        // console.log ("UserID controller:", userID)
-        //Search for product type:
-        const ifProdExists = await db.query('SELECT * FROM product WHERE product_name = $1', [capitalizeFirstLetter(product)])
-        // console.log("ifProdExists :", ifProdExists.rows)
-        let productID;
-        if (ifProdExists.rows.length === 0) {
-            const addProduct = await db.query('INSERT INTO product(product_name, yeartype, rootstock, soil, watering, category) ' +
-                'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [capitalizeFirstLetter(product), yeartype, rootstock, soil, watering, category])
-            productID =  addProduct.rows[0].id
-            // console.log("addProduct :", addProduct.rows)
-        } else {
-            console.log("Product exists :", ifProdExists.rows[0].id)
-            productID =  ifProdExists.rows[0].id
-        }
-        const ifProducerExists = await db.query('SELECT * FROM producer WHERE producer_name = $1', [capitalizeFirstLetter(producer)])
-        // console.log("ifProducerExists :", ifProducerExists.rows)
-        let producerID;
-        if (ifProducerExists.rows.length === 0) {
-            const addProducer = await db.query('INSERT INTO producer(producer_name) VALUES ($1) RETURNING *', [capitalizeFirstLetter(producer)])
-            // console.log("addProducer :", addProducer.rows)
-            producerID =  addProducer.rows[0].id
-        } else {
-            console.log("Producer exists :", producerID =  ifProducerExists.rows[0].id)
-            producerID =  ifProducerExists.rows[0].id
-        }
-        const ifSortExists = await db.query('SELECT * FROM sort WHERE name = $1 AND product_id = $2 AND producer_id = $3',
-            [capitalizeFirstLetter(plantSort), productID, producerID])
-        // console.log("ifSortExists :", ifSortExists)
-        if (ifSortExists.rows.length !== 0) {
-            throw new Error("Такое растение уже есть")
-            // console.log(Error)
-        } else {
-            // console.log("userID: ", userID)
-            return await db.query('INSERT INTO sort(name, product_id, producer_id, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
-                [capitalizeFirstLetter(plantSort), productID, producerID, user_id])
-            // console.log("New Sort:", newPlant)
-            // return newPlant
-        }
-        // return newPlant
-    } catch (e) {
-        console.log(e)
-        return e
-    }
-
-}
-
 module.exports.getNumberOfPlants = async (id) => {
     try {
         const plantFound = await db.query('SELECT * FROM sort WHERE user_id=$1', [id])
@@ -237,7 +187,6 @@ module.exports.delSession = async (sessID) => {
 module.exports.addProducer = async (data) => {
     const { producer } = data;
     console.log('controller addProducer producer', producer)
-    let producerID;
     let success = false;
     let message;
     await dbKnex
@@ -262,11 +211,143 @@ module.exports.addProducer = async (data) => {
                     .catch(err => {console.log('insert err', err)});
             } else {
                 console.log("Producer exists :", result[0].id)
-                producerID = result[0].id
                 message = 'producer exists';
                 // return { success, message:  }
             }
         })
         .catch(err => {console.log('check err', err)});
     return { success, message }
+}
+
+module.exports.addCat = async (data) => {
+    const { category, cat_pic, cat_desc } = data;
+    console.log('controller addCat cat', category)
+    let success = false;
+    let message;
+    await dbKnex
+        .select()
+        .from('categories')
+        .where({cat_name: capitalizeFirstLetter(category)})
+        .then(async(result) => {
+            // console.log('283 check category result', result)
+            if (result.length === 0) {
+                await dbKnex
+                    .insert({cat_name: capitalizeFirstLetter(category), cat_desc, cat_pic})
+                    .into('categories')
+                    .returning('*')
+                    .then(result => {
+                        console.log('290 result', result, result[0].cat_id)
+                        if (result[0].id > 0) {
+                            console.log('292 ', result[0].cat_id)
+                            success = true;
+                            message = 'successfully added';
+                        }
+                    })
+                    .catch(err => {console.log('insert err', err)});
+            } else {
+                console.log("Cat exists :", result[0].id)
+                message = 'cat exists';
+            }
+        })
+        .catch(err => {console.log('check err', err)});
+    return { success, message }
+}
+
+module.exports.addProduct = async (data) => {
+    const { category, product, yeartype, rootstock, depth_min, depth_max, watering, soil, sun } = data;
+    console.log('controller addProduct product', product)
+    let success = false;
+    let message;
+    await dbKnex
+        .select()
+        .from('product')
+        .where({product_name: capitalizeFirstLetter(product)})
+        .then(async(result) => {
+            // console.log('283 check category result', result)
+            if (result.length === 0) {
+                await dbKnex
+                    .insert({product_name: capitalizeFirstLetter(product), category, yeartype, rootstock, depth_min, depth_max, watering, soil, sun})
+                    .into('product')
+                    .returning('*')
+                    .then(result => {
+                        console.log('325 result', result, result[0].id)
+                        if (result[0].id > 0) {
+                            console.log('327 ', result[0].id)
+                            success = true;
+                            message = 'successfully added';
+                        }
+                    })
+                    .catch(err => {console.log('insert err', err)});
+            } else {
+                console.log("Product exists :", result[0].id)
+                message = 'product exists';
+            }
+        })
+        .catch(err => {console.log('check err', err)});
+    return { success, message }
+}
+
+module.exports.addPlant = async (data) => {
+    const {
+        producer_id,
+        product_id,
+        name,
+        days_to_seedlings_min,
+        days_to_seedlings_max,
+        height_max,
+        height_min,
+        planting_start_day,
+        planting_start_month,
+        planting_stop_day,
+        planting_stop_month,
+        plant_pic,
+        user_id
+    } = data
+    let success = false;
+    let message;
+    await dbKnex
+        .select()
+        .from('sort')
+        .where({name: capitalizeFirstLetter(name), product_id, producer_id})
+        .then(async (result) => {
+            if (result.length === 0) {
+                await dbKnex
+                    .insert({
+                        product_id,
+                        producer_id,
+                        name: capitalizeFirstLetter(name),
+                        days_to_seedlings_min,
+                        days_to_seedlings_max,
+                        height_max,
+                        height_min,
+                        planting_start_day,
+                        planting_start_month,
+                        planting_stop_day,
+                        planting_stop_month,
+                        plant_pic,
+                        user_id
+                    })
+                    .into('sort')
+                    .returning('*')
+                    .then((result) => {
+                        console.log('333 result', result)
+                        console.log('334 result', result[0].id)
+                        if (result[0].id > 0) {
+                            console.log('336 ', result[0].id)
+                            success = true;
+                            message = 'successfully added';
+                        }
+                    })
+                    .catch(err => {
+                        console.log('insert err', err)
+                    });
+            } else {
+                console.log("Plant exists :", result[0].id)
+                message = 'Plant exists';
+            }
+        })
+        .catch(err => {
+            console.log('check err', err)
+        });
+    return {success, message}
 }

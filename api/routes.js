@@ -245,14 +245,26 @@ router.get("/api/getbase", async (req, res) => {
 
 router.post("/api/addplant", async (req, res) => {
     console.log("Plant added: ", req.body)
-    const plantAdded = await controller.addPlant(req.body)
-    res.send(plantAdded)
+    const { success, message } = await controller.addPlant(req.body)
+    res.send({ success, message })
 })
 
 router.post("/api/addProducer", async (req, res) => {
     // console.log("addProducer 254: ", req.body)
     const { success, message } = await controller.addProducer(req.body)
     console.log('255 addProducer result', success, message )
+    res.send({ success, message })
+})
+
+router.post("/api/addCat", async (req, res) => {
+    const { success, message } = await controller.addCat(req.body)
+    console.log('262 addCat result', success, message )
+    res.send({ success, message })
+})
+
+router.post("/api/addProduct", async (req, res) => {
+    const { success, message } = await controller.addProduct(req.body)
+    console.log('267 addProduct result', success, message )
     res.send({ success, message })
 })
 
