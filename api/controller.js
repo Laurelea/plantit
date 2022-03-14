@@ -351,3 +351,13 @@ module.exports.addPlant = async (data) => {
         });
     return {success, message}
 }
+
+module.exports.saveCatPic = async (data) => {
+    const { pic, pic_name } =  data;
+    console.log('356 controller saveCatPic pic_name', pic_name)
+    // try {
+    //     return await db.query('DELETE from sessions WHERE sid=$1', [sessID])
+    // } catch (err) {
+    //     console.log('180 controller delSession:', err)
+    // }
+}

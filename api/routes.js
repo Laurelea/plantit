@@ -299,4 +299,12 @@ router.get("/api/getYearTypes", async(req, res) => {
     res.json(result)
 })
 
+router.post("/api/saveCatPic", async(req, res) => {
+    console.log('pic_name to save:', req.body.pic_name)
+    const result = await controller.saveCatPic(req.body)
+    console.log('305 inside router saveCatPic', result)
+    res.json(result)
+})
+
+
 module.exports = app
