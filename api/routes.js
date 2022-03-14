@@ -251,9 +251,9 @@ router.post("/api/addplant", async (req, res) => {
 
 router.post("/api/addProducer", async (req, res) => {
     // console.log("addProducer 254: ", req.body)
-    const producerAdded = await controller.addProducer(req.body)
-    console.log('255 addPlant result', producerAdded)
-    res.send(producerAdded)
+    const { success, message } = await controller.addProducer(req.body)
+    console.log('255 addProducer result', success, message )
+    res.send({ success, message })
 })
 
 router.post("/api/getNumberOfPlants", async(req, res) => {

@@ -22,15 +22,14 @@ const AddProducer = (props: IAddProducerProps) => {
         console.log("ProducerData to send to server:", producerData)
         await axios.post(API_URL + 'api/addProducer', producerData)
             .then(response => {
-                props.updateBase();
                 console.log("33 addProducer  post.response.data: ", response.data);
-                if (response.data.command === "INSERT") {
-                    console.log("added ok")
-                    window.alert("added ok")
-                } else {
-                    console.log("Error addProducer: " + response.data)
-                    window.alert("error ((")
+                if (response.data.success) {
+                    props.updateBase();
                 }
+                return response.data.message
+            })
+            .then(message => {
+                window.alert(message)
             })
             .catch(error => {
                 console.log(error);

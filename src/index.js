@@ -48,7 +48,7 @@ const initialBase = async () => {
                 })
             await getProducts()
                 .then(productResponse => {
-                    console.log('51 index: ', productResponse);
+                    // console.log('51 index: ', productResponse);
                     store.dispatch({
                         type: 'GETPRODUCTS',
                         payload: {
@@ -59,7 +59,7 @@ const initialBase = async () => {
                 })
             await getProducers()
                 .then(producerResponse => {
-                    console.log('62 index: ', producerResponse);
+                    // console.log('62 index: ', producerResponse);
                     store.dispatch({
                         type: 'GETPRODUCERS',
                         payload: {
@@ -70,7 +70,7 @@ const initialBase = async () => {
                 })
             await getYearTypes()
                 .then(ytResponse => {
-                    console.log('74 index: ', ytResponse);
+                    // console.log('74 index: ', ytResponse);
                     store.dispatch({
                         type: 'GETYEARTYPES',
                         payload: {

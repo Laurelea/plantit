@@ -36,7 +36,7 @@ export const getProducts = async () => {
         url: API_URL + 'api/getProducts'
     })
         .then((response: { data: Array<IProduct> | undefined }) => {
-            console.log('42 getProducts', response.data, typeof (response.data))
+            // console.log('42 getProducts', response.data, typeof (response.data))
             return response.data
         })
         .catch((error: any) => {
@@ -50,7 +50,7 @@ export const getProducers = async () => {
         url: API_URL + 'api/getProducers'
     })
         .then((response: { data: Array<IProducer> | undefined }) => {
-            console.log('57 getProducers', response.data, typeof (response.data))
+            // console.log('57 getProducers', response.data, typeof (response.data))
             return response.data
         })
         .catch((error: any) => {
@@ -64,7 +64,7 @@ export const getYearTypes= async () => {
         url: API_URL + 'api/getYearTypes'
     })
         .then((response: { data: Array<IYearType> | undefined }) => {
-            console.log('72 getYearTypes', response.data, typeof (response.data))
+            // console.log('72 getYearTypes', response.data, typeof (response.data))
             return response.data
         })
         .catch((error: any) => {

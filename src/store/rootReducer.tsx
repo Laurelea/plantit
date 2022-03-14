@@ -22,7 +22,7 @@ const initialState: IReduxState = {
 const rootReducer = (state=initialState, action: TAction) => {
     switch(action.type) {
         case AUTHORIZE:
-            console.log('authorized success');
+            // console.log('authorized success');
             return {
                 ...state,
                 isAuthenticated: true,

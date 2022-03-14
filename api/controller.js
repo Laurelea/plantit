@@ -238,6 +238,8 @@ module.exports.addProducer = async (data) => {
     const { producer } = data;
     console.log('controller addProducer producer', producer)
     let producerID;
+    let success = false;
+    let message;
     await dbKnex
         .select()
         .from('producer')
@@ -248,19 +250,23 @@ module.exports.addProducer = async (data) => {
                 await dbKnex
                     .insert({producer_name: capitalizeFirstLetter(producer)})
                     .into('producer')
-                    .returning()
+                    .returning('*')
                     .then(result => {
-                        console.log('252 result', result.rows)
-                        producerID =  result[0].id
-                        return producerID
+                        console.log('252 result', result)
+                        if (result[0].id > 0) {
+                            success = true;
+                            message = 'successfully added';
+                            // return { success, message: }
+                        }
                     })
                     .catch(err => {console.log('insert err', err)});
             } else {
                 console.log("Producer exists :", result[0].id)
-                producerID =  result[0].id
-                return producerID
+                producerID = result[0].id
+                message = 'producer exists';
+                // return { success, message:  }
             }
         })
         .catch(err => {console.log('check err', err)});
-    return producerID
+    return { success, message }
 }
