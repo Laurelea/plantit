@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { getCats } from "./allBase";
-import { ICat } from "../store/types";
+import {ICat, IReduxState} from "../store/types";
+import {connect} from "react-redux";
+import {updateBase, updateCats } from "../store/actions";
 
 interface IShowBaseState {
     cats: undefined | Array<ICat>,
 }
 
-const ShowBase = () => {
+interface IShowBaseProps {
+    cats: Array<ICat> | undefined,
+}
+
+const ShowBase = (props: IShowBaseProps) => {
     const [state, setState] = useState<IShowBaseState>({
         cats: undefined,
     });
@@ -20,7 +26,7 @@ const ShowBase = () => {
                     cats: response,
                 })
             })
-    }, []);
+    }, [props]);
     return (
         <React.Fragment>
             <div className="showBaseHeader">
@@ -46,4 +52,8 @@ const ShowBase = () => {
     )
 }
 
-export default ShowBase
+// export default ShowBase
+
+export default connect((state: IReduxState) => ({
+    cats: state.cats,
+}), { updateBase, updateCats })(ShowBase);

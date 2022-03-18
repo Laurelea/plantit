@@ -8,6 +8,21 @@ const controller = require('./controller')
 const app = express();
 const uuidv4 = require("uuidv4")
 const cors = require("cors");
+const multer = require("multer");
+
+const catpicsStorage = multer.diskStorage({
+    destination: "./public/images/catpics",
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' +file.originalname )
+    }
+})
+
+const plantpicsStorage = multer.diskStorage({
+    destination: "./public/images/plantpics",
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' +file.originalname )
+    }
+})
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -82,7 +97,7 @@ router.get("/api", async (req, res) => {
                     console.log("Printing state if no cookie in DB:", state)
                     throw new Error("Browser cookie ID doesn't match anything in the DB")
                 } else {
-                    console.log("Changing state...", response.rows[0].sess.userID)
+                    // console.log("Changing state...", response.rows[0].sess.userID)
                     state.isAuthenticated = true;
                     state.userName = response.rows[0].sess.userName
                     state.userEmail = response.rows[0].sess.userEmail
@@ -213,7 +228,7 @@ router.post("/api/auth", async (req, res) => {
 router.post("/api/register", async (req, res) => {
     try {
         // console.log("post.req.body: ", req.body)
-        const {username, password, email} = await req.body
+        const { username, password, email } = await req.body
         console.log("username, email:", username, email)
         const ifUser = await controller.getUser(email)
         const ifUN = await controller.getUserByUN(username)
@@ -243,12 +258,6 @@ router.get("/api/getbase", async (req, res) => {
     res.send(baseToShow)
 })
 
-router.post("/api/addplant", async (req, res) => {
-    console.log("Plant added: ", req.body)
-    const { success, message } = await controller.addPlant(req.body)
-    res.send({ success, message })
-})
-
 router.post("/api/addProducer", async (req, res) => {
     // console.log("addProducer 254: ", req.body)
     const { success, message } = await controller.addProducer(req.body)
@@ -256,10 +265,46 @@ router.post("/api/addProducer", async (req, res) => {
     res.send({ success, message })
 })
 
+router.post("/api/addplant", async (req, res) => {
+    console.log("Plant added: ", req.body)
+    const upload = multer({ storage: plantpicsStorage }).array('pic');
+    await upload(req, res, async (err) => {
+        if (err instanceof multer.MulterError) {
+            console.log('router addplant multererror')
+            return res.status(500).json(err)
+        } else if (err) {
+            console.log('router addplant other error')
+            return res.status(500).json(err)
+        }
+        const plantdata =  {
+            ...req.body,
+            plant_pic: req.files[0].path.replace('public', '..')
+        }
+        const { success, message } = await controller.addPlant(plantdata)
+        console.log('285 addplant result', success, message )
+        return res.status(200).send({ success, message })
+    })
+})
+
 router.post("/api/addCat", async (req, res) => {
-    const { success, message } = await controller.addCat(req.body)
-    console.log('262 addCat result', success, message )
-    res.send({ success, message })
+    const upload = multer({ storage: catpicsStorage }).array('pic');
+    await upload(req, res, async (err) => {
+        if (err instanceof multer.MulterError) {
+            console.log('router saveCatPic multererror')
+            return res.status(500).json(err)
+        } else if (err) {
+            console.log('router saveCatPic other error')
+            return res.status(500).json(err)
+        }
+        const catdata =  {
+            category: req.body.category,
+            cat_desc: req.body.cat_desc,
+            cat_pic: req.files[0].path.replace('public', '..')
+        }
+        const { success, message } = await controller.addCat(catdata)
+        console.log('262 addCat result', success, message )
+        return res.status(200).send({ success, message })
+    })
 })
 
 router.post("/api/addProduct", async (req, res) => {
@@ -295,16 +340,8 @@ router.get("/api/getProducers", async(req, res) => {
 
 router.get("/api/getYearTypes", async(req, res) => {
     const result = await controller.getYearTypes()
-    console.log('280 inside router getYearTypes', result)
+    // console.log('280 inside router getYearTypes', result)
     res.json(result)
 })
-
-router.post("/api/saveCatPic", async(req, res) => {
-    console.log('pic_name to save:', req.body.pic_name)
-    const result = await controller.saveCatPic(req.body)
-    console.log('305 inside router saveCatPic', result)
-    res.json(result)
-})
-
 
 module.exports = app

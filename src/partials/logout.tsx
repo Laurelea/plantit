@@ -22,7 +22,7 @@ interface ILogoutResponse {
 const Logout = async() => {
     await axios({
         method: 'post',
-        url: API_URL + 'api/logout'
+        url: `${API_URL}/logout`
     })
         .then( (response: ILogoutResponse) => {
             CookiesDelete()

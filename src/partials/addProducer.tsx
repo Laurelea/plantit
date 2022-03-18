@@ -20,7 +20,7 @@ const AddProducer = (props: IAddProducerProps) => {
         }
         event.currentTarget.reset();
         console.log("ProducerData to send to server:", producerData)
-        await axios.post(API_URL + 'api/addProducer', producerData)
+        await axios.post(`${API_URL}/addProducer`, producerData)
             .then(response => {
                 console.log("33 addProducer  post.response.data: ", response.data);
                 if (response.data.success) {

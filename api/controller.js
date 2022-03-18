@@ -1,14 +1,13 @@
-// const db = require('./dbConnect').db
 const bcrypt = require('bcrypt')
 const dbKnex = require('./dbKnex')
 const db = require("./dbConnect");
 
-const capitalizeFirstLetter = (str) => {
+const capitalizeFirstLetter = str => {
     return str.charAt(0).toUpperCase() + str.substring(1);
 }
 
 
-module.exports.getUser = async (email) => {
+module.exports.getUser = async email => {
     // console.log('Email to check: ', email)
     return await db.query('SELECT * FROM users WHERE email=$1', [email])
     // console.log(ifUser, ifUser.rows.length)
@@ -29,7 +28,7 @@ module.exports.getUser = async (email) => {
 //     return ifUser
 // }
 
-module.exports.getUserByUN = async (username) => {
+module.exports.getUserByUN = async username => {
     console.log('UN to check: ', username)
     return await db.query('SELECT * FROM users WHERE user_name=$1', [username])
     // console.log("ifUser.rows.length: ", ifUser.rows.length)
@@ -86,14 +85,14 @@ module.exports.deleteUser = async () => {
     }
 }
 
-module.exports.getToken = async (token) => {
+module.exports.getToken = async token => {
     console.log('Token to check: ', token)
     return await db.query('SELECT * FROM sessions WHERE token=$1', [token])
     // console.log("ifUser.rows.length: ", ifUser.rows.length)
     // return ifToken
 }
 
-module.exports.lookForSameSID = async (browserCookie) => {
+module.exports.lookForSameSID = async browserCookie => {
     // console.log('Controller. Cookie from the browser to process: ', browserCookie, "\n")
     return await db.query('SELECT * FROM sessions WHERE sid=$1', [browserCookie])
     // console.log("cookiesFound.rows.length: ", cookiesFound.rows.length)
@@ -164,7 +163,7 @@ module.exports.getYearTypes = async () => {
 }
 
 
-module.exports.getNumberOfPlants = async (id) => {
+module.exports.getNumberOfPlants = async id => {
     try {
         const plantFound = await db.query('SELECT * FROM sort WHERE user_id=$1', [id])
         console.log("getNumberOfPlants controller id, plantFound.rows.length: ", id, plantFound.rows.length)
@@ -175,7 +174,7 @@ module.exports.getNumberOfPlants = async (id) => {
     }
 }
 
-module.exports.delSession = async (sessID) => {
+module.exports.delSession = async sessID => {
     console.log('177 controller sessID', sessID)
     try {
         return await db.query('DELETE from sessions WHERE sid=$1', [sessID])
@@ -184,7 +183,7 @@ module.exports.delSession = async (sessID) => {
     }
 }
 
-module.exports.addProducer = async (data) => {
+module.exports.addProducer = async data => {
     const { producer } = data;
     console.log('controller addProducer producer', producer)
     let success = false;
@@ -219,7 +218,7 @@ module.exports.addProducer = async (data) => {
     return { success, message }
 }
 
-module.exports.addCat = async (data) => {
+module.exports.addCat = async data => {
     const { category, cat_pic, cat_desc } = data;
     console.log('controller addCat cat', category)
     let success = false;
@@ -228,7 +227,7 @@ module.exports.addCat = async (data) => {
         .select()
         .from('categories')
         .where({cat_name: capitalizeFirstLetter(category)})
-        .then(async(result) => {
+        .then(async result => {
             // console.log('283 check category result', result)
             if (result.length === 0) {
                 await dbKnex
@@ -237,7 +236,7 @@ module.exports.addCat = async (data) => {
                     .returning('*')
                     .then(result => {
                         console.log('290 result', result, result[0].cat_id)
-                        if (result[0].id > 0) {
+                        if (result[0].cat_id > 0) {
                             console.log('292 ', result[0].cat_id)
                             success = true;
                             message = 'successfully added';
@@ -253,7 +252,7 @@ module.exports.addCat = async (data) => {
     return { success, message }
 }
 
-module.exports.addProduct = async (data) => {
+module.exports.addProduct = async data => {
     const { category, product, yeartype, rootstock, depth_min, depth_max, watering, soil, sun } = data;
     console.log('controller addProduct product', product)
     let success = false;
@@ -287,45 +286,19 @@ module.exports.addProduct = async (data) => {
     return { success, message }
 }
 
-module.exports.addPlant = async (data) => {
-    const {
-        producer_id,
-        product_id,
-        name,
-        days_to_seedlings_min,
-        days_to_seedlings_max,
-        height_max,
-        height_min,
-        planting_start_day,
-        planting_start_month,
-        planting_stop_day,
-        planting_stop_month,
-        plant_pic,
-        user_id
-    } = data
+module.exports.addPlant = async data => {
+    const { producer_id, product_id, name } = data
     let success = false;
     let message;
     await dbKnex
         .select()
         .from('sort')
-        .where({name: capitalizeFirstLetter(name), product_id, producer_id})
-        .then(async (result) => {
+        .where({ name, product_id, producer_id })
+        .then(async result => {
             if (result.length === 0) {
                 await dbKnex
                     .insert({
-                        product_id,
-                        producer_id,
-                        name: capitalizeFirstLetter(name),
-                        days_to_seedlings_min,
-                        days_to_seedlings_max,
-                        height_max,
-                        height_min,
-                        planting_start_day,
-                        planting_start_month,
-                        planting_stop_day,
-                        planting_stop_month,
-                        plant_pic,
-                        user_id
+                        ...data
                     })
                     .into('sort')
                     .returning('*')
@@ -349,15 +322,5 @@ module.exports.addPlant = async (data) => {
         .catch(err => {
             console.log('check err', err)
         });
-    return {success, message}
-}
-
-module.exports.saveCatPic = async (data) => {
-    const { pic, pic_name } =  data;
-    console.log('356 controller saveCatPic pic_name', pic_name)
-    // try {
-    //     return await db.query('DELETE from sessions WHERE sid=$1', [sessID])
-    // } catch (err) {
-    //     console.log('180 controller delSession:', err)
-    // }
+    return { success, message }
 }

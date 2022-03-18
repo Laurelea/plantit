@@ -1,4 +1,4 @@
-import React, {useState, useEffect, ChangeEvent} from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 // import '../css/App.css';
 import axios from "axios";
 import { API_URL } from "../config";
@@ -179,7 +179,7 @@ const NewUser = () => {
             password: state.password,
             email: state.email,
         }
-        await axios.post(API_URL + 'api/register', regData)
+        await axios.post(`${API_URL}/register`, regData)
             .then(response => {
                 setState({
                     ...state,

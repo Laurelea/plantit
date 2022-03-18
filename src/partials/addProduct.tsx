@@ -67,7 +67,7 @@ const AddProduct = (props: IAddProductProps) => {
         }
         event.currentTarget.reset();
         console.log("productData to send to server:", productData)
-        await axios.post(API_URL + 'api/addProduct', productData)
+        await axios.post(`${API_URL}/addProduct`, productData)
             .then(response => {
                 console.log("33 addProduct  post.response.data: ", response.data);
                 if (response.data.success) {

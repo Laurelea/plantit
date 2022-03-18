@@ -44,7 +44,7 @@ const App = (props: IAppProps) => {
     useEffect(() => {
         axios({
             method: 'get',
-            url: API_URL +'api',
+            url: API_URL,
         })
             .then( (response: ICheckAuth) => {
                 console.log("48 App get.response.data: ", response.data);

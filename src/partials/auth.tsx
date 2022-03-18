@@ -44,7 +44,7 @@ const Auth = (props: IAuthProps) => {
             email: state.loginValue,
         }
         console.log('authData: ', authData)
-        await axios.post(API_URL + 'api/auth', authData, { withCredentials: true })
+        await axios.post(`${API_URL}/auth`, authData, { withCredentials: true })
             .then(async (response) => {
                 console.log("49 auth post.response.data: ", response.data);
 

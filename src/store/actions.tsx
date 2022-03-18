@@ -70,6 +70,7 @@ export const setMessage = (message: string) => {
 }
 
 export const updateCats = () => async(dispatch: Dispatch) => {
+    console.log('updateCats triggered')
     await getCats()
         .then(response => {
             console.log('updateCats: ', response);
