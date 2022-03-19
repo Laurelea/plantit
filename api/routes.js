@@ -265,10 +265,33 @@ router.post("/api/addProducer", async (req, res) => {
     res.send({ success, message })
 })
 
+// router.post("/api/test", async (req, res) => {
+//     console.log("269 test: ", req.body)
+//     const upload = multer({ storage: plantpicsStorage }).array('pic');
+//     upload(req, res, (err) => {
+//         // if (err instanceof multer.MulterError) {
+//         //     console.log('router addplant multererror')
+//         //     return res.status(500).json(err)
+//         // } else if (err) {
+//         //     console.log('router addplant other error')
+//         //     return res.status(500).json(err)
+//         // }
+//         // const plantdata =  {
+//         //     ...req.body,
+//         //     plant_pic: req.files[0].path.replace('public', '..')
+//         // }
+//         // const { success, message } = await controller.addPlant(plantdata)
+//         // console.log('285 addplant result', success, message )
+//         // return res.status(200).send({ success, message })
+//         // return res.status(200).send({ success: true, message: 'success' })
+//     })
+//     res.send({ success: true, message: 'success' })
+// })
+
 router.post("/api/addplant", async (req, res) => {
     console.log("Plant added: ", req.body)
     const upload = multer({ storage: plantpicsStorage }).array('pic');
-    await upload(req, res, async (err) => {
+    const plant_pic = await upload(req, res, async (err) => {
         if (err instanceof multer.MulterError) {
             console.log('router addplant multererror')
             return res.status(500).json(err)
@@ -276,14 +299,15 @@ router.post("/api/addplant", async (req, res) => {
             console.log('router addplant other error')
             return res.status(500).json(err)
         }
-        const plantdata =  {
-            ...req.body,
-            plant_pic: req.files[0].path.replace('public', '..')
-        }
-        const { success, message } = await controller.addPlant(plantdata)
-        console.log('285 addplant result', success, message )
-        return res.status(200).send({ success, message })
+        return req.files[0].path.replace('public', '..')
     })
+    const plantdata = {
+        ...req.body,
+        plant_pic
+    }
+    const { success, message } = await controller.addPlant(plantdata)
+    console.log('285 addplant result', success, message )
+    return res.status(200).send({ success, message })
 })
 
 router.post("/api/addCat", async (req, res) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { connect } from "react-redux";
-import { updateBase } from "../store/actions";
+import { updateBase, updateUserInfo } from "../store/actions";
 import { ICat, IProduct, IReduxState, IUser, IProducer, IYearType } from "../store/types";
 import { API_URL } from "../config";
 import FormData from "form-data";
@@ -12,7 +12,7 @@ const capitalizeFirstLetter = (str: string) => {
 
 interface IAddPlantProps {
     currentUser: IUser,
-    // updateUserInfo: (numberOfPlants: number) => void,
+    updateUserInfo: (numberOfPlants: number) => void,
     updateBase: () => void,
     products: Array<IProduct> | undefined,
     cats: Array<ICat> | undefined,
@@ -42,18 +42,18 @@ const AddPlant = (props: IAddPlantProps) => {
         preview: undefined,
         error: undefined,
     })
-    // const updateNumberOfPlants = async() => {
-    //     const data = {id: props.currentUser.userID}
-    //     await axios.post('/api/getNumberOfPlants', data)
-    //         .then(response => {
-    //                 console.log("LK Got Plants: response.data: ", response.data)
-    //                 props.updateUserInfo(response.data);
-    //             }
-    //         )
-    //         .catch(error => {
-    //             console.log("updateNumberOfPlants error: ", error);
-    //         })
-    // }
+    const updateNumberOfPlants = async() => {
+        const data = {id: props.currentUser.userID}
+        await axios.post('/api/getNumberOfPlants', data)
+            .then(response => {
+                    console.log("LK Got Plants: response.data: ", response.data)
+                    props.updateUserInfo(response.data);
+                }
+            )
+            .catch(error => {
+                console.log("updateNumberOfPlants error: ", error);
+            })
+    }
     const selectCat = (e: React.ChangeEvent<HTMLSelectElement>) => {
         console.log('42 selectCat', e.target.value, typeof e.target.value)
         setState({
@@ -106,28 +106,28 @@ const AddPlant = (props: IAddPlantProps) => {
                 ...formData.getHeaders
             }
         })
-            // .then(response => {
-            //     window.alert(response.data.message)
-            //     console.log("33 addplant  post.response.data: ", response.data);
-            //
-            //     if (response.data.success) {
-            //         window.alert('succ')
-            //
-            //         // props.updateBase();
-            //         // await updateNumberOfPlants();
-            //     } else {
-            //         window.alert(response.data.message)
-            //     }
-            //     setState({
-            //         ...state,
-            //         pic: undefined,
-            //         preview: undefined,
-            //         error: undefined,
-            //     })
-            // })
-            // .catch(error => {
-            //     console.log(error);
-            // })
+            .then(async response => {
+                window.alert(response.data.message)
+                console.log("33 addplant  post.response.data: ", response.data);
+
+                if (response.data.success) {
+                    // window.alert('succ')
+
+                    props.updateBase();
+                    await updateNumberOfPlants();
+                } else {
+                    window.alert(response.data.message)
+                }
+                setState({
+                    ...state,
+                    pic: undefined,
+                    preview: undefined,
+                    error: undefined,
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
     return (
         <form name='Форма для добавления нового растения' id='PlantAddForm' className='addForm' onSubmit={addPlantHandler}
@@ -221,4 +221,4 @@ export default connect((state: IReduxState) => ({
     cats: state.cats,
     producers: state.producers,
     yeartypes: state.yeartypes
-}), { updateBase })(AddPlant);
+}), { updateBase, updateUserInfo })(AddPlant);
