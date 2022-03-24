@@ -126,3 +126,18 @@
     min-height: 30px;
     /*padding: 5px;*/
 }
+
+.edit-extended-line {
+    display: grid;
+    /*grid-template-rows: 1fr;*/
+    grid-template-columns: 1fr 1fr;
+}
+
+.small-add-button {
+    padding: 1px !important;
+    /*font-size: 100% !important;*/
+    margin: 2px !important;
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+    min-width: 20px;
+}

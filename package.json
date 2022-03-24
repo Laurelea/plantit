@@ -12,7 +12,8 @@
     "eject": "react-app-rewired eject",
     "prod": "react-app-rewired build && node api/server.js",
     "server-dev": "nodemon api/server.js",
-    "client-dev": "react-scripts start"
+    "client-dev": "react-scripts start",
+    "lint": "tslint \"src/**/**.ts*\" \"pages/**/**.ts*\""
   },
   "author": "p.v.sukhorukova",
   "license": "ISC",
@@ -37,7 +38,6 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.0",
-    "react-table": "^7.7.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "socket.io": "^4.1.2",
@@ -74,6 +74,8 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.22",
     "@types/react-router-dom": "^5.3.3",
+    "@types/redux": "^3.6.0",
+    "@types/redux-thunk": "^2.1.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "nodemon": "^2.0.15",
     "tslint": "^6.1.3",

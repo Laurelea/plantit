@@ -25,7 +25,7 @@ interface IAppProps {
     unauthorize: () => void,
     isAuthenticated: boolean,
     currentUser: IUser,
-    cats: undefined | Array<ICat>,
+    cats: undefined | ICat[],
 }
 
 interface ICheckAuth {
@@ -97,7 +97,7 @@ const App = (props: IAppProps) => {
                                 ? props.cats.map(cat => {
                                 const catLink = "/cat-" + cat.cat_id;
                                 return (
-                                <Route path={catLink} exact key={cat.cat_id}><Cards cat = {cat.cat_id}/> </Route>
+                                <Route path={catLink} exact key={cat.cat_id}><Cards sortCat = {cat.cat_id}/> </Route>
                             )})
                                 : null}
                             {/*<Route path="/cat-1" exact><Cards cat = {1}/> </Route>*/}

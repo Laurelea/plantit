@@ -197,7 +197,7 @@ button {
     background-color: #99a591;
     font-family: "Roboto Thin", monospace;
     font-variant: small-caps;
-    font-size: 110%;
+    /*font-size: 110%;*/
     margin: 10px;
     border-radius: 15px;
     /*min-width: 100px;*/
