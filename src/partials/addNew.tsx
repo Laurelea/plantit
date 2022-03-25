@@ -9,7 +9,12 @@ interface IAddNewState {
     option: number | undefined,
 }
 
-export const AddNew = () => {
+interface IAddNewProps {
+    currAdd: number,
+}
+
+export const AddNew = (props: IAddNewProps) => {
+    console.log(props)
     const [state, setState] = useState<IAddNewState>({
         option: undefined
     })

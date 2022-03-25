@@ -110,6 +110,7 @@ module.exports.showDB = async () => {
             'product.watering',
             'sort.name as name',
             'producer.producer_name',
+            'producer.id as producer_id',
             'users.user_name',
             'product.rootstock',
             'yeartypes.name as yeartype',

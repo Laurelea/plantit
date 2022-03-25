@@ -3,7 +3,7 @@ import '../css/plantCard.css';
 import { IReduxState } from "../store/types";
 import { updateBase, updateUserInfo } from "../store/actions";
 import { connect } from "react-redux";
-import { useState} from "react";
+import React, { useState} from "react";
 import axios from "axios";
 import { API_URL } from "../config";
 import { useHistory } from 'react-router-dom';
@@ -20,13 +20,12 @@ interface ICardsProps {
     yeartypes: IYearType[] | undefined,
 }
 
-interface IplantCardsState {
+interface IPlantCardsState {
     showBig: boolean,
     item: Irow | undefined,
     showEdit: boolean,
     products: IProduct[] | undefined,
     cats: ICat[] | undefined,
-    currentCat: number | undefined,
     producers: IProducer[] | undefined,
     yeartypes: IYearType[] | undefined,
     pic: File | undefined,
@@ -34,20 +33,27 @@ interface IplantCardsState {
     preview: string | undefined,
 }
 
+interface IPLantChangesState {
+    currentCat: number | undefined,
+    currentProduct: number | undefined,
+}
 const PlantCards = (props: ICardsProps) => {
-    const [state, setState] = useState<IplantCardsState>({
+    const [state, setState] = useState<IPlantCardsState>({
         showBig: false,
         item: undefined,
         showEdit: false,
         products: props.products,
         cats: props.cats,
-        currentCat: undefined,
         producers: props.producers,
         yeartypes: props.yeartypes,
         pic: undefined,
         preview: undefined,
         error: undefined,
     });
+    const [changes, setChanges] = useState<IPLantChangesState>({
+        currentCat: undefined,
+        currentProduct: undefined,
+    })
     const openBigCard = (item: Irow) => {
         console.log('tik:', item);
         setState({
@@ -77,6 +83,11 @@ const PlantCards = (props: ICardsProps) => {
             showBig: true,
             showEdit: false,
         })
+        setChanges({
+            ...changes,
+            currentCat: undefined,
+            currentProduct: undefined,
+        })
     }
     const saveChanges = () => {
         // axios changes
@@ -87,9 +98,21 @@ const PlantCards = (props: ICardsProps) => {
         })
     };
     const history = useHistory();
-    const forwardToAddProduct = () => {
+    const forwardToAddPage = () => {
         console.log('91 trigger')
         history.push("/addNew");
+    };
+    const selectCat = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log('95 cards selectCat', e.target.value, typeof e.target.value)
+        setChanges({
+            ...changes,
+            currentCat: Number(e.target.value)})
+    };
+    const selectProduct = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log('111 cards selectProduct', e.target.value, typeof e.target.value)
+        setChanges({
+            ...changes,
+            currentProduct: Number(e.target.value)})
     };
     const delPlant = async () => {
         const answer = window.confirm(`Delete the plant? ${state.item?.id}-${state.item?.name}`);
@@ -130,7 +153,7 @@ const PlantCards = (props: ICardsProps) => {
         )
     };
     const PlantCardBig = () => {
-        console.log('plant in Bigcard:', state.item)
+        // console.log('plant in Bigcard:', state.item)
         if (state.item && state.showBig) {
             return (
                 <div className="plantcard-big">
@@ -193,29 +216,35 @@ const PlantCards = (props: ICardsProps) => {
                     <div className='bigcart-desc'>
                         <div className="big-card-titles">
                             <p className='big-card-line'>Категория:</p>
-                            {/*<select name="category" required className='select-add' value={state.item.cat_id}>*/}
-                            {/*    /!*onChange={selectCat}*!/*/}
-                            {/*    <option> </option>*/}
-                            {/*    {state.cats*/}
-                            {/*        ? state.cats.map(item => (*/}
-                            {/*            <option key={item.cat_id} value={item.cat_id}>{item.cat_name}</option>*/}
-                            {/*        ))*/}
-                            {/*        : null*/}
-                            {/*    }*/}
-                            {/*</select>*/}
-                            <p className='big-card-line'>{state.item.cat_name}</p>
+                            <div className='edit-extended-line'>
+                                <select name="category" required className='select-add' value={changes.currentCat ? changes.currentCat : state.item.cat_id} onChange={selectCat}>
+                                    {state.cats
+                                        ? state.cats.map(item => (
+                                            <option key={item.cat_id} value={item.cat_id}>{item.cat_name}</option>
+                                        ))
+                                        : null
+                                    }
+                                </select>
+                                <button onClick={() => forwardToAddPage()} className='small-add-button'>+</button>
+                            </div>
+                            {/*<p className='big-card-line'>{state.item.cat_name}</p>*/}
                             <p className='big-card-line'>Культура:</p>
                             <div className='edit-extended-line'>
-                                <select name="product" required className='select-add' defaultValue={state.item.product_id}>
+                                <select name="product" required className='select-add' defaultValue={state.item.product_id} onChange={selectProduct}>
                                     {/*onChange={selectCat}*/}
                                     {state.products
-                                        ? state.products.filter(item => item.category === state.item?.cat_id).sort((a, b) => (a.product_name > b.product_name) ? 1: -1).map(item => (
+                                        ? state.products
+                                            .filter(item => changes.currentCat
+                                                ? item.category === changes.currentCat
+                                                : item.category === state.item?.cat_id)
+                                            .sort((a, b) => (a.product_name > b.product_name) ? 1: -1)
+                                            .map(item => (
                                             <option key={item.id} value={item.id}>{item.product_name}</option>
                                         ))
                                         : <option>no products(</option>
                                     }
                                 </select>
-                                <button onClick={forwardToAddProduct} className='small-add-button'>+</button>
+                                <button onClick={() => forwardToAddPage()} className='small-add-button'>+</button>
                             </div>
                             {/*<p className='big-card-line'>{state.item.product_name}</p>*/}
                             <p className='big-card-line'>Сорт:</p>
@@ -223,7 +252,18 @@ const PlantCards = (props: ICardsProps) => {
                             {/*       autoComplete="off" className='add-input'/>*/}
                             <p className='big-card-line'>{state.item.name}</p>
                             <p className='big-card-line'>Производитель семян:</p>
-                            <p className='big-card-line'>{state.item.producer_name}</p>
+                            <div className='edit-extended-line'>
+                                <select name="producer" required className='select-add' defaultValue={state.item.producer_id}>
+                                    {state.producers
+                                        ? state.producers.sort((a, b) => (a.producer_name > b.producer_name) ? 1: -1).map(item => (
+                                            <option key={item.id} value={item.id}>{item.producer_name}</option>
+                                        ))
+                                        : <option>no producers(</option>
+                                    }
+                                </select>
+                                <button onClick={() => forwardToAddPage()} className='small-add-button'>+</button>
+                            </div>
+                            {/*<p className='big-card-line'>{state.item.producer_name}</p>*/}
                             <p className='big-card-line'>Требования к почве:</p>
                             <p className='big-card-line'>{state.item.soil}</p>
                             <p className='big-card-line'>Требования к поливу: </p>

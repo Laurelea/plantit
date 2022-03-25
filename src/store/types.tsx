@@ -23,6 +23,7 @@ export interface Irow extends Record<string, any> {
     product_id: number,
     name: string,
     producer_name: string,
+    producer_id: number,
     user_name: string,
     soil: string,
     watering: string,
