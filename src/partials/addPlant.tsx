@@ -1,34 +1,34 @@
-import React, { useState } from 'react'
-import axios from "axios";
-import { connect } from "react-redux";
-import { updateBase, updateUserInfo } from "../store/actions";
-import { ICat, IProduct, IReduxState, IUser, IProducer, IYearType } from "../store/types";
-import { API_URL } from "../config";
-import FormData from "form-data";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { updateBase, updateUserInfo } from '../store/actions';
+import { ICat, IProduct, IReduxState, IUser, IProducer, IYearType } from '../store/types';
+import { API_URL } from '../config';
+import FormData from 'form-data';
 
 const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.substring(1);
-}
+};
 
 interface IAddPlantProps {
-    currentUser: IUser,
-    updateUserInfo: (numberOfPlants: number) => void,
-    updateBase: () => void,
-    products: Array<IProduct> | undefined,
-    cats: Array<ICat> | undefined,
-    producers: Array<IProducer> | undefined,
-    yeartypes: Array<IYearType> | undefined,
+    currentUser: IUser;
+    updateUserInfo: (numberOfPlants: number) => void;
+    updateBase: () => void;
+    products: IProduct[] | undefined;
+    cats: ICat[] | undefined;
+    producers: IProducer[] | undefined;
+    yeartypes: IYearType[] | undefined;
 }
 
 interface IAddPlantState {
-    products: Array<IProduct> | undefined,
-    cats: Array<ICat> | undefined,
-    currentCat: number | undefined,
-    producers: Array<IProducer> | undefined,
-    yeartypes: Array<IYearType> | undefined,
-    pic: File | undefined,
-    error: string | undefined,
-    preview: string | undefined,
+    products: IProduct[] | undefined;
+    cats: ICat[] | undefined;
+    currentCat: number | undefined;
+    producers: IProducer[] | undefined;
+    yeartypes: IYearType[] | undefined;
+    pic: File | undefined;
+    error: string | undefined;
+    preview: string | undefined;
 }
 
 const AddPlant = (props: IAddPlantProps) => {
@@ -41,25 +41,25 @@ const AddPlant = (props: IAddPlantProps) => {
         pic: undefined,
         preview: undefined,
         error: undefined,
-    })
+    });
     const updateNumberOfPlants = async() => {
-        const data = {id: props.currentUser.userID}
+        const data = {id: props.currentUser.userID};
         await axios.post('/api/getNumberOfPlants', data)
             .then(response => {
-                    console.log("LK Got Plants: response.data: ", response.data)
+                    console.log('LK Got Plants: response.data: ', response.data);
                     props.updateUserInfo(response.data);
                 }
             )
             .catch(error => {
-                console.log("updateNumberOfPlants error: ", error);
-            })
-    }
+                console.log('updateNumberOfPlants error: ', error);
+            });
+    };
     const selectCat = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log('42 selectCat', e.target.value, typeof e.target.value)
+        console.log('42 selectCat', e.target.value, typeof e.target.value);
         setState({
             ...state,
-            currentCat: Number(e.target.value)})
-    }
+            currentCat: Number(e.target.value)});
+    };
     const imageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log('53 addPlant imageChange', e);
         if (e.currentTarget.files && e.currentTarget.files[0]) {
@@ -67,7 +67,7 @@ const AddPlant = (props: IAddPlantProps) => {
             const splitFileName = pic.name.split('.');
             const extension = splitFileName[splitFileName.length - 1].toLowerCase();
             if (!['jpg', 'jpeg', 'bmp', 'png'].includes(extension)) {
-                window.alert('supported file extension only jpg/jpeg/bmp/png')
+                window.alert('supported file extension only jpg/jpeg/bmp/png');
                 return;
             } else {
                 console.log('62 addPlant imageChange')
@@ -169,7 +169,7 @@ const AddPlant = (props: IAddPlantProps) => {
                     : <option>no producers(</option>
                 }
             </select>
-            <label className='add-elem'>
+            <label className="add-elem">
                 Введите название сорта:
             </label>
                 <input type='text' placeholder='Сорт растения: Машенька, Гигант, Роузи и тп.' autoFocus name='plantSort' required
@@ -182,7 +182,7 @@ const AddPlant = (props: IAddPlantProps) => {
                 {/*<textarea name="days_to_seedlings_min" placeholder="Мин" autoComplete="off" className="diap"></textarea>*/}
                 <input name="days_to_seedlings_max" type='text' placeholder="Макс" autoComplete="off" className="diap" defaultValue='0'></input>
             </div>
-            <label className='add-elem'>
+            <label className="add-elem">
                 Высота растения:
             </label>
             <div className="diaps">
