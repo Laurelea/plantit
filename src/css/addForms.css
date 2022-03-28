@@ -52,7 +52,7 @@
 }
 
 .select-add {
-    /*width: 50%;*/
+    /*width: auto;*/
     /*margin: 10px;*/
     /*padding: 5px;*/
     font-size: 1rem;
@@ -125,4 +125,23 @@
     text-align: left;
     min-height: 30px;
     /*padding: 5px;*/
+}
+
+.edit-extended-line {
+    display: grid;
+    width: 100%;
+    border: 1px solid lightskyblue;
+    align-items: center;
+    /*grid-template-rows: 1fr;*/
+    grid-template-columns: 0.95fr 0.05fr;
+}
+
+.small-add-button {
+    padding: 1px !important;
+    /*font-size: 100% !important;*/
+    margin: 2px !important;
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+    width: 25px;
+    height: 25px;
 }

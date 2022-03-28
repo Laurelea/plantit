@@ -18,9 +18,12 @@ export interface IUser {
 export interface Irow extends Record<string, any> {
     id: number,
     cat_name: string,
+    cat_id: number,
     product_name: string,
+    product_id: number,
     name: string,
     producer_name: string,
+    producer_id: number,
     user_name: string,
     soil: string,
     watering: string,

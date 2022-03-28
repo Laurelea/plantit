@@ -368,4 +368,10 @@ router.get("/api/getYearTypes", async(req, res) => {
     res.json(result)
 })
 
+router.put("/api/delplant", async(req, res) => {
+    console.log('373 inside router delplant', req.body)
+    const result = await controller.delPlant(req.body)
+    res.json(result)
+})
+
 module.exports = app

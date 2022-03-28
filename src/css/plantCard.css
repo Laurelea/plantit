@@ -79,6 +79,9 @@
 .plantcard-big {
     display: grid;
     width: 600px;
+    position: absolute;
+    align-self: center;
+    justify-self: center;
     /*height: 300px;*/
     background: black;
     border: solid cornflowerblue 3px;
@@ -90,6 +93,7 @@
     "bigcart-desc pic-big";
     /*padding: 1rem;*/
     box-shadow: -2rem 2rem 2rem rgba(255, 255, 255, 0.9);
+    /*animation: blinker 1s cubic-bezier(0.5, 0, 1, 1) infinite alternate;*/
     transition: 1.1s ease-out;
     filter: blur(0);
     transform: scale(1);
@@ -141,7 +145,7 @@
     width: 100%;
     display: grid;
     /*align-items: space-between;*/
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     border: solid navajowhite 1px;
     /*padding: 5px;*/
 }

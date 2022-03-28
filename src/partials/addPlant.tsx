@@ -152,7 +152,7 @@ const AddPlant = (props: IAddPlantProps) => {
             </label>
             <select name="product" required className='select-add'>
                 {state.products
-                    ? state.products.filter(item => item.category == state.currentCat).sort((a, b) => (a.product_name > b.product_name) ? 1: -1).map(item => (
+                    ? state.products.filter(item => item.category === state.currentCat).sort((a, b) => (a.product_name > b.product_name) ? 1: -1).map(item => (
                     <option key={item.id} value={item.id}>{item.product_name}</option>
                 ))
                     : <option>no products(</option>

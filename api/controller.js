@@ -105,10 +105,12 @@ module.exports.showDB = async () => {
             'categories.cat_name',
             'categories.cat_id',
             'product.product_name',
+            'product.id as product_id',
             'product.soil',
             'product.watering',
             'sort.name as name',
             'producer.producer_name',
+            'producer.id as producer_id',
             'users.user_name',
             'product.rootstock',
             'yeartypes.name as yeartype',
@@ -321,6 +323,28 @@ module.exports.addPlant = async data => {
         })
         .catch(err => {
             console.log('check err', err)
+        });
+    return { success, message }
+}
+
+module.exports.delPlant = async data => {
+    console.log('329 data:', data)
+    const { id } = data;
+    console.log('331 id:', id)
+    let success = false;
+    let message;
+    await dbKnex
+        .delete()
+        .from('sort')
+        .where({ id })
+        .then(async result => {
+            console.log('337 controller result', result)
+            message = 'plant deleted ok';
+            success = true;
+        })
+        .catch(err => {
+            console.log('check err', err)
+            message = JSON.stringify(err);
         });
     return { success, message }
 }

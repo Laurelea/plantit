@@ -5,20 +5,20 @@ import { IReduxState, Irow } from "../store/types";
 import React from 'react';
 
 interface IBaseProps {
-    dbToPrint: undefined | Array<Irow>,
+    dbToPrint: undefined | Irow[],
     updateBase: () => void,
     sortkey?: string,
 }
 
 interface ITableState {
-    sortKey: string,
+    sortKey: keyof Irow,
     sortOrder: boolean,
     filterType: string | undefined,
     filterValue: string,
     page: number,
     elemPerPage: number,
     loading: boolean,
-    baseToShow: Array<Irow> | undefined,
+    baseToShow: Irow[] | undefined,
     // curNumOfPages: number,
 }
 
@@ -140,7 +140,7 @@ const Table = (props: IBaseProps) => {
         )
     }
 
-    const Sort = (sortKey: string) => {
+    const Sort = (sortKey: keyof Irow) => {
         setState ({
             ...state,
             sortKey: sortKey,

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { getCats } from "./allBase";
-import {ICat, IReduxState} from "../store/types";
-import {connect} from "react-redux";
-import {updateBase, updateCats } from "../store/actions";
+import { ICat, IReduxState } from "../store/types";
+import { connect } from "react-redux";
+import { updateBase, updateCats } from "../store/actions";
 
 interface IShowBaseState {
     cats: undefined | Array<ICat>,
@@ -38,7 +38,9 @@ const ShowBase = (props: IShowBaseProps) => {
                 const catLink = "/cat-" + cat.cat_id
                 return (
                         <div className='cat CatWrapper' key={cat.cat_id}>
-                            <img src={cat.cat_pic} alt={cat.cat_name} className='cat-pic'/>
+                            <NavLink to={catLink}>
+                                <img src={cat.cat_pic} alt={cat.cat_name} className='cat-pic'/>
+                            </NavLink>
                             <div className='def-list-1'>
                                 <NavLink to={catLink}> {cat.cat_name} </NavLink>
                                 <p>
